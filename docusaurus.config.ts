@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'كلية الحاسبات',
+  title: 'دليل طالب كلية الحاسبات',
   tagline: 'كل اللي تحتاجه كطالب في كلية الحاسبات',
   favicon: 'img/favicon.ico',
 
@@ -74,7 +74,7 @@ const config: Config = {
       }
     },
     navbar: {
-      title: 'كلية الحاسبات',
+      title: 'دليل طالب كلية الحاسبات',
       logo: {
         alt: 'كلية الحاسبات Logo',
         src: 'img/logo.svg',
