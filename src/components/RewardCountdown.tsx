@@ -17,7 +17,7 @@ const RewardCountdown: React.FC = () => {
         const month = currentDate.getMonth();
 
         // Start with the 27th of current month
-        let paymentDate = new Date(year, month, 28);
+        let paymentDate = new Date(year, month, 27);
         
         // Apply the adjustment rules first
         const dayOfWeek = paymentDate.getDay();
@@ -98,13 +98,13 @@ const RewardCountdown: React.FC = () => {
     if (isPaymentDay) {
         return (
             <div style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 25%)',
+                color: 'var(--ifm-color-primary)',
+                background: 'var(--ifm-card-background-color)',
                 borderRadius: '16px',
                 padding: '2rem',
                 textAlign: 'center',
-                color: 'white',
                 margin: '2rem 0',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
@@ -115,10 +115,10 @@ const RewardCountdown: React.FC = () => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%)',
+                    background: 'linear-gradient(45deg, rgba(var(--ifm-color-primary-rgb), 0.05) 25%, transparent 25%, transparent 75%, rgba(var(--ifm-color-primary-rgb), 0.05) 75%), linear-gradient(45deg, rgba(var(--ifm-color-primary-rgb), 0.05) 25%, transparent 25%, transparent 75%, rgba(var(--ifm-color-primary-rgb), 0.05) 75%)',
                     backgroundSize: '30px 30px',
                     backgroundPosition: '0 0, 15px 15px',
-                    opacity: 0.3
+                    opacity: 0.6
                 }}></div>
                 
                 <div style={{ 
@@ -130,7 +130,7 @@ const RewardCountdown: React.FC = () => {
                 }}>🎉💰🎊</div>
                 
                 <h2 style={{ 
-                    color: 'white', 
+                    color: 'var(--ifm-color-primary)', 
                     marginBottom: '1rem',
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -140,7 +140,8 @@ const RewardCountdown: React.FC = () => {
                 
                 <p style={{ 
                     fontSize: '1.3rem', 
-                    opacity: 0.95,
+                    color: 'var(--ifm-color-primary)',
+                    opacity: 0.8,
                     marginBottom: '1.5rem',
                     position: 'relative',
                     zIndex: 1
