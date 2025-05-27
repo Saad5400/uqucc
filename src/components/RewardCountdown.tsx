@@ -17,20 +17,29 @@ const RewardCountdown: React.FC = () => {
         const month = currentDate.getMonth();
 
         // Start with the 27th of current month
-        let paymentDate = new Date(year, month, 27);
-
-        // If we're past the 27th (or adjusted date), move to next month
-        if (currentDate > paymentDate) {
-            paymentDate = new Date(year, month + 1, 27);
-        }
-
-        // Apply the adjustment rules
+        let paymentDate = new Date(year, month, 28);
+        
+        // Apply the adjustment rules first
         const dayOfWeek = paymentDate.getDay();
-
         if (dayOfWeek === 5) { // Friday
             paymentDate.setDate(26); // Move to Thursday
         } else if (dayOfWeek === 6) { // Saturday
             paymentDate.setDate(28); // Move to Sunday
+        }
+
+        // If we're past the payment date (including adjustments), move to next month
+        if (currentDate.toDateString() === paymentDate.toDateString()) {
+            // It's payment day today
+            return paymentDate;
+        } else if (currentDate > paymentDate) {
+            // Move to next month
+            paymentDate = new Date(year, month + 1, 27);
+            const nextDayOfWeek = paymentDate.getDay();
+            if (nextDayOfWeek === 5) { // Friday
+                paymentDate.setDate(26); // Move to Thursday
+            } else if (nextDayOfWeek === 6) { // Saturday
+                paymentDate.setDate(28); // Move to Sunday
+            }
         }
 
         return paymentDate;
@@ -95,23 +104,64 @@ const RewardCountdown: React.FC = () => {
                 textAlign: 'center',
                 color: 'white',
                 margin: '2rem 0',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                position: 'relative',
+                overflow: 'hidden'
             }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
-                <h2 style={{ color: 'white', marginBottom: '1rem' }}>مبروك! اليوم يوم صرف المكافأة</h2>
-                <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-                    يتم صرف المكافآت اليوم - {formatDate(new Date())}
-                </p>
+                {/* Animated background elements */}
                 <div style={{
-                    background: 'var(--ifm-card-background-color)',
-                    borderRadius: '8px',
-                    padding: '1rem',
-                    marginTop: '1rem'
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%)',
+                    backgroundSize: '30px 30px',
+                    backgroundPosition: '0 0, 15px 15px',
+                    opacity: 0.3
+                }}></div>
+                
+                <div style={{ 
+                    fontSize: '4rem', 
+                    marginBottom: '1rem',
+                    animation: 'bounce 2s infinite',
+                    position: 'relative',
+                    zIndex: 1
+                }}>🎉💰🎊</div>
+                
+                <h2 style={{ 
+                    color: 'white', 
+                    marginBottom: '1rem',
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    position: 'relative',
+                    zIndex: 1
+                }}>مبروك! اليوم يوم صرف المكافأة</h2>
+                
+                <p style={{ 
+                    fontSize: '1.3rem', 
+                    opacity: 0.95,
+                    marginBottom: '1.5rem',
+                    position: 'relative',
+                    zIndex: 1
                 }}>
-                    <p style={{ margin: 0, fontSize: '0.9rem' }}>
-                        تحقق من حسابك البنكي لاستلام المكافأة
-                    </p>
-                </div>
+                    ممكن تاخذ حتى 24 ساعة عشان توصل المكافأة لحسابك
+                </p>
+                
+                {/* Add some CSS animation styles */}
+                <style>{`
+                    @keyframes bounce {
+                        0%, 20%, 50%, 80%, 100% {
+                            transform: translateY(0);
+                        }
+                        40% {
+                            transform: translateY(-10px);
+                        }
+                        60% {
+                            transform: translateY(-5px);
+                        }
+                    }
+                `}</style>
             </div>
         );
     }
@@ -126,6 +176,7 @@ const RewardCountdown: React.FC = () => {
                 marginBottom: '1.5rem'
             }}>
                 <div style={{
+                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
                     background: 'var(--ifm-card-background-color)',
                     borderRadius: '12px',
                     padding: '1rem',
@@ -135,6 +186,7 @@ const RewardCountdown: React.FC = () => {
                     <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>يوم</div>
                 </div>
                 <div style={{
+                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
                     background: 'var(--ifm-card-background-color)',
                     borderRadius: '12px',
                     padding: '1rem',
@@ -144,6 +196,7 @@ const RewardCountdown: React.FC = () => {
                     <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>ساعة</div>
                 </div>
                 <div style={{
+                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
                     background: 'var(--ifm-card-background-color)',
                     borderRadius: '12px',
                     padding: '1rem',
@@ -153,6 +206,7 @@ const RewardCountdown: React.FC = () => {
                     <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>دقيقة</div>
                 </div>
                 <div style={{
+                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
                     background: 'var(--ifm-card-background-color)',
                     borderRadius: '12px',
                     padding: '1rem',
@@ -164,6 +218,7 @@ const RewardCountdown: React.FC = () => {
             </div>
 
             <div style={{
+                boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
                 color: 'var(--ifm-color-primary)',
                 background: 'var(--ifm-card-background-color)',
                 borderRadius: '8px',
