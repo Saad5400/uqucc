@@ -28,3 +28,8 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Hiding the X on the search bar <button class="searchClearButton_qk4g">✕</button> */
+button[class*="searchClearButton"] {
+  display: none;
+}
