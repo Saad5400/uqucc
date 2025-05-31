@@ -54,6 +54,8 @@ const config: Config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Saad5400/uqucc/tree/main/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
         blog: {
           showReadingTime: true,
@@ -87,7 +89,7 @@ const config: Config = {
     docs: {
       sidebar: {
         autoCollapseCategories: true,
-      }
+      },
     },
     navbar: {
       title: 'دليل طالب كلية الحاسبات',
