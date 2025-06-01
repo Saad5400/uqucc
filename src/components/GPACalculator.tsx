@@ -323,47 +323,22 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                         </motion.div>
                     ))}
                 </AnimatePresence>
-            </motion.div>
-
-            {/* Export/Import section */}
+            </motion.div>            {/* Export/Import section */}
             <motion.div
-                style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+                className="flex flex-col gap-2 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
             >
-                <p style={{
-                    margin: '0',
-                    color: 'var(--ifm-color-content-secondary)',
-                    fontSize: '0.9rem'
-                }}>
+                <p className="m-0 text-content-secondary text-sm">
                     يمكنك تصدير واستيراد البيانات لنقلها بين الأجهزة أو الاحتفاظ بها، هذه الخاصية منفصلة عن الحفظ التلقائي
                 </p>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div className="flex gap-4">
                     <motion.button
                         onClick={exportData}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1rem',
-                            backgroundColor: 'transparent',
-                            border: '1px solid var(--ifm-color-primary)',
-                            borderRadius: '6px',
-                            color: 'var(--ifm-color-primary)',
-                            fontSize: '1rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            fontFamily: 'inherit'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary)';
-                            e.currentTarget.style.color = 'var(--ifm-color-primary-contrast-background)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = 'var(--ifm-color-primary)';
-                        }}
+                        className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit hover:bg-primary hover:text-primary-contrast"
                     >
                         تصدير البيانات
                     </motion.button>
@@ -371,26 +346,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                         onClick={importData}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1rem',
-                            backgroundColor: 'transparent',
-                            border: '1px solid var(--ifm-color-primary)',
-                            borderRadius: '6px',
-                            color: 'var(--ifm-color-primary)',
-                            fontSize: '1rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            fontFamily: 'inherit'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary)';
-                            e.currentTarget.style.color = 'var(--ifm-color-primary-contrast-background)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = 'var(--ifm-color-primary)';
-                        }}
+                        className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit hover:bg-primary hover:text-primary-contrast"
                     >
                         استيراد البيانات
                     </motion.button>
