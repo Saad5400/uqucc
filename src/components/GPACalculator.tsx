@@ -148,19 +148,19 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
             console.error('Error importing data:', error);
             alert('خطأ في استيراد البيانات');
         }
-    }, []);    return (
+    }, []); return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <motion.h3 
+            <motion.h3
                 className="text-primary text-2xl mb-4"
                 layout
             >
                 <AnimatePresence mode="wait">
                     {gpa ? (
-                        <motion.ul 
+                        <motion.ul
                             key="gpa-results"
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -168,7 +168,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                             transition={{ duration: 0.3 }}
                             className="list-none p-0 m-0 w-full"
                         >
-                            <motion.li 
+                            <motion.li
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.1 }}
@@ -184,7 +184,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                     {gpa}
                                 </motion.span>
                             </motion.li>
-                            <motion.li 
+                            <motion.li
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2 }}
@@ -200,7 +200,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                     {approximateGpa}
                                 </motion.span>
                             </motion.li>
-                            <motion.li 
+                            <motion.li
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.3 }}
@@ -216,7 +216,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                     {totalCredits}
                                 </motion.span>
                             </motion.li>
-                            <motion.li 
+                            <motion.li
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.4 }}
@@ -247,80 +247,46 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                 </AnimatePresence>
             </motion.h3>
 
-            <motion.hr 
+            <motion.hr
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="border-none border-t border-border origin-left"
             />
 
-            <motion.div 
+            <motion.div
                 className="flex flex-col gap-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-            >
+                transition={{ duration: 0.5, delay: 0.3 }}                        >
                 <motion.button
                     onClick={addCourse}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className='text-center'
-                    style={{
-                        width: '100%',
-                        padding: '0.75rem 1rem',
-                        backgroundColor: 'transparent',
-                        border: '1px solid var(--ifm-color-primary)',
-                        borderRadius: '6px',
-                        color: 'var(--ifm-color-primary)',
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        fontFamily: 'inherit'
-                    }}
-                    onMouseOver={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary)';
-                        e.currentTarget.style.color = 'var(--ifm-color-primary-contrast-background)';
-                    }}
-                    onMouseOut={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = 'var(--ifm-color-primary)';
-                    }}
+                    className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-center hover:bg-primary hover:text-primary-contrast"
                 >
                     إضافة مقرر
                 </motion.button>
 
                 <AnimatePresence>
                     {courses.map((course, index) => (
-                        <motion.div 
-                            key={course.id} 
+                        <motion.div
+                            key={course.id}
                             initial={{ opacity: 0, x: -20, scale: 0.9 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                            transition={{ 
+                            transition={{
                                 duration: 0.3,
                                 delay: index * 0.05
                             }}
                             layout
-                            style={{ display: 'flex' }}
+                            className="flex"
                         >
                             <motion.button
                                 onClick={() => removeCourse(course.id)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                style={{
-                                    width: 'fit-content',
-                                    padding: '0.75rem 1rem',
-                                    backgroundColor: 'var(--ifm-color-danger)',
-                                    border: '1px solid var(--ifm-color-danger)',
-                                    borderTopRightRadius: '6px',
-                                    borderBottomRightRadius: '6px',
-                                    borderTopLeftRadius: '0',
-                                    borderBottomLeftRadius: '0',
-                                    color: 'white',
-                                    fontSize: '0.9rem',
-                                    cursor: 'pointer',
-                                    fontFamily: 'inherit'
-                                }}
+                                className="w-fit py-3 px-4 bg-danger border border-danger rounded-s-md rounded-e-none text-white text-sm cursor-pointer font-inherit"
                             >
                                 حذف
                             </motion.button>
@@ -331,62 +297,21 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                 onChange={(e) => updateCourse(course.id, 'name', e.target.value)}
                                 placeholder="اسم المقرر"
                                 whileFocus={{ scale: 1.02 }}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.75rem',
-                                    border: '1px solid var(--ifm-color-emphasis-300)',
-                                    borderRight: 'none',
-                                    borderLeft: 'none',
-                                    borderRadius: '0',
-                                    fontSize: '1rem',
-                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                    color: 'var(--ifm-color-content)',
-                                    fontFamily: 'inherit',
-                                    transition: 'all 0.2s ease'
-                                }}
-                            />
-
-                            <motion.input
+                                className="w-full py-3 px-3 border-t border-b border-border border-s-0 border-l-0 rounded-none text-base bg-background text-content font-inherit transition-all duration-200 ease-in-out"
+                            />                            <motion.input
                                 type="text"
                                 value={course.credits || ''}
                                 onChange={(e) => updateCourse(course.id, 'credits', e.target.value)}
                                 placeholder="الساعات"
                                 whileFocus={{ scale: 1.02 }}
-                                style={{
-                                    width: '100px',
-                                    minWidth: '100px',
-                                    padding: '0.75rem',
-                                    border: '1px solid var(--ifm-color-emphasis-300)',
-                                    borderRadius: '0',
-                                    fontSize: '1rem',
-                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                    color: 'var(--ifm-color-content)',
-                                    fontFamily: 'inherit',
-                                    transition: 'all 0.2s ease'
-                                }}
+                                className="w-24 min-w-24 py-3 px-3 border border-border rounded-none text-base bg-background text-content font-inherit transition-all duration-200 ease-in-out"
                             />
 
                             <motion.select
                                 value={course.grade || ''}
                                 onChange={(e) => updateCourse(course.id, 'grade', e.target.value)}
                                 whileFocus={{ scale: 1.02 }}
-                                style={{
-                                    width: '100px',
-                                    minWidth: '100px',
-                                    padding: '0.75rem',
-                                    border: '1px solid var(--ifm-color-emphasis-300)',
-                                    borderTopLeftRadius: '6px',
-                                    borderBottomLeftRadius: '6px',
-                                    borderTopRightRadius: '0',
-                                    borderBottomRightRadius: '0',
-                                    borderRight: 'none',
-                                    fontSize: '1rem',
-                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                    color: 'var(--ifm-color-content)',
-                                    fontFamily: 'inherit',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s ease'
-                                }}
+                                className="w-24 min-w-24 py-3 px-3 border border-border rounded-e-md rounded-s-none border-s-0 text-base bg-background text-content font-inherit cursor-pointer transition-all duration-200 ease-in-out"
                             >
                                 <option value="">التقدير</option>
                                 {Object.keys(grades).map((grade) => (
@@ -401,7 +326,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
             </motion.div>
 
             {/* Export/Import section */}
-            <motion.div 
+            <motion.div
                 style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
