@@ -20,4 +20,5 @@
 
     /* Status colors */
     --color-danger: var(--ifm-color-danger);
+    --color-success: var(--ifm-color-success);
 }
