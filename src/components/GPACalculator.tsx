@@ -87,10 +87,18 @@ async function extractTextFromPDF(file: File): Promise<string> {
     for (let i = 1; i <= numPages; i++) {
         const page = await pdfDocument.getPage(i);
         const textContent = await page.getTextContent();
-        const pageText = textContent.items
-            .map((item: any) => item.str)
+        allText += textContent.items
+            // filter out non-ascii characters
+            .map((item: any) => {
+                if (typeof item.str === 'string') {
+                    return item.str.replace(/[^\x20-\x7E]/g, '') // Remove non-ASCII characters
+                        .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+                        .trim(); // Trim leading/trailing spaces
+                }
+                return '';
+            })
+            .filter((text: string) => text.length > 0) // Filter out empty strings
             .join(';');
-        allText += pageText + '\n\n';
     }
 
     return allText;
