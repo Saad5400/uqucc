@@ -1,11 +1,10 @@
 {
   "name": "uqucc",
   "version": "0.0.0",
-  "private": true,
-  "scripts": {
+  "private": true,  "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start": "concurrently \"npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css --watch\" \"docusaurus start\"",
+    "build": "npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -19,16 +18,19 @@
     "@docusaurus/preset-classic": "3.7.0",
     "@easyops-cn/docusaurus-search-local": "^0.49.2",
     "@mdx-js/react": "^3.0.0",
+    "@tailwindcss/cli": "^4.1.8",
     "clsx": "^2.0.0",
     "framer-motion": "^12.15.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
     "@docusaurus/types": "3.7.0",
+    "concurrently": "^9.1.2",
     "typescript": "~5.6.2"
   },
   "browserslist": {
