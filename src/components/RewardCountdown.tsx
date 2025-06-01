@@ -97,55 +97,19 @@ const RewardCountdown: React.FC = () => {
 
     if (isPaymentDay) {
         return (
-            <div style={{
-                boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 25%)',
-                color: 'var(--ifm-color-primary)',
-                background: 'var(--ifm-card-background-color)',
-                borderRadius: '16px',
-                padding: '2rem',
-                textAlign: 'center',
-                margin: '2rem 0',
-                position: 'relative',
-                overflow: 'hidden'
-            }}>
+            <div className="shadow-lg text-primary bg-card-bg rounded-2xl p-8 text-center my-8 relative overflow-hidden">
                 {/* Animated background elements */}
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+                <div className="absolute inset-0 opacity-60" style={{
                     background: 'linear-gradient(45deg, rgba(var(--ifm-color-primary-rgb), 0.05) 25%, transparent 25%, transparent 75%, rgba(var(--ifm-color-primary-rgb), 0.05) 75%), linear-gradient(45deg, rgba(var(--ifm-color-primary-rgb), 0.05) 25%, transparent 25%, transparent 75%, rgba(var(--ifm-color-primary-rgb), 0.05) 75%)',
                     backgroundSize: '30px 30px',
-                    backgroundPosition: '0 0, 15px 15px',
-                    opacity: 0.6
+                    backgroundPosition: '0 0, 15px 15px'
                 }}></div>
                 
-                <div style={{ 
-                    fontSize: '4rem', 
-                    marginBottom: '1rem',
-                    animation: 'bounce 2s infinite',
-                    position: 'relative',
-                    zIndex: 1
-                }}>🎉💰🎊</div>
+                <div className="text-6xl mb-4 animate-bounce relative z-10">🎉💰🎊</div>
                 
-                <h2 style={{ 
-                    color: 'var(--ifm-color-primary)', 
-                    marginBottom: '1rem',
-                    fontSize: '2rem',
-                    fontWeight: 'bold',
-                    position: 'relative',
-                    zIndex: 1
-                }}>مبروك! اليوم يوم صرف المكافأة</h2>
+                <h2 className="text-primary mb-4 text-3xl font-bold relative z-10">مبروك! اليوم يوم صرف المكافأة</h2>
                 
-                <p style={{ 
-                    fontSize: '1.3rem', 
-                    color: 'var(--ifm-color-primary)',
-                    opacity: 0.8,
-                    marginBottom: '1.5rem',
-                    position: 'relative',
-                    zIndex: 1
-                }}>
+                <p className="text-xl text-primary opacity-80 mb-6 relative z-10">
                     ممكن تاخذ حتى 24 ساعة عشان توصل المكافأة لحسابك
                 </p>
                 
@@ -169,63 +133,27 @@ const RewardCountdown: React.FC = () => {
 
     return (
         <>
-            <div style={{
-                color: 'var(--ifm-color-primary)',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '1rem',
-                marginBottom: '1.5rem'
-            }}>
-                <div style={{
-                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
-                    background: 'var(--ifm-card-background-color)',
-                    borderRadius: '12px',
-                    padding: '1rem',
-                    backdropFilter: 'blur(10px)'
-                }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{timeLeft.days}</div>
-                    <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>يوم</div>
+            <div className="text-primary grid grid-cols-4 gap-4 mb-6">
+                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                    <div className="text-3xl font-bold">{timeLeft.days}</div>
+                    <div className="text-sm opacity-80">يوم</div>
                 </div>
-                <div style={{
-                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
-                    background: 'var(--ifm-card-background-color)',
-                    borderRadius: '12px',
-                    padding: '1rem',
-                    backdropFilter: 'blur(10px)'
-                }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{timeLeft.hours}</div>
-                    <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>ساعة</div>
+                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                    <div className="text-3xl font-bold">{timeLeft.hours}</div>
+                    <div className="text-sm opacity-80">ساعة</div>
                 </div>
-                <div style={{
-                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
-                    background: 'var(--ifm-card-background-color)',
-                    borderRadius: '12px',
-                    padding: '1rem',
-                    backdropFilter: 'blur(10px)'
-                }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{timeLeft.minutes}</div>
-                    <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>دقيقة</div>
+                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                    <div className="text-3xl font-bold">{timeLeft.minutes}</div>
+                    <div className="text-sm opacity-80">دقيقة</div>
                 </div>
-                <div style={{
-                    boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
-                    background: 'var(--ifm-card-background-color)',
-                    borderRadius: '12px',
-                    padding: '1rem',
-                    backdropFilter: 'blur(10px)'
-                }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{timeLeft.seconds}</div>
-                    <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>ثانية</div>
+                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                    <div className="text-3xl font-bold">{timeLeft.seconds}</div>
+                    <div className="text-sm opacity-80">ثانية</div>
                 </div>
             </div>
 
-            <div style={{
-                boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
-                color: 'var(--ifm-color-primary)',
-                background: 'var(--ifm-card-background-color)',
-                borderRadius: '8px',
-                padding: '1rem'
-            }}>
-                <p style={{ margin: 0, fontSize: '1rem' }}>
+            <div className="shadow-md text-primary bg-card-bg rounded-lg p-4">
+                <p className="!mb-0 text-base">
                     موعد المكافأة القادمة: <strong>{formatDate(nextPaymentDate)}</strong>
                 </p>
             </div>
