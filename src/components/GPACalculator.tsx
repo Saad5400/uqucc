@@ -302,6 +302,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                     onClick={addCourse}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    className='text-center'
                     style={{
                         width: '100%',
                         padding: '0.75rem 1rem',

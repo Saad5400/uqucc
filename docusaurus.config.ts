@@ -75,6 +75,7 @@ const config: Config = {
         theme: {
           customCss: [
             './src/css/custom.css',
+            './src/css/tailwind-output.css',
           ],
         },
         gtag: {
