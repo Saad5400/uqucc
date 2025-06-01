@@ -89,7 +89,7 @@ async function extractTextFromPDF(file: File): Promise<string> {
         const textContent = await page.getTextContent();
         const pageText = textContent.items
             .map((item: any) => item.str)
-            .join(' ');
+            .join(';');
         allText += pageText + '\n\n';
     }
 
@@ -97,34 +97,7 @@ async function extractTextFromPDF(file: File): Promise<string> {
 }
 
 function parseCoursesFromText(text: string): Course[] {
-    // Unicode ranges covering basic Arabic letters + presentation forms
-    const ARABIC_RANGE = "\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
-    const GRADE_PATTERN = "(A\\+|A|B\\+|B|C\\+|C|D\\+|D|F)";
-
-    // Build a global regex:  <Arabic name + digits + spaces>  ␣  <1–5>  ␣  <grade>
-    const courseRegex = new RegExp(
-        `([${ARABIC_RANGE}0-9\\s()]+?)\\s+([1-5])\\s+${GRADE_PATTERN}`,
-        "g"
-    );
-
-    // Normalize whitespace, convert Arabic-Indic digits, then run the regex
-    const normalized = convertArabicToLatinDigits(text.replace(/\s+/g, " "));
-    const courses: Course[] = [];
-    let match: RegExpExecArray | null;
-    let counter = 1;
-
-    while ((match = courseRegex.exec(normalized)) !== null) {
-        const [, rawName, credits, grade] = match;
-        courses.push({
-            id: counter.toString(),
-            name: rawName.trim(),
-            credits,
-            grade: grade as GradeValue,
-        });
-        counter++;
-    }
-
-    return courses;
+    return [];
 }
 
 const GPACalculator: React.FC = () => {
