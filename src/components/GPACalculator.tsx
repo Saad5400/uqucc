@@ -148,20 +148,14 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
             console.error('Error importing data:', error);
             alert('خطأ في استيراد البيانات');
         }
-    }, []);
-
-    return (
+    }, []);    return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
             <motion.h3 
-                style={{
-                    color: 'var(--ifm-color-primary)',
-                    fontSize: 'var(--ifm-h3-font-size)',
-                    marginBottom: '1rem'
-                }}
+                className="text-primary text-2xl mb-4"
                 layout
             >
                 <AnimatePresence mode="wait">
@@ -172,23 +166,13 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
                             transition={{ duration: 0.3 }}
-                            style={{
-                                listStyle: 'none',
-                                padding: 0,
-                                margin: 0,
-                                width: '100%'
-                            }}
+                            className="list-none p-0 m-0 w-full"
                         >
                             <motion.li 
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.1 }}
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                                    padding: '0.5rem 0'
-                                }}
+                                className="flex justify-between border-b border-border py-2"
                             >
                                 <span>معدلك الحقيقي:</span>
                                 <motion.span
@@ -204,12 +188,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2 }}
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                                    padding: '0.5rem 0'
-                                }}
+                                className="flex justify-between border-b border-border py-2"
                             >
                                 <span>معدلك التقريبي:</span>
                                 <motion.span
@@ -225,12 +204,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.3 }}
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                                    padding: '0.5rem 0'
-                                }}
+                                className="flex justify-between border-b border-border py-2"
                             >
                                 <span>الساعات المجتازة:</span>
                                 <motion.span
@@ -246,11 +220,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.4 }}
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    padding: '0.5rem 0'
-                                }}
+                                className="flex justify-between py-2"
                             >
                                 <span>إجمالي النقاط:</span>
                                 <motion.span
@@ -281,19 +251,11 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                style={{ 
-                    border: 'none', 
-                    borderTop: '1px solid var(--ifm-color-emphasis-300)',
-                    transformOrigin: 'left'
-                }} 
+                className="border-none border-t border-border origin-left"
             />
 
             <motion.div 
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                }}
+                className="flex flex-col gap-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
