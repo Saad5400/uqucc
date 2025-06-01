@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Utility function to convert Arabic-Indic digits to Latin digits (with trimming)
 function convertArabicToLatinDigits(arabicNumber: string): string {
@@ -150,69 +151,157 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
     }, []);
 
     return (
-        <>
-            <h3 style={{
-                color: 'var(--ifm-color-primary)',
-                fontSize: 'var(--ifm-h3-font-size)',
-                marginBottom: '1rem'
-            }}>
-                {gpa ? (
-                    <ul style={{
-                        listStyle: 'none',
-                        padding: 0,
-                        margin: 0,
-                        width: '100%'
-                    }}>
-                        <li style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                            padding: '0.5rem 0'
-                        }}>
-                            <span>معدلك الحقيقي:</span>
-                            <span>{gpa}</span>
-                        </li>
-                        <li style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                            padding: '0.5rem 0'
-                        }}>
-                            <span>معدلك التقريبي:</span>
-                            <span>{approximateGpa}</span>
-                        </li>
-                        <li style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-                            padding: '0.5rem 0'
-                        }}>
-                            <span>الساعات المجتازة:</span>
-                            <span>{totalCredits}</span>
-                        </li>
-                        <li style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            padding: '0.5rem 0'
-                        }}>
-                            <span>إجمالي النقاط:</span>
-                            <span>{totalWeightedGrade.toFixed(2)}</span>
-                        </li>
-                    </ul>
-                ) : (
-                    <span>املأ البيانات لحساب المعدل</span>
-                )}
-            </h3>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <motion.h3 
+                style={{
+                    color: 'var(--ifm-color-primary)',
+                    fontSize: 'var(--ifm-h3-font-size)',
+                    marginBottom: '1rem'
+                }}
+                layout
+            >
+                <AnimatePresence mode="wait">
+                    {gpa ? (
+                        <motion.ul 
+                            key="gpa-results"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                                listStyle: 'none',
+                                padding: 0,
+                                margin: 0,
+                                width: '100%'
+                            }}
+                        >
+                            <motion.li 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 }}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
+                                    padding: '0.5rem 0'
+                                }}
+                            >
+                                <span>معدلك الحقيقي:</span>
+                                <motion.span
+                                    key={gpa}
+                                    initial={{ scale: 1.2, color: 'var(--ifm-color-primary)' }}
+                                    animate={{ scale: 1, color: 'inherit' }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {gpa}
+                                </motion.span>
+                            </motion.li>
+                            <motion.li 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 }}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
+                                    padding: '0.5rem 0'
+                                }}
+                            >
+                                <span>معدلك التقريبي:</span>
+                                <motion.span
+                                    key={approximateGpa}
+                                    initial={{ scale: 1.2, color: 'var(--ifm-color-primary)' }}
+                                    animate={{ scale: 1, color: 'inherit' }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {approximateGpa}
+                                </motion.span>
+                            </motion.li>
+                            <motion.li 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 }}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
+                                    padding: '0.5rem 0'
+                                }}
+                            >
+                                <span>الساعات المجتازة:</span>
+                                <motion.span
+                                    key={totalCredits}
+                                    initial={{ scale: 1.2, color: 'var(--ifm-color-primary)' }}
+                                    animate={{ scale: 1, color: 'inherit' }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {totalCredits}
+                                </motion.span>
+                            </motion.li>
+                            <motion.li 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.4 }}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    padding: '0.5rem 0'
+                                }}
+                            >
+                                <span>إجمالي النقاط:</span>
+                                <motion.span
+                                    key={totalWeightedGrade.toFixed(2)}
+                                    initial={{ scale: 1.2, color: 'var(--ifm-color-primary)' }}
+                                    animate={{ scale: 1, color: 'inherit' }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {totalWeightedGrade.toFixed(2)}
+                                </motion.span>
+                            </motion.li>
+                        </motion.ul>
+                    ) : (
+                        <motion.span
+                            key="empty-state"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            املأ البيانات لحساب المعدل
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </motion.h3>
 
-            <hr style={{ border: 'none', borderTop: '1px solid var(--ifm-color-emphasis-300)' }} />
+            <motion.hr 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                style={{ 
+                    border: 'none', 
+                    borderTop: '1px solid var(--ifm-color-emphasis-300)',
+                    transformOrigin: 'left'
+                }} 
+            />
 
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-            }}>
-                <button
+            <motion.div 
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+            >
+                <motion.button
                     onClick={addCourse}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     style={{
                         width: '100%',
                         padding: '0.75rem 1rem',
@@ -235,100 +324,126 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                     }}
                 >
                     إضافة مقرر
-                </button>
+                </motion.button>
 
-                {courses.map((course) => (
-                    <div key={course.id} style={{ display: 'flex' }}>
-                        <button
-                            onClick={() => removeCourse(course.id)}
-                            style={{
-                                width: 'fit-content',
-                                padding: '0.75rem 1rem',
-                                backgroundColor: 'var(--ifm-color-danger)',
-                                border: '1px solid var(--ifm-color-danger)',
-                                borderTopRightRadius: '6px',
-                                borderBottomRightRadius: '6px',
-                                borderTopLeftRadius: '0',
-                                borderBottomLeftRadius: '0',
-                                color: 'white',
-                                fontSize: '0.9rem',
-                                cursor: 'pointer',
-                                fontFamily: 'inherit'
+                <AnimatePresence>
+                    {courses.map((course, index) => (
+                        <motion.div 
+                            key={course.id} 
+                            initial={{ opacity: 0, x: -20, scale: 0.9 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: 20, scale: 0.9 }}
+                            transition={{ 
+                                duration: 0.3,
+                                delay: index * 0.05
                             }}
+                            layout
+                            style={{ display: 'flex' }}
                         >
-                            حذف
-                        </button>
+                            <motion.button
+                                onClick={() => removeCourse(course.id)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                style={{
+                                    width: 'fit-content',
+                                    padding: '0.75rem 1rem',
+                                    backgroundColor: 'var(--ifm-color-danger)',
+                                    border: '1px solid var(--ifm-color-danger)',
+                                    borderTopRightRadius: '6px',
+                                    borderBottomRightRadius: '6px',
+                                    borderTopLeftRadius: '0',
+                                    borderBottomLeftRadius: '0',
+                                    color: 'white',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer',
+                                    fontFamily: 'inherit'
+                                }}
+                            >
+                                حذف
+                            </motion.button>
 
-                        <input
-                            type="text"
-                            value={course.name || ''}
-                            onChange={(e) => updateCourse(course.id, 'name', e.target.value)}
-                            placeholder="اسم المقرر"
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                border: '1px solid var(--ifm-color-emphasis-300)',
-                                borderRight: 'none',
-                                borderLeft: 'none',
-                                borderRadius: '0',
-                                fontSize: '1rem',
-                                backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                color: 'var(--ifm-color-content)',
-                                fontFamily: 'inherit'
-                            }}
-                        />
+                            <motion.input
+                                type="text"
+                                value={course.name || ''}
+                                onChange={(e) => updateCourse(course.id, 'name', e.target.value)}
+                                placeholder="اسم المقرر"
+                                whileFocus={{ scale: 1.02 }}
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    border: '1px solid var(--ifm-color-emphasis-300)',
+                                    borderRight: 'none',
+                                    borderLeft: 'none',
+                                    borderRadius: '0',
+                                    fontSize: '1rem',
+                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
+                                    color: 'var(--ifm-color-content)',
+                                    fontFamily: 'inherit',
+                                    transition: 'all 0.2s ease'
+                                }}
+                            />
 
-                        <input
-                            type="text"
-                            value={course.credits || ''}
-                            onChange={(e) => updateCourse(course.id, 'credits', e.target.value)}
-                            placeholder="الساعات"
-                            style={{
-                                width: '100px',
-                                minWidth: '100px',
-                                padding: '0.75rem',
-                                border: '1px solid var(--ifm-color-emphasis-300)',
-                                borderRadius: '0',
-                                fontSize: '1rem',
-                                backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                color: 'var(--ifm-color-content)',
-                                fontFamily: 'inherit'
-                            }}
-                        />
+                            <motion.input
+                                type="text"
+                                value={course.credits || ''}
+                                onChange={(e) => updateCourse(course.id, 'credits', e.target.value)}
+                                placeholder="الساعات"
+                                whileFocus={{ scale: 1.02 }}
+                                style={{
+                                    width: '100px',
+                                    minWidth: '100px',
+                                    padding: '0.75rem',
+                                    border: '1px solid var(--ifm-color-emphasis-300)',
+                                    borderRadius: '0',
+                                    fontSize: '1rem',
+                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
+                                    color: 'var(--ifm-color-content)',
+                                    fontFamily: 'inherit',
+                                    transition: 'all 0.2s ease'
+                                }}
+                            />
 
-                        <select
-                            value={course.grade || ''}
-                            onChange={(e) => updateCourse(course.id, 'grade', e.target.value)}
-                            style={{
-                                width: '100px',
-                                minWidth: '100px',
-                                padding: '0.75rem',
-                                border: '1px solid var(--ifm-color-emphasis-300)',
-                                borderTopLeftRadius: '6px',
-                                borderBottomLeftRadius: '6px',
-                                borderTopRightRadius: '0',
-                                borderBottomRightRadius: '0',
-                                borderRight: 'none',
-                                fontSize: '1rem',
-                                backgroundColor: 'var(--ifm-color-emphasis-0)',
-                                color: 'var(--ifm-color-content)',
-                                fontFamily: 'inherit',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            <option value="">التقدير</option>
-                            {Object.keys(grades).map((grade) => (
-                                <option key={grade} value={grade}>
-                                    {grade}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                ))}
-            </div>
+                            <motion.select
+                                value={course.grade || ''}
+                                onChange={(e) => updateCourse(course.id, 'grade', e.target.value)}
+                                whileFocus={{ scale: 1.02 }}
+                                style={{
+                                    width: '100px',
+                                    minWidth: '100px',
+                                    padding: '0.75rem',
+                                    border: '1px solid var(--ifm-color-emphasis-300)',
+                                    borderTopLeftRadius: '6px',
+                                    borderBottomLeftRadius: '6px',
+                                    borderTopRightRadius: '0',
+                                    borderBottomRightRadius: '0',
+                                    borderRight: 'none',
+                                    fontSize: '1rem',
+                                    backgroundColor: 'var(--ifm-color-emphasis-0)',
+                                    color: 'var(--ifm-color-content)',
+                                    fontFamily: 'inherit',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease'
+                                }}
+                            >
+                                <option value="">التقدير</option>
+                                {Object.keys(grades).map((grade) => (
+                                    <option key={grade} value={grade}>
+                                        {grade}
+                                    </option>
+                                ))}
+                            </motion.select>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+            </motion.div>
 
             {/* Export/Import section */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <motion.div 
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+            >
                 <p style={{
                     margin: '0',
                     color: 'var(--ifm-color-content-secondary)',
@@ -337,8 +452,10 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                     يمكنك تصدير واستيراد البيانات لنقلها بين الأجهزة أو الاحتفاظ بها، هذه الخاصية منفصلة عن الحفظ التلقائي
                 </p>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button
+                    <motion.button
                         onClick={exportData}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         style={{
                             width: '100%',
                             padding: '0.75rem 1rem',
@@ -361,9 +478,11 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                         }}
                     >
                         تصدير البيانات
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                         onClick={importData}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         style={{
                             width: '100%',
                             padding: '0.75rem 1rem',
@@ -386,10 +505,10 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                         }}
                     >
                         استيراد البيانات
-                    </button>
+                    </motion.button>
                 </div>
-            </div>
-        </>
+            </motion.div>
+        </motion.div>
     );
 };
 
