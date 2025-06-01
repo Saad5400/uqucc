@@ -389,16 +389,16 @@ const GPACalculator: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                    <h4 className="text-content text-lg mb-3 m-0">رفع كشف الدرجات</h4>
+                    <h4 className="text-content text-lg mb-3 m-0">رفع السجل الاكاديمي</h4>
                     <p className="text-content-secondary text-sm mb-3 m-0">
-                        ارفع كشف الدرجات (PDF) باللغة الإنجليزية لملء البيانات تلقائياً
+                        تقدر ترفع ملف السجل الاكاديمي حتى نستخرج منه بيانات المقررات تلقائيا! طبعا هذه البيانات تبقى محفوظة في جهازك فقط، ولا يتم رفعها للسيرفر.
                     </p>
 
                     <div className="flex flex-col gap-2">
                         <motion.label
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-center hover:bg-primary hover:text-primary-contrast flex items-center justify-center gap-2"
+                            className="w-full py-3 px-4 bg-primary border border-primary rounded-md text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-center text-primary-contrast flex items-center justify-center gap-2"
                         >
                             {isProcessingPDF ? (
                                 <>
@@ -441,7 +441,7 @@ const GPACalculator: React.FC = () => {
                     onClick={addCourse}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-center hover:bg-primary hover:text-primary-contrast"
+                    className="w-full py-3 px-4 bg-primary border border-primary rounded-md text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-center text-primary-contrast"
                 >
                     إضافة مقرر
                 </motion.button>
@@ -516,7 +516,7 @@ const GPACalculator: React.FC = () => {
                         onClick={exportData}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit hover:bg-primary hover:text-primary-contrast"
+                        className="w-full py-3 px-4 bg-primary border border-primary rounded-md text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-primary-contrast"
                     >
                         تصدير البيانات
                     </motion.button>
@@ -524,7 +524,7 @@ const GPACalculator: React.FC = () => {
                         onClick={importData}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full py-3 px-4 bg-transparent border border-primary rounded-md text-primary text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit hover:bg-primary hover:text-primary-contrast"
+                        className="w-full py-3 px-4 bg-primary border border-primary rounded-md text-base cursor-pointer transition-all duration-200 ease-in-out font-inherit text-primary-contrast"
                     >
                         استيراد البيانات
                     </motion.button>
