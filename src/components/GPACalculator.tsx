@@ -38,45 +38,6 @@ interface Course {
     credits?: string;
 }
 
-interface ParsedCourse {
-    code: string;
-    name: string;
-    creditHours: number;
-    passedHours: number;
-    degree: number;
-    grade: string;
-    points: number;
-}
-
-interface ParsedSemester {
-    term: string;
-    academicYear: string;
-    semesterGPA: number | null;
-    cumulativeGPA: number | null;
-    courses: ParsedCourse[];
-}
-
-interface ParsedAcademicRecord {
-    studentId: string;
-    issueDate: string;
-    GPA: number;
-    status: string;
-    name: string;
-    degree: string;
-    studyType: string;
-    faculty: string;
-    major: string;
-    totalCreditHours: number;
-    passedHours: number;
-    cumulativeGPA: number;
-    totalPoints: number;
-    semesters: ParsedSemester[];
-}
-
-interface GPACalculatorProps {
-    title?: string;
-}
-
 // Function to load PDF.js dynamically
 async function loadPDFJS(): Promise<any> {
     // Check if PDF.js is already loaded
@@ -116,12 +77,12 @@ async function extractTextFromPDF(file: File): Promise<string> {
 
     // Load PDF.js
     const pdfjsLib = await loadPDFJS();
-    
+
     const arrayBuffer = await file.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
     const pdfDocument = await loadingTask.promise;
     const numPages = pdfDocument.numPages;
-    
+
     let allText = '';
     for (let i = 1; i <= numPages; i++) {
         const page = await pdfDocument.getPage(i);
@@ -131,115 +92,16 @@ async function extractTextFromPDF(file: File): Promise<string> {
             .join(' ');
         allText += pageText + '\n\n';
     }
-    
+
     return allText;
 }
 
 // Function to parse academic record text
-function parseAcademicRecord(text: string): ParsedAcademicRecord | null {
-    try {
-        const studentIdMatch = text.match(/Student ID\s*:\s*(\d+)/);
-        const issueDateMatch = text.match(/Date\s*:\s*([\d]{2}-[\d]{2}-[\d]{4})/);
-        const gpaMatch = text.match(/GPA\s*:\s*([\d\.]+)/);
-        const statusMatch = text.match(/Status\s*:\s*(\w+)/);
-        const nameMatch = text.match(/Name\s*:\s*([A-Z ,]+)/);
-        const degreeMatch = text.match(/Degree\s*:\s*([\w ]+?)\s*Study type/);
-        const studyTypeMatch = text.match(/Study type\s*:\s*([A-Za-z ]+)/);
-        const facultyMatch = text.match(/Faculty\s*:\s*([A-Za-z &]+)/);
-        const majorMatch = text.match(/Major\s*:\s*([A-Za-z &]+)/);
-        const totalCreditHoursMatch = text.match(/Crd Hrs\s*:\s*(\d+)/);
-        const passedHoursMatch = text.match(/Passed Hrs\s*:\s*(\d+)/);
-        const cumulativeGpaMatch = text.match(/Accum GPA\s*:\s*([\d\.]+)/);
-        const totalPointsMatch = text.match(/Points\s*:\s*([\d\.]+)/);
-
-        if (!studentIdMatch || !gpaMatch) {
-            throw new Error('Required fields not found');
-        }
-
-        // Parse semesters
-        const semesterPattern = /(First|Second|Third) Semester\s+([\d\/]+)(.*?)(?=(?:First|Second|Third) Semester|$)/gs;
-        const semesters: ParsedSemester[] = [];
-        let semesterMatch;
-        
-        while ((semesterMatch = semesterPattern.exec(text)) !== null) {
-            const [, term, year, block] = semesterMatch;
-            
-            const semGpaMatch = block.match(/S\.GPA\s*:\s*([\d\.]+)/);
-            const cumGpaMatch = block.match(/Ac\. GPA\s*:\s*([\d\.]+)/);
-            
-            const courses: ParsedCourse[] = [];
-            const coursePattern = /^([A-Z0-9]+)\s+(.+?)\s+(\d+)\s+(\d+)\s+(\d+(?:\.\d+)?)\s+([A-F][\+\-]?)\s+(\d+\.\d+)/gm;
-            let courseMatch;
-            
-            while ((courseMatch = coursePattern.exec(block)) !== null) {
-                const [, code, title, ch, ph, deg, grade, pts] = courseMatch;
-                courses.push({
-                    code,
-                    name: title.trim(),
-                    creditHours: parseInt(ch),
-                    passedHours: parseInt(ph),
-                    degree: parseFloat(deg),
-                    grade,
-                    points: parseFloat(pts)
-                });
-            }
-            
-            semesters.push({
-                term: `${term} Semester`,
-                academicYear: year,
-                semesterGPA: semGpaMatch ? parseFloat(semGpaMatch[1]) : null,
-                cumulativeGPA: cumGpaMatch ? parseFloat(cumGpaMatch[1]) : null,
-                courses
-            });
-        }
-
-        return {
-            studentId: studentIdMatch[1],
-            issueDate: issueDateMatch ? issueDateMatch[1] : '',
-            GPA: parseFloat(gpaMatch[1]),
-            status: statusMatch ? statusMatch[1] : '',
-            name: nameMatch ? nameMatch[1].trim() : '',
-            degree: degreeMatch ? degreeMatch[1].trim() : '',
-            studyType: studyTypeMatch ? studyTypeMatch[1].trim() : '',
-            faculty: facultyMatch ? facultyMatch[1].trim() : '',
-            major: majorMatch ? majorMatch[1].trim() : '',
-            totalCreditHours: totalCreditHoursMatch ? parseInt(totalCreditHoursMatch[1]) : 0,
-            passedHours: passedHoursMatch ? parseInt(passedHoursMatch[1]) : 0,
-            cumulativeGPA: cumulativeGpaMatch ? parseFloat(cumulativeGpaMatch[1]) : 0,
-            totalPoints: totalPointsMatch ? parseFloat(totalPointsMatch[1]) : 0,
-            semesters
-        };
-    } catch (error) {
-        console.error('Error parsing academic record:', error);
-        return null;
-    }
+function parseCoursesFromText(text: string): Course[] {
+    return [];
 }
 
-// Function to convert parsed courses to the component's Course format
-function convertParsedCoursesToCourses(parsedRecord: ParsedAcademicRecord): Course[] {
-    const allCourses: Course[] = [];
-    
-    parsedRecord.semesters.forEach(semester => {
-        semester.courses.forEach(course => {
-            // Map the grade to our grade system
-            let mappedGrade: GradeValue | undefined;
-            if (course.grade in grades) {
-                mappedGrade = course.grade as GradeValue;
-            }
-            
-            allCourses.push({
-                id: `imported-${Date.now()}-${Math.random()}`,
-                name: `${course.code} - ${course.name}`,
-                grade: mappedGrade,
-                credits: course.creditHours.toString()
-            });
-        });
-    });
-    
-    return allCourses;
-}
-
-const GPACalculator: React.FC<GPACalculatorProps> = () => {
+const GPACalculator: React.FC = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [gpa, setGpa] = useState<number>(0);
     const [approximateGpa, setApproximateGpa] = useState<number>(0);
@@ -327,7 +189,9 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
             console.error('Error exporting data:', error);
             alert('خطأ في تصدير البيانات');
         }
-    }, [courses]);    const importData = useCallback(async () => {
+    }, [courses]);
+
+    const importData = useCallback(async () => {
         try {
             const text = await navigator.clipboard.readText();
             const data = JSON.parse(text);
@@ -346,7 +210,9 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
             console.error('Error importing data:', error);
             alert('خطأ في استيراد البيانات');
         }
-    }, []);    const handlePDFUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    }, []);
+
+    const handlePDFUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
@@ -357,7 +223,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
 
         // Check if we're in the browser
         if (typeof window === 'undefined') {
-            setUploadStatus('PDF upload is only available in the browser');
+            setUploadStatus('لا يمكن معالجة PDF في هذا السياق');
             return;
         }
 
@@ -366,59 +232,37 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
 
         try {
             setUploadStatus('جاري معالجة الملف...');
-            
+
             // Extract text from PDF
             const text = await extractTextFromPDF(file);
             console.log('Extracted text:', text);
-            
+
             if (!text || text.trim().length === 0) {
-                throw new Error('No text could be extracted from the PDF');
-            }
-            
-            setUploadStatus('جاري تحليل البيانات...');
-            
-            // Parse the academic record
-            const parsedRecord = parseAcademicRecord(text);
-            
-            if (!parsedRecord) {
-                throw new Error('Could not parse academic record. Please ensure the PDF is an English academic transcript.');
-            }
-            
-            if (!parsedRecord.semesters || parsedRecord.semesters.length === 0) {
-                throw new Error('No courses found in the academic record');
+                throw new Error('لا يوجد نص في الملف');
             }
 
+            setUploadStatus('جاري تحليل البيانات...');
+
             // Convert to courses format and set
-            const importedCourses = convertParsedCoursesToCourses(parsedRecord);
-            
+            const importedCourses = parseCoursesFromText(text);
+
             if (importedCourses.length === 0) {
-                throw new Error('No valid courses could be imported from the academic record');
+                throw new Error('لم يتم العثور على أي مقررات في الملف');
             }
-            
+
             setCourses(importedCourses);
-            
-            setUploadStatus(`تم استيراد ${importedCourses.length} مقرر بنجاح من ${parsedRecord.semesters.length} فصل دراسي`);
-            
+
+            setUploadStatus(`تم استيراد ${importedCourses.length} مقرر بنجاح!`);
+
             // Clear the status after 5 seconds
             setTimeout(() => {
                 setUploadStatus('');
             }, 5000);
-            
+
         } catch (error) {
             console.error('Error processing PDF:', error);
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            
-            if (errorMessage.includes('PDF.js failed to load')) {
-                setUploadStatus('خطأ في تحميل مكتبة PDF.js. تأكد من اتصالك بالإنترنت');
-            } else if (errorMessage.includes('No text could be extracted')) {
-                setUploadStatus('لا يمكن استخراج النص من هذا الملف. تأكد أن الملف ليس محمي أو مشفر');
-            } else if (errorMessage.includes('No courses found') || errorMessage.includes('No valid courses')) {
-                setUploadStatus('لم يتم العثور على مقررات في الملف. تأكد أن الملف هو كشف درجات صحيح');
-            } else if (errorMessage.includes('Could not parse academic record')) {
-                setUploadStatus('تعذر تحليل كشف الدرجات. تأكد أن الملف باللغة الإنجليزية وفي التنسيق الصحيح');
-            } else {
-                setUploadStatus('خطأ في معالجة الملف. تأكد من أن الملف هو كشف درجات باللغة الإنجليزية');
-            }
+            setUploadStatus(`خطأ: ${errorMessage}`);
         } finally {
             setIsProcessingPDF(false);
             // Clear the file input
@@ -426,7 +270,9 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                 fileInputRef.current.value = '';
             }
         }
-    }, []);return (
+    }, []);
+
+    return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -547,7 +393,7 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                     <p className="text-content-secondary text-sm mb-3 m-0">
                         ارفع كشف الدرجات (PDF) باللغة الإنجليزية لملء البيانات تلقائياً
                     </p>
-                    
+
                     <div className="flex flex-col gap-2">
                         <motion.label
                             whileHover={{ scale: 1.02 }}
@@ -573,18 +419,17 @@ const GPACalculator: React.FC<GPACalculatorProps> = () => {
                                 className="hidden"
                             />
                         </motion.label>
-                        
+
                         {uploadStatus && (
                             <motion.p
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className={`text-sm m-0 ${
-                                    uploadStatus.includes('خطأ') || uploadStatus.includes('يرجى')
-                                        ? 'text-danger'
-                                        : uploadStatus.includes('بنجاح')
+                                className={`text-sm m-0 ${uploadStatus.includes('خطأ') || uploadStatus.includes('يرجى')
+                                    ? 'text-danger'
+                                    : uploadStatus.includes('بنجاح')
                                         ? 'text-success'
                                         : 'text-content-secondary'
-                                }`}
+                                    }`}
                             >
                                 {uploadStatus}
                             </motion.p>
