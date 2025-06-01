@@ -105,7 +105,66 @@ async function extractTextFromPDF(file: File): Promise<string> {
 }
 
 function parseCoursesFromText(text: string): Course[] {
-    return [];
+    const tokens = text.split(";").map(t => t.trim()).filter(Boolean);
+
+    const codeRe = /^[A-Z]{2,4}\d{4}$/;               // CS1101
+    const gradeRe = /^(A\+|A|B\+|B|C\+|C|D\+|D|F|\+)$/;
+    const creditRe = /^[0-6]$/;                         // 0-6
+
+    const courses: Course[] = [];
+    let i = 0;
+
+    while (i < tokens.length) {
+        if (!codeRe.test(tokens[i])) { i++; continue; }
+
+        // 1️⃣ contiguous codes
+        const codes = [];
+        while (i < tokens.length && codeRe.test(tokens[i])) codes.push(tokens[i++]);
+
+        // 2️⃣ marks 0-100
+        while (i < tokens.length && /^\d+$/.test(tokens[i]) && +tokens[i] <= 100) i++;
+
+        // 3️⃣ grade letters
+        const grades = [];
+        while (i < tokens.length && gradeRe.test(tokens[i])) grades.push(tokens[i++]);
+
+        // Right-align grades with codes
+        if (grades.length < codes.length) {
+            grades.unshift(...Array(codes.length - grades.length).fill(null));
+        } else {
+            grades.length = codes.length;   // truncate excess
+        }
+
+        // 4️⃣ optional repeat of the codes list
+        let repeat = 0;
+        while (repeat < codes.length && i + repeat < tokens.length && codeRe.test(tokens[i + repeat])) repeat++;
+        if (repeat === codes.length) i += repeat;
+
+        // 5️⃣ hunt for a credits run
+        const credits = Array(codes.length).fill(null);
+        for (let j = i; j < tokens.length; j++) {
+            if (!creditRe.test(tokens[j])) continue;
+            const slice = tokens.slice(j, j + codes.length);
+            if (slice.length === codes.length && slice.every(c => creditRe.test(c))) {
+                slice.forEach((c, k) => { credits[k] = c; });
+                i = j + codes.length;
+                break;
+            }
+        }
+
+        // 6️⃣ emit
+        codes.forEach((code, idx) => {
+            const g = grades[idx];
+            courses.push({
+                id: 'course-' + code,
+                name: code,
+                grade: g === '+' || g === null ? null : g,
+                credits: credits[idx]
+            });
+        });
+    }
+
+    return courses.reverse();
 }
 
 const GPACalculator: React.FC = () => {
@@ -242,7 +301,6 @@ const GPACalculator: React.FC = () => {
 
             // Extract text from PDF
             const text = await extractTextFromPDF(file);
-            console.log('Extracted text:', text);
 
             if (!text || text.trim().length === 0) {
                 throw new Error('لا يوجد نص في الملف');
@@ -297,7 +355,7 @@ const GPACalculator: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
                             transition={{ duration: 0.3 }}
-                            className="list-none p-0 m-0 w-full"
+                            className="list-none !p-0 !m-0 w-full"
                         >
                             <motion.li
                                 initial={{ opacity: 0, x: -20 }}
