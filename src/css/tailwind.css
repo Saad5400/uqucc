@@ -22,3 +22,14 @@
     --color-danger: var(--ifm-color-danger);
     --color-success: var(--ifm-color-success);
 }
+
+
+/* Some fixes */
+ul.breadcrumbs, li.breadcrumbs__item {
+  @apply flex flex-row items-center;
+}
+
+a.theme-edit-this-page {
+    @apply flex flex-row;
+}
+
