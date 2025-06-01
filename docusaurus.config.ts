@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'دليل طالب كلية الحاسبات',
   tagline: 'كل اللي تحتاجه كطالب في كلية الحاسبات',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   // Set the production url of your site here
   url: 'https://uqucc.sb.sa',
@@ -98,7 +98,7 @@ const config: Config = {
       title: 'دليل طالب كلية الحاسبات',
       logo: {
         alt: 'كلية الحاسبات Logo',
-        src: 'img/logo.svg',
+        src: 'img/favicon.png',
       },
     },
     footer: {
