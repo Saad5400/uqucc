@@ -1,5 +1,11 @@
 name: Deploy Docusaurus to GitHub Pages
 
+# Make sure the Pages API is writable:
+permissions:
+  contents: read        # allows checkout
+  pages: write          # allows gh-pages branch updates
+  id-token: write       # only needed if you’re doing OIDC
+
 on:
   push:
     branches:
