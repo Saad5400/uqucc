@@ -134,25 +134,25 @@ const RewardCountdown: React.FC = () => {
     return (
         <>
             <div className="text-primary grid grid-cols-4 gap-4 mb-6">
-                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                <div className="shadow-md bg-card rounded-xl p-4 backdrop-blur-sm">
                     <div className="text-3xl font-bold">{timeLeft.days}</div>
                     <div className="text-sm opacity-80">يوم</div>
                 </div>
-                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                <div className="shadow-md bg-card rounded-xl p-4 backdrop-blur-sm">
                     <div className="text-3xl font-bold">{timeLeft.hours}</div>
                     <div className="text-sm opacity-80">ساعة</div>
                 </div>
-                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                <div className="shadow-md bg-card rounded-xl p-4 backdrop-blur-sm">
                     <div className="text-3xl font-bold">{timeLeft.minutes}</div>
                     <div className="text-sm opacity-80">دقيقة</div>
                 </div>
-                <div className="shadow-md bg-card-bg rounded-xl p-4 backdrop-blur-sm">
+                <div className="shadow-md bg-card rounded-xl p-4 backdrop-blur-sm">
                     <div className="text-3xl font-bold">{timeLeft.seconds}</div>
                     <div className="text-sm opacity-80">ثانية</div>
                 </div>
             </div>
 
-            <div className="shadow-md text-primary bg-card-bg rounded-lg p-4">
+            <div className="shadow-md text-primary bg-card rounded-lg p-4">
                 <p className="!mb-0 text-base">
                     موعد المكافأة القادمة: <strong>{formatDate(nextPaymentDate)}</strong>
                 </p>

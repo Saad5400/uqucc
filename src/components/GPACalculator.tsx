@@ -1,25 +1,31 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
-    SelectScrollDownButton,
-    SelectScrollUpButton,
-    SelectSeparator,
     SelectTrigger,
     SelectValue,
 } from './ui/select';
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "./ui/card"
 
 // Convert Arabic-Indic digits and separators to a JS number
 const parseArabicNumber = (text = '') =>
     parseFloat(
-        text.trim()
+        text
+            .trim()
             .replace(/[٠-٩]/g, digit => '٠١٢٣٤٥٦٧٨٩'.indexOf(digit) + '')
             .replace(/[٫،,]/g, '.')
     ) || 0;
@@ -37,19 +43,27 @@ const gradeValues: Record<string, number> = {
 };
 
 export default function GPACalculator() {
-    const [courses, setCourses] = useState(() =>
-        JSON.parse(localStorage.getItem('courses') || '[{}]')
-    );
+    // Load courses and ensure each has a stable random id
+    const [courses, setCourses] = useState(() => {
+        const stored = JSON.parse(localStorage.getItem('courses') || '[]');
+        return stored.map((course: any) => ({
+            id: nanoid(),
+            name: course.name || '',
+            credits: course.credits || '',
+            grade: course.grade
+                ? { value: course.grade.value, label: course.grade.value }
+                : undefined,
+        }));
+    });
 
-    // Persist courses to localStorage
+    // Persist courses (excluding id) to localStorage
     useEffect(() => {
-        localStorage.setItem('courses', JSON.stringify(courses));
+        const toStore = courses.map(({ id, ...rest }) => rest);
+        localStorage.setItem('courses', JSON.stringify(toStore));
     }, [courses]);
 
-    // Setup auto-animate on the course list container
     const [listContainer] = useAutoAnimate();
 
-    // Compute GPA metrics
     const { gpa, approximateGpa, totalCredits, totalPoints } = useMemo(() => {
         const { creditsSum, pointsSum } = courses.reduce(
             (acc, { credits, grade }) => {
@@ -70,23 +84,25 @@ export default function GPACalculator() {
         };
     }, [courses]);
 
-    // Handlers for course operations
-    const addCourse = () => setCourses(prev => [{}, ...prev]);
-    const removeCourse = (index: number) =>
-        setCourses(prev => prev.filter((_, i) => i !== index));
+    // Handlers
+    const addCourse = () =>
+        setCourses(prev => [{ id: nanoid(), name: '', credits: '', grade: undefined }, ...prev]);
+
+    const removeCourse = (id: string) =>
+        setCourses(prev => prev.filter(course => course.id !== id));
+
     const updateCourseField = (
-        index: number,
+        id: string,
         field: 'name' | 'credits' | 'grade',
         value: any
     ) => {
         setCourses(prev =>
-            prev.map((course, i) =>
-                i === index ? { ...course, [field]: value } : course
+            prev.map(course =>
+                course.id === id ? { ...course, [field]: value } : course
             )
         );
     };
 
-    // Export and import data to/from clipboard
     const exportCourses = () => {
         navigator.clipboard.writeText(JSON.stringify({ courses }));
         toast.success('تم نسخ البيانات للحافظة');
@@ -99,7 +115,9 @@ export default function GPACalculator() {
             if (!Array.isArray(parsed.courses)) throw new Error();
             setCourses(
                 parsed.courses.map((course: any) => ({
-                    ...course,
+                    id: nanoid(),
+                    name: course.name || '',
+                    credits: course.credits || '',
                     grade: course.grade
                         ? { value: course.grade.value, label: course.grade.value }
                         : undefined,
@@ -114,54 +132,89 @@ export default function GPACalculator() {
     return (
         <div className="container max-w-screen-md mb-8">
             {totalCredits ? (
-                <ul className="space-y-2">
-                    {[
-                        ['معدلك الحقيقي', gpa],
-                        ['معدلك التقريبي', approximateGpa],
-                        ['الساعات المجتازة', totalCredits],
-                        ['إجمالي النقاط', totalPoints],
-                    ].map(([label, value]) => (
-                        <li key={label} className="flex justify-between border-b">
-                            <span>{label}:</span>
-                            <span>{value}</span>
-                        </li>
-                    ))}
-                </ul>
+                <div className="flex flex-wrap gap-4 mb-4">
+                    {/* Real GPA */}
+                    <Card className='flex-1'>
+                        <CardHeader>
+                            <CardTitle>المعدل الدقيق</CardTitle>
+                        </CardHeader>
+                        <CardContent className='text-2xl font-bold text-end'>
+                            {gpa}
+                        </CardContent>
+                    </Card>
+                    {/* Approximate GPA */}
+                    <Card className='flex-1'>
+                        <CardHeader>
+                            <CardTitle>المعدل التقريبي</CardTitle>
+                        </CardHeader>
+                        <CardContent className='text-2xl font-bold text-end'>
+                            {approximateGpa}
+                        </CardContent>
+                    </Card>
+                    {/* Total Credits */}
+                    <Card className='flex-1'>
+                        <CardHeader>
+                            <CardTitle>إجمالي الساعات</CardTitle>
+                        </CardHeader>
+                        <CardContent className='text-2xl font-bold text-end'>
+                            {totalCredits}
+                        </CardContent>
+                    </Card>
+                    {/* Total Points */}
+                    <Card className='flex-1'>
+                        <CardHeader>
+                            <CardTitle>إجمالي النقاط</CardTitle>
+                        </CardHeader>
+                        <CardContent className='text-2xl font-bold text-end'>
+                            {totalPoints}
+                        </CardContent>
+                    </Card>
+                </div>
             ) : (
-                <p>املأ البيانات لحساب المعدل</p>
+                <p className="text-muted-foreground">املأ البيانات لحساب المعدل</p>
             )}
 
-            <Button onClick={addCourse} className="w-full mt-4">
-                إضافة مقرر
-            </Button>
+            <div className='flex justify-between items-center gap-2'>
+                <Button onClick={addCourse} className="flex-1">
+                    إضافة مقرر
+                </Button>
+                <div className="flex gap-2">
+                    <Button variant='secondary' onClick={exportCourses} className="flex-1">
+                        تصدير البيانات
+                    </Button>
+                    <Button variant='secondary' onClick={importCourses} className="flex-1">
+                        استيراد البيانات
+                    </Button>
+                </div>
+            </div>
 
             <div ref={listContainer} className="space-y-2 mt-4">
-                {courses.map((course, idx) => (
-                    <div key={idx} className="flex gap-2">
+                {courses.map(course => (
+                    <div key={course.id} className="flex gap-2">
                         <Button
                             variant="destructive"
-                            onClick={() => removeCourse(idx)}
+                            onClick={() => removeCourse(course.id)}
                         >
-                            حذف
+                            X
                         </Button>
                         <Input
-                            value={course.name || ''}
-                            onChange={e => updateCourseField(idx, 'name', e.target.value)}
+                            value={course.name}
+                            onChange={e => updateCourseField(course.id, 'name', e.target.value)}
                             placeholder="اسم المقرر"
                         />
                         <Input
-                            value={course.credits || ''}
-                            onChange={e => updateCourseField(idx, 'credits', e.target.value)}
+                            value={course.credits}
+                            onChange={e => updateCourseField(course.id, 'credits', e.target.value)}
                             placeholder="الساعات"
-                            className="w-20"
+                            className="w-42"
                         />
                         <Select
                             value={course.grade?.value}
                             onValueChange={val =>
-                                updateCourseField(idx, 'grade', { value: val, label: val })
+                                updateCourseField(course.id, 'grade', { value: val, label: val })
                             }
                         >
-                            <SelectTrigger className="w-20">
+                            <SelectTrigger className="w-42">
                                 <SelectValue placeholder="التقدير" />
                             </SelectTrigger>
                             <SelectContent>
@@ -174,15 +227,6 @@ export default function GPACalculator() {
                         </Select>
                     </div>
                 ))}
-            </div>
-
-            <div className="flex gap-4 mt-4">
-                <Button onClick={exportCourses} className="flex-1">
-                    تصدير البيانات
-                </Button>
-                <Button onClick={importCourses} className="flex-1">
-                    استيراد البيانات
-                </Button>
             </div>
         </div>
     );
