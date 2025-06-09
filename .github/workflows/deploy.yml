@@ -1,5 +1,11 @@
 name: Deploy Docusaurus to GitHub Pages
 
+# Make sure the Pages API is writable:
+permissions:
+  contents: read        # allows checkout
+  pages: write          # allows gh-pages branch updates
+  id-token: write       # only needed if you’re doing OIDC
+
 on:
   push:
     branches:
@@ -13,6 +19,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0         # full history so gh-pages can force-push
+          persist-credentials: true  # keep the GITHUB_TOKEN for pushes
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -28,5 +35,5 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # automatically provided
-          USE_SSH: true
+          GIT_USER: 'github-actions'
         run: npm run deploy
