@@ -81,7 +81,7 @@ const RewardCountdown: React.FC = () => {
 
             // Check if it's payment day
             setIsPaymentDay(isToday(currentPaymentDate));
-        }, 1000);
+        }, 100);
 
         return () => clearInterval(timer);
     }, []); // Empty dependency array - only run once on mount
