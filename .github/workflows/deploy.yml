@@ -1,10 +1,10 @@
+# .github/workflows/deploy.yml
 name: Deploy Docusaurus to GitHub Pages
 
-# Make sure the Pages API is writable:
 permissions:
-  contents: read        # allows checkout
-  pages: write          # allows gh-pages branch updates
-  id-token: write       # only needed if you’re doing OIDC
+  contents: read       # for checkout
+  pages: write         # to publish the site
+  id-token: write      # required by configure-pages
 
 on:
   push:
@@ -12,28 +12,40 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0         # full history so gh-pages can force-push
-          persist-credentials: true  # keep the GITHUB_TOKEN for pushes
+          fetch-depth: 0                # full history for Pages if needed
 
-      - name: Use Node.js
+      # 👇 Build steps
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: 22.x
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci                     # installs exactly your lockfile
 
-      - name: Build Docusaurus site
-        run: npm run build
+      - name: Build
+        run: npm run build             # runs "docusaurus build" under the hood
+      # 👆 Build steps
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: build                  # your Docusaurus output folder
 
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # automatically provided
-          GIT_USER: 'github-actions'
-        run: npm run deploy
+        id: deployment
+        uses: actions/deploy-pages@v2
