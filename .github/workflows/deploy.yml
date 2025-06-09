@@ -25,10 +25,8 @@ jobs:
       - name: Build Docusaurus site
         run: npm run build
 
-      # Upload the build folder as a Pages artifact
-      - uses: actions/upload-pages-artifact@v1
-        with:
-          path: build
-
-      # Deploy to GitHub Pages
-      - uses: actions/deploy-pages@v1
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # automatically provided
+          USE_SSH: true
+        run: npm run deploy
