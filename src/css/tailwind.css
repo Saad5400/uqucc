@@ -1,35 +1,27 @@
-@import "tailwindcss";
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+/* @import "tailwindcss/preflight.css" layer(base); */
+@import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
-    /* Primary colors - mapped from --ifm-color-primary */
-    --color-primary: var(--ifm-color-primary);
-    --color-primary-contrast: var(--ifm-color-primary-contrast-background);
-    --color-primary-rgb: var(--ifm-color-primary-rgb);
+  /* Primary colors - mapped from --ifm-color-primary */
+  --color-primary: var(--ifm-color-primary);
+  --color-primary-contrast: var(--ifm-color-primary-contrast-background);
+  --color-primary-rgb: var(--ifm-color-primary-rgb);
 
-    /* Content colors */
-    --color-background: var(--ifm-background-color);
-    --color-content: var(--ifm-color-content);
-    --color-content-secondary: var(--ifm-color-content-secondary);
+  /* Content colors */
+  --color-background: var(--ifm-background-color);
+  --color-content: var(--ifm-color-content);
+  --color-content-secondary: var(--ifm-color-content-secondary);
 
-    /* Background colors */
-    --color-card-bg: var(--ifm-card-background-color);
-    --color-emphasis-light: var(--ifm-color-emphasis-0);
+  /* Background colors */
+  --color-card-bg: var(--ifm-card-background-color);
+  --color-emphasis-light: var(--ifm-color-emphasis-0);
 
-    /* Border colors */
-    --color-border: var(--ifm-color-emphasis-300);
+  /* Border colors */
+  --color-border: var(--ifm-color-emphasis-300);
 
-    /* Status colors */
-    --color-danger: var(--ifm-color-danger);
-    --color-success: var(--ifm-color-success);
+  /* Status colors */
+  --color-danger: var(--ifm-color-danger);
+  --color-success: var(--ifm-color-success);
 }
-
-
-/* Some fixes */
-ul.breadcrumbs, li.breadcrumbs__item {
-  @apply flex flex-row items-center;
-}
-
-a.theme-edit-this-page {
-    @apply flex flex-row;
-}
-
