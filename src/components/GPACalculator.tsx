@@ -20,6 +20,7 @@ import {
     CardHeader,
     CardTitle,
 } from "./ui/card"
+import { Plus, FileDown, FileUp, Trash } from 'lucide-react';
 
 // Convert Arabic-Indic digits and separators to a JS number
 const parseArabicNumber = (text = '') =>
@@ -45,6 +46,8 @@ const gradeValues: Record<string, number> = {
 export default function GPACalculator() {
     // Load courses and ensure each has a stable random id
     const [courses, setCourses] = useState(() => {
+        if (typeof window === 'undefined') return [];
+
         const stored = JSON.parse(localStorage.getItem('courses') || '[]');
         return stored.map((course: any) => ({
             id: nanoid(),
@@ -58,6 +61,8 @@ export default function GPACalculator() {
 
     // Persist courses (excluding id) to localStorage
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+
         const toStore = courses.map(({ id, ...rest }) => rest);
         localStorage.setItem('courses', JSON.stringify(toStore));
     }, [courses]);
@@ -180,13 +185,16 @@ export default function GPACalculator() {
             <div className='flex justify-between items-center gap-2'>
                 <Button onClick={addCourse} className="flex-1">
                     إضافة مقرر
+                    <Plus />
                 </Button>
                 <div className="flex gap-2">
                     <Button variant='secondary' onClick={exportCourses} className="flex-1">
                         تصدير البيانات
+                        <FileDown />
                     </Button>
                     <Button variant='secondary' onClick={importCourses} className="flex-1">
                         استيراد البيانات
+                        <FileUp />
                     </Button>
                 </div>
             </div>
@@ -198,7 +206,7 @@ export default function GPACalculator() {
                             variant="destructive"
                             onClick={() => removeCourse(course.id)}
                         >
-                            X
+                            <Trash />
                         </Button>
                         <Input
                             value={course.name}
