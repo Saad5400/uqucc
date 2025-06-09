@@ -63,6 +63,7 @@ export default function GPACalculator() {
     }, [courses]);
 
     const [listContainer] = useAutoAnimate();
+    const [statsContainer] = useAutoAnimate();
 
     const { gpa, approximateGpa, totalCredits, totalPoints } = useMemo(() => {
         const { creditsSum, pointsSum } = courses.reduce(
@@ -131,48 +132,50 @@ export default function GPACalculator() {
 
     return (
         <div className="container max-w-screen-md mb-8">
-            {totalCredits ? (
-                <div className="flex flex-wrap gap-4 mb-4">
-                    {/* Real GPA */}
-                    <Card className='flex-1'>
-                        <CardHeader>
-                            <CardTitle>المعدل الدقيق</CardTitle>
-                        </CardHeader>
-                        <CardContent className='text-2xl font-bold text-end'>
-                            {gpa}
-                        </CardContent>
-                    </Card>
-                    {/* Approximate GPA */}
-                    <Card className='flex-1'>
-                        <CardHeader>
-                            <CardTitle>المعدل التقريبي</CardTitle>
-                        </CardHeader>
-                        <CardContent className='text-2xl font-bold text-end'>
-                            {approximateGpa}
-                        </CardContent>
-                    </Card>
-                    {/* Total Credits */}
-                    <Card className='flex-1'>
-                        <CardHeader>
-                            <CardTitle>إجمالي الساعات</CardTitle>
-                        </CardHeader>
-                        <CardContent className='text-2xl font-bold text-end'>
-                            {totalCredits}
-                        </CardContent>
-                    </Card>
-                    {/* Total Points */}
-                    <Card className='flex-1'>
-                        <CardHeader>
-                            <CardTitle>إجمالي النقاط</CardTitle>
-                        </CardHeader>
-                        <CardContent className='text-2xl font-bold text-end'>
-                            {totalPoints}
-                        </CardContent>
-                    </Card>
-                </div>
-            ) : (
-                <p className="text-muted-foreground">املأ البيانات لحساب المعدل</p>
-            )}
+            <div ref={statsContainer}>
+                {totalCredits ? (
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] gap-4 mb-4">
+                        {/* Real GPA */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>المعدل الدقيق</CardTitle>
+                            </CardHeader>
+                            <CardContent className='text-2xl font-bold text-end'>
+                                {gpa}
+                            </CardContent>
+                        </Card>
+                        {/* Approximate GPA */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>المعدل التقريبي</CardTitle>
+                            </CardHeader>
+                            <CardContent className='text-2xl font-bold text-end'>
+                                {approximateGpa}
+                            </CardContent>
+                        </Card>
+                        {/* Total Credits */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>إجمالي الساعات</CardTitle>
+                            </CardHeader>
+                            <CardContent className='text-2xl font-bold text-end'>
+                                {totalCredits}
+                            </CardContent>
+                        </Card>
+                        {/* Total Points */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>إجمالي النقاط</CardTitle>
+                            </CardHeader>
+                            <CardContent className='text-2xl font-bold text-end'>
+                                {totalPoints}
+                            </CardContent>
+                        </Card>
+                    </div>
+                ) : (
+                    <p className="text-muted-foreground">املأ البيانات لحساب المعدل</p>
+                )}
+            </div>
 
             <div className='flex justify-between items-center gap-2'>
                 <Button onClick={addCourse} className="flex-1">
