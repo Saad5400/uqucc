@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "concurrently \"npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css --watch\" \"docusaurus start\"",
-    "build": "npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css --minify && docusaurus build",
+    "build": "npx @tailwindcss/cli -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css --minify && docusaurus build && echo 'uqucc.sb.sa' > ./build/CNAME",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
