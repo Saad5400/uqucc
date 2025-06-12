@@ -39,7 +39,7 @@ const config: Config = {
       ({
         docsRouteBasePath: '/',
         hashed: true,
-        language: "ar",
+        language: ["en", "ar"],
       }),
     ],
   ],
@@ -110,15 +110,6 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    // algolia: {
-    //   appId: 'YOUR_APP_ID',
-    //   apiKey: 'YOUR_SEARCH_API_KEY',
-    //   indexName: 'YOUR_INDEX_NAME',
-    //   contextualSearch: true,
-    //   searchParameters: {},
-    //   searchPagePath: 'search',
-    //   insights: false,
-    // },
   } satisfies Preset.ThemeConfig,
 };
 
