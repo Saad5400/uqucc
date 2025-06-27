@@ -52,6 +52,12 @@ export default function AbsenceCalculator() {
         return maxAbsHours - absCnt;             // قد تكون سالبة إن تجاوز الحد
     }, [totalHours, maxAbsRate, unexcCnt, excCnt]);
 
+    const currentAbsRate = useMemo(() => {
+  const absCnt = parseInt(unexcCnt) + parseInt(excCnt);
+  const rate = totalHours > 0 ? (absCnt / totalHours) * 100 : 0;
+  return Math.round(rate * 100) / 100;  // دقة منزلتين
+}, [totalHours, unexcCnt, excCnt]);
+    
     function formatLecturesPerWeek(lecturesPerWeek) {
         switch (lecturesPerWeek) {
             case '1':
@@ -136,6 +142,14 @@ export default function AbsenceCalculator() {
                         {formatHours(absLeft)}
                     </CardContent>
                 </Card>
+<Card>
+  <CardHeader>
+    <CardTitle>نسبة الغياب الحالية</CardTitle>
+  </CardHeader>
+  <CardContent className="text-2xl font-bold text-end">
+    {`${currentAbsRate}%`}
+  </CardContent>
+</Card>
                 <Card>
                     <CardHeader>
                         <CardTitle>نسبة الغياب للساعة الواحدة</CardTitle>
