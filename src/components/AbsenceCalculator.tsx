@@ -119,15 +119,7 @@ export default function AbsenceCalculator() {
                 />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>نسبة الغياب للساعة الواحدة</CardTitle>
-                    </CardHeader>
-                    <CardContent className='text-2xl font-bold text-end'>
-                        {lecWeight ? `${lecWeight}%` : ''}
-                    </CardContent>
-                </Card>
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <Card>
                     <CardHeader>
                         <CardTitle>تقدر تغيب بدون عذر</CardTitle>
@@ -142,6 +134,14 @@ export default function AbsenceCalculator() {
                     </CardHeader>
                     <CardContent className='text-2xl font-bold text-end'>
                         {formatHours(absLeft)}
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>نسبة الغياب للساعة الواحدة</CardTitle>
+                    </CardHeader>
+                    <CardContent className='text-2xl font-bold text-end'>
+                        {lecWeight ? `${lecWeight}%` : ''}
                     </CardContent>
                 </Card>
             </div>
