@@ -13,56 +13,62 @@ import {
 
 export default function AbsenceCalculator() {
 
-    const weeksCount = 10;
-    const noExcusedAbsencePercentage = 0.15;
-    const excusedAbsencePercentage = 0.25;
+    const weeks = 10;            // عدد أسابيع المقرر
+    const maxUnexcRate = 0.15;   // %15 حد الغياب بدون عذر
+    const maxAbsRate = 0.25;     // %25 حد الغياب الكلي
 
-    const [lecturesPerWeek, setLecturesPerWeek] = useState(2);
-    const [currentNoExcusedAbsences, setCurrentNoExcusedAbsences] = useState(0);
-    const [currentExcusedAbsences, setCurrentExcusedAbsences] = useState(0);
+    const [lecsPerWk, setLecsPerWk] = useState<string>('2');
+    const [unexcCnt, setUnexcCnt] = useState<string>('0'); // ساعات غياب بدون عذر
+    const [excCnt, setExcCnt] = useState<string>('0'); // ساعات غياب بعذر
 
-    const singleLecturePercentage = useMemo(() => Math.round(((1 * 100) / (weeksCount * lecturesPerWeek)) * 100) / 100, [weeksCount, lecturesPerWeek]);
-    const maxNoExcusedAbsences = useMemo(() => Math.floor(((weeksCount * lecturesPerWeek * noExcusedAbsencePercentage) - currentNoExcusedAbsences)), [weeksCount, lecturesPerWeek, noExcusedAbsencePercentage, currentNoExcusedAbsences]);
-    const maxExcusedAbsences = useMemo(() => Math.floor(((weeksCount * lecturesPerWeek * excusedAbsencePercentage) - currentExcusedAbsences)), [weeksCount, lecturesPerWeek, excusedAbsencePercentage, currentExcusedAbsences]);
+    /** وزن كل محاضرة كنسبة مئوية من إجمالي الساعات */
+    const lecWeight = useMemo(() => {
+        const weight = (1 * 100) / (weeks * parseInt(lecsPerWk));
+        return Math.round(weight * 100) / 100;  // دقة منزلتين
+    }, [weeks, lecsPerWk]);
+
+    /** إجمالي عدد الساعات في الفصل */
+    const totalHours = useMemo(() => weeks * parseInt(lecsPerWk), [weeks, lecsPerWk]);
+
+    /** الساعات المتبقية قبل تجاوز 15% غياب بدون عذر */
+    const unexcLeft = useMemo(() => {
+        const total = parseInt(unexcCnt) + parseInt(excCnt);
+        const maxUnexcHours = Math.floor(totalHours * maxUnexcRate);
+        const maxAbsHours = Math.floor(totalHours * maxAbsRate);
+
+        // 1) by the unexcused‐only cap
+        const byUnexcRule = maxUnexcHours - parseInt(unexcCnt);
+        // 2) by the overall cap (subtract what you've already used)
+        const byTotalRule = maxAbsHours - total;
+
+        // you can only take the stricter of the two
+        return Math.min(byUnexcRule, byTotalRule);
+    }, [totalHours, maxUnexcRate, maxAbsRate, unexcCnt, excCnt]);
+
+    /** الساعات المتبقية قبل تجاوز 25% غياب كلي */
+    const absLeft = useMemo(() => {
+        const absCnt = parseInt(unexcCnt) + parseInt(excCnt);
+        const maxAbsHours = Math.floor(totalHours * maxAbsRate);
+        return maxAbsHours - absCnt;             // قد تكون سالبة إن تجاوز الحد
+    }, [totalHours, maxAbsRate, unexcCnt, excCnt]);
 
     function formatLecturesPerWeek(lecturesPerWeek) {
         switch (lecturesPerWeek) {
-            case 1:
+            case '1':
                 return "محاضرة فردية";
-            case 2:
+            case '2':
                 return "محاضرة زوجية";
-            case 3:
+            case '3':
                 return "محاضرة زوجية ومحاضرة فردية";
-            case 4:
+            case '4':
                 return "محاضرتين زوجية";
             default:
                 return "";
         }
     }
 
-    function formatMaxNoExcusedAbsences(maxNoExcusedAbsences) {
-        switch (lecturesPerWeek) {
-            case 1:
-                if (maxNoExcusedAbsences <= 0) {
-                    return "لا يمكنك الغياب بدون عذر";
-                }
-                else if (maxNoExcusedAbsences === 1) {
-                    return "محاضرة واحدة";
-                } else {
-                    return `${maxNoExcusedAbsences} محاضرات`;
-                }
-            case 2:
-                if (maxNoExcusedAbsences <= 1) {
-                    return "لا يمكنك الغياب بدون عذر";
-                }
-                else if (maxNoExcusedAbsences <= 3) {
-                    return "محاضرة واحدة";
-                }
-        }
-    }
-
     function formatHours(hours) {
-        if (!hours) {
+        if (!hours && hours !== 0) {
             return "";
         }
         else if (hours <= 0) {
@@ -84,13 +90,13 @@ export default function AbsenceCalculator() {
                     <Input
                         id="lecturesPerWeek"
                         type="number"
-                        value={lecturesPerWeek}
-                        onChange={(e) => setLecturesPerWeek(e.target.value ? Number(e.target.value) : undefined)}
+                        value={lecsPerWk}
+                        onChange={(e) => setLecsPerWk(e.target.value ?? '')}
                         min={1}
                         max={4}
                     />
                     <span className="absolute top-1/2 end-8 transform -translate-y-1/2 text-muted-foreground pointer-events-none max-w-32 sm:max-w-none">
-                        {formatLecturesPerWeek(lecturesPerWeek)}
+                        {formatLecturesPerWeek(lecsPerWk)}
                     </span>
                 </div>
             </div>
@@ -99,8 +105,8 @@ export default function AbsenceCalculator() {
                 <Input
                     id="currentNoExcusedAbsences"
                     type="number"
-                    value={currentNoExcusedAbsences}
-                    onChange={(e) => setCurrentNoExcusedAbsences(e.target.value ? Number(e.target.value) : undefined)}
+                    value={unexcCnt}
+                    onChange={(e) => setUnexcCnt(e.target.value ?? '')}
                 />
             </div>
             <div className="grid grid-cols-2">
@@ -108,8 +114,8 @@ export default function AbsenceCalculator() {
                 <Input
                     id="currentExcusedAbsences"
                     type="number"
-                    value={currentExcusedAbsences}
-                    onChange={(e) => setCurrentExcusedAbsences(e.target.value ? Number(e.target.value) : undefined)}
+                    value={excCnt}
+                    onChange={(e) => setExcCnt(e.target.value ?? '')}
                 />
             </div>
 
@@ -119,7 +125,7 @@ export default function AbsenceCalculator() {
                         <CardTitle>نسبة الغياب للساعة الواحدة</CardTitle>
                     </CardHeader>
                     <CardContent className='text-2xl font-bold text-end'>
-                        {singleLecturePercentage ? `${singleLecturePercentage}%` : ''}
+                        {lecWeight ? `${lecWeight}%` : ''}
                     </CardContent>
                 </Card>
                 <Card>
@@ -127,7 +133,7 @@ export default function AbsenceCalculator() {
                         <CardTitle>تقدر تغيب بدون عذر</CardTitle>
                     </CardHeader>
                     <CardContent className='text-2xl font-bold text-end'>
-                        {formatHours(maxNoExcusedAbsences)}
+                        {formatHours(unexcLeft)}
                     </CardContent>
                 </Card>
                 <Card>
@@ -135,7 +141,7 @@ export default function AbsenceCalculator() {
                         <CardTitle>تقدر تغيب بعذر</CardTitle>
                     </CardHeader>
                     <CardContent className='text-2xl font-bold text-end'>
-                        {formatHours(maxExcusedAbsences)}
+                        {formatHours(absLeft)}
                     </CardContent>
                 </Card>
             </div>
