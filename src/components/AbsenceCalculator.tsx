@@ -119,7 +119,7 @@ export default function AbsenceCalculator() {
                 />
             </div>
 
-            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <Card>
                     <CardHeader>
                         <CardTitle>تقدر تغيب بدون عذر</CardTitle>
