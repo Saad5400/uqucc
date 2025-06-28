@@ -77,8 +77,10 @@ export default function AbsenceCalculator() {
         if (!hours && hours !== 0) {
             return "";
         }
-        else if (hours <= 0) {
-            return "لا يمكنك الغياب";
+        else if (hours < 0) {
+            return "محروم";
+        } else if (hours == 0) {
+            return "لا يمكنك الغياب والا تنحرم";
         } else if (hours === 1) {
             return "ساعة واحدة";
         } else if (hours === 2) {
