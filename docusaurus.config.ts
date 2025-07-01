@@ -104,7 +104,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `جميع الحقوق محفوظة © ${new Date().getFullYear()}`,
+      copyright: `جميع الحقوق محفوظة © ${new Date().getFullYear()} | من الطلاب للطلاب وغير مرتبط بالجامعة`,
     },
     prism: {
       theme: prismThemes.github,
