@@ -53,3 +53,10 @@ div[class*="searchBarContainer"] {
   }
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.3s;
+}
