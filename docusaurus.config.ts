@@ -88,8 +88,12 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      { name: 'description', content: 'دليل شامل لطلاب كلية الحاسبات بجامعة أم القرى، يشمل الإجراءات الأكاديمية، الأدوات التقنية، الموارد والمزيد.' },
+      { name: 'keywords', content: 'طلاب, كلية الحاسبات, جامعة أم القرى, دليل الطالب, موارد, تقنية, إجراءات أكاديمية' },
+    ],
     // Replace with your project's social card
-    // image: 'img/docusaurus-social-card.jpg',
+    image: 'img/favicon.svg',
     docs: {
       sidebar: {
         autoCollapseCategories: true,
