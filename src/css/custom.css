@@ -32,6 +32,24 @@
 
 
 /* Hiding the X on the search bar <button class="searchClearButton_qk4g">✕</button> */
-button[class*="searchClearButton"] {
+button[class*="searchClearButton"],
+div[class*="searchHintContainer"] {
   display: none;
 }
+
+div[class*="searchBarContainer"],
+span[class*="searchBar"],
+input[class*="searchInput"] {
+  width: 100%;
+}
+
+div[class*="searchBarContainer"] {
+  margin-left: 0px;
+}
+
+@media (max-width: 576px) {
+  div[class*="mb-4"] input[class*="searchInput"] {
+    width: 100%;
+  }
+}
+
