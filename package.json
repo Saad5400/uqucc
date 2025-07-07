@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
+    "@docusaurus/plugin-sitemap": "^3.8.1",
     "@docusaurus/preset-classic": "3.7.0",
     "@easyops-cn/docusaurus-search-local": "^0.51.0",
     "@formkit/auto-animate": "^0.8.2",
