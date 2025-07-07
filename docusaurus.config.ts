@@ -105,6 +105,12 @@ const config: Config = {
     footer: {
       style: 'dark',
       copyright: `جميع الحقوق محفوظة © ${new Date().getFullYear()} | من الطلاب للطلاب وغير مرتبط بالجامعة`,
+      links: [
+        {
+          label: 'شروط الاستخدام',
+          to: '/شروط-الاستخدام',
+        }
+      ],
     },
     prism: {
       theme: prismThemes.github,
