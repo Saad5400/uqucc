@@ -19,7 +19,7 @@ defineProps<{
             </SidebarMenuItem>
 
             <!-- node with children -->
-            <Collapsible v-else class="group/collapsible">
+            <Collapsible v-else class="group">
                 <SidebarMenuItem>
                     <div class="flex items-center justify-between">
                         <SidebarMenuButton as-child>
@@ -29,7 +29,7 @@ defineProps<{
                         </SidebarMenuButton>
                         <CollapsibleTrigger asChild>
                             <SidebarMenuButton class="size-fit">
-                                <ChevronLeft class="size-4" />
+                                <ChevronLeft class="size-4 group-data-[state=open]:-rotate-90 transition-transform" />
                             </SidebarMenuButton>
                         </CollapsibleTrigger>
                     </div>

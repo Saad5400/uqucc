@@ -10,7 +10,7 @@ const { data: items } = await useAsyncData('navigation', () =>
     <SidebarProvider>
         <Sidebar side="right" variant="floating">
             <SidebarHeader />
-            <SidebarContent>
+            <SidebarContent style="scrollbar-gutter: stable;">
                 <SidebarGroup>
                     <SidebarMenu>
                         <ClientOnly>
