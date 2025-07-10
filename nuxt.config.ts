@@ -14,6 +14,11 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
   ],
 
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui',
+  },
+
   css: ['~/assets/css/tailwind.css'],
 
   vite: {
