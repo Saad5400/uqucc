@@ -1,13 +1,17 @@
 <script setup lang="ts">
-const { data: home } = await useAsyncData(() => queryCollection('content').path('/').first())
+defineOgImageComponent('NuxtSeo')
+
+const today = new Date();
+const payDay = new Date(today.getFullYear(), today.getMonth(), 27);
+const timeToPay = payDay.getTime() - today.getTime();
+const daysToPay = Math.ceil(timeToPay / (1000 * 60 * 60 * 24));
 
 useSeoMeta({
-  title: home.value?.title,
-  description: home.value?.description
+  title: `${daysToPay} Days Until Payday`,
+  description: `There are ${daysToPay} days left until payday.`,
 })
 </script>
 
 <template>
-  <ContentRenderer v-if="home" :value="home" />
-  <div v-else>Home not found</div>
+  Days until payday: {{ daysToPay }}
 </template>
