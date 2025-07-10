@@ -39,7 +39,7 @@ const { data: items } = await useAsyncData('navigation', () =>
                     </span>
                 </div>
             </header>
-            <main class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
+            <main class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm p-4">
                 <slot />
             </main>
         </div>
