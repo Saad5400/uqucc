@@ -28,10 +28,16 @@ const { data: items } = await useAsyncData('navigation', () =>
         </Sidebar>
         <div class="p-2 flex-1 space-y-4">
             <header
-                class="flex items-center justify-between p-2 bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
+                class="flex items-center gap-2 justify-start p-2 bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
                 <Button as-child variant="ghost" size="icon">
                     <SidebarTrigger />
                 </Button>
+                <div class="flex items-center gap-2">
+                    <NuxtImg class="size-6" src="/favicon.svg" />
+                    <span>
+                        دليل طالب كلية الحاسبات
+                    </span>
+                </div>
             </header>
             <main class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
                 <slot />
