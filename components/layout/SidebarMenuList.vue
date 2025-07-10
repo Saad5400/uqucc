@@ -13,7 +13,7 @@ defineProps<{
         <li v-for="item in items" :key="item.stem">
             <!-- leaf node -->
             <SidebarMenuItem v-if="!item.children || !item.children.length">
-                <SidebarMenuButton as-child>
+                <SidebarMenuButton class="h-full text-start" as-child>
                     <NuxtLink :to="item.path">{{ item.title }}</NuxtLink>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -22,13 +22,13 @@ defineProps<{
             <Collapsible v-else class="group">
                 <SidebarMenuItem>
                     <div class="flex items-center justify-between">
-                        <SidebarMenuButton as-child>
-                            <NuxtLink class="w-full" :to="item.path">
+                        <SidebarMenuButton class="h-full text-start" as-child>
+                            <NuxtLink :to="item.path">
                                 {{ item.title }}
                             </NuxtLink>
                         </SidebarMenuButton>
                         <CollapsibleTrigger asChild>
-                            <SidebarMenuButton class="size-fit">
+                            <SidebarMenuButton class="w-fit">
                                 <ChevronLeft class="size-4 group-data-[state=open]:-rotate-90 transition-transform" />
                             </SidebarMenuButton>
                         </CollapsibleTrigger>
