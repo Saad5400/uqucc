@@ -26,11 +26,22 @@ const { data: items } = await useAsyncData('navigation', () =>
             </SidebarContent>
             <SidebarFooter />
         </Sidebar>
-        <main>
-            <Button as-child variant="ghost" size="icon">
-                <SidebarTrigger />
-            </Button>
-            <slot />
-        </main>
+        <div class="p-2 flex-1 space-y-4">
+            <header
+                class="flex items-center justify-between p-2 bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
+                <Button as-child variant="ghost" size="icon">
+                    <SidebarTrigger />
+                </Button>
+            </header>
+            <main class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
+                <slot />
+            </main>
+        </div>
     </SidebarProvider>
 </template>
+
+<style scoped>
+main {
+    min-height: calc(100dvh - 5.5rem);
+}
+</style>
