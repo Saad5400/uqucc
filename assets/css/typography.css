@@ -65,7 +65,7 @@
 
     .typography pre {
         @apply p-4 my-6 overflow-x-auto rounded-lg bg-muted;
-        direction: ltr
+        direction: ltr;
     }
 
     .typography pre code {

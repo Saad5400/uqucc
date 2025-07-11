@@ -60,7 +60,7 @@ const colorMode = useColorMode();
                     </template>
                 </ClientOnly>
             </header>
-            <main style="max-width: calc(100dw - 1rem);"
+            <main style="max-width: calc(100dvw - 1rem);"
                 class="w-full p-4 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
                 <slot />
             </main>

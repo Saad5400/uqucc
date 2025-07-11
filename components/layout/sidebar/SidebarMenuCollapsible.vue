@@ -9,7 +9,11 @@ const props = defineProps<{
     item: ContentNavigationItem,
 }>();
 const route = useRoute();
-const open = ref(route.path.includes(props.item.path));
+const open = ref(false);
+
+watch(() => route.path, (newPath) => {
+    open.value = newPath.includes(props.item.path);
+});
 </script>
 
 <template>
