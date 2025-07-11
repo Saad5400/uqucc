@@ -30,7 +30,7 @@ defineOgImageComponent('Seo', {
 </script>
 
 <template>
-  <Breadcrumb class="mt-4 mb-6">
+  <Breadcrumb class="mb-4" v-if="breadcrumbs.length > 1">
     <BreadcrumbList>
       <div class="contents" v-for="(breadcrumb, index) in breadcrumbs" :key="index">
         <BreadcrumbItem>
@@ -39,11 +39,8 @@ defineOgImageComponent('Seo', {
               {{ breadcrumb.title }}
             </NuxtLink>
           </BreadcrumbLink>
-          <BreadcrumbPage v-else>
-            {{ breadcrumb.title }}
-          </BreadcrumbPage>
         </BreadcrumbItem>
-        <BreadcrumbSeparator v-if="index !== breadcrumbs.length - 1" />
+        <BreadcrumbSeparator v-if="index < breadcrumbs.length - 2" />
       </div>
     </BreadcrumbList>
   </Breadcrumb>
