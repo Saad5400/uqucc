@@ -1,9 +1,6 @@
 <template>
-  <h2 :id="props.id">
-    <a
-      v-if="props.id && generate"
-      :href="`#${props.id}`"
-    >
+  <h2 :id="slugify(props.id || '')">
+    <a v-if="props.id && generate" :href="`#${slugify(props.id)}`">
       <slot />
     </a>
     <slot v-else />
@@ -11,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useRuntimeConfig } from '#imports'
+import slugify from 'slugify';
 
 const props = defineProps<{ id?: string }>()
 

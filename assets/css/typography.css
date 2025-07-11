@@ -3,7 +3,6 @@
 @layer components {
     .typography * {
         @apply my-2 break-words whitespace-normal transition-all text-foreground;
-        max-width: calc(100dvw - 4rem);
     }
 
     .typography h1 {
