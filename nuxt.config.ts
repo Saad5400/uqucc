@@ -13,7 +13,13 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'shadcn-nuxt',
     'nuxt-og-image',
+    '@nuxtjs/color-mode',
   ],
+
+  colorMode: {
+    classSuffix: '',
+    preference: 'dark',
+  },
 
   shadcn: {
     prefix: '',

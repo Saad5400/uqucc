@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { Moon, Sun } from 'lucide-vue-next';
 import SidebarMenuList from '~/components/layout/sidebar/SidebarMenuList.vue';
 
 const { data: items } = await useAsyncData('navigation', () =>
     queryCollectionNavigation('docs')
 );
+
+const colorMode = useColorMode();
 </script>
 
 <template>
@@ -28,16 +31,34 @@ const { data: items } = await useAsyncData('navigation', () =>
         </Sidebar>
         <div class="flex-1 p-2 space-y-4">
             <header
-                class="flex items-center justify-start w-full gap-2 p-2 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
-                <Button as-child variant="ghost" size="icon">
-                    <SidebarTrigger />
-                </Button>
-                <NuxtLink to="/" class="flex items-center gap-2">
-                    <NuxtImg class="size-6" src="/favicon.svg" />
-                    <span>
-                        دليل طالب كلية الحاسبات
-                    </span>
-                </NuxtLink>
+                class="flex items-center justify-between w-full gap-2 p-2 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
+                <div class="flex items-center gap-2">
+                    <Button as-child variant="ghost" size="icon">
+                        <SidebarTrigger />
+                    </Button>
+                    <NuxtLink to="/" class="flex items-center gap-2">
+                        <NuxtImg class="size-6" src="/favicon.svg" />
+                        <span>
+                            دليل طالب كلية الحاسبات
+                        </span>
+                    </NuxtLink>
+                </div>
+                <ClientOnly class="flex items-center gap-2">
+                    <Button v-if="colorMode.value === 'dark'" @click="colorMode.preference = 'light'" variant="ghost"
+                        size="icon">
+                        <Moon />
+                    </Button>
+                    <Button v-if="colorMode.value === 'light'" @click="colorMode.preference = 'dark'" variant="ghost"
+                        size="icon">
+                        <Sun />
+                    </Button>
+
+                    <template #fallback>
+                        <Button class="skeleton" variant="ghost" size="icon">
+                            <Skeleton class="size-full" />
+                        </Button>
+                    </template>
+                </ClientOnly>
             </header>
             <main style="max-width: calc(100dw - 1rem);"
                 class="w-full p-4 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
