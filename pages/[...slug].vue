@@ -10,11 +10,11 @@ const route = useRoute();
 const { data: page } = await useAsyncData(`pageData:${route.path}`, () => {
   return queryCollection('docs').path(route.path).first();
 });
-const { data: items } = await useAsyncData('navigation', () =>
+const { data: items } = await useAsyncData(`navigationData:docs`, () =>
   queryCollectionNavigation('docs')
 );
-const children = findPageChildren(items.value ?? undefined, route.path);
-const breadcrumbs = findPageBreadcrumb(items.value ?? undefined, route.path, { current: true });
+const children = findPageChildren(items.value ?? [], route.path);
+const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, { current: true });
 
 useHead({
   title: page.value?.title,
