@@ -4,11 +4,11 @@ const props = defineProps<{
     description?: string;
 }>();
 
-const titleRender = h('div', { class: 'text-[#298287] flex flex-row-reverse flex-wrap text-7xl pr-18' }, props.title?.split(' ').map(word => {
+const titleRender = h('div', { class: 'text-[#298287] flex flex-row-reverse flex-wrap text-7xl pr-12' }, props.title?.split(' ').map(word => {
     return h('span', { style: `width: ${word.length * 32}px` }, word);
 }))
 
-const descriptionRender = h('div', { class: 'mt-10 flex flex-row-reverse flex-wrap text-5xl px-18' }, props.description?.split(' ').map(word => {
+const descriptionRender = h('div', { class: 'mt-10 flex flex-row-reverse flex-wrap text-5xl px-12' }, props.description?.split(' ').map(word => {
     return h('span', { style: `width: ${(word.length + 2) * 20}px`, class: 'py-1' }, word);
 }))
 </script>
