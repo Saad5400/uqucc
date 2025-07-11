@@ -30,4 +30,13 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+
+  ogImage: {
+    defaults: {
+      cacheMaxAgeSeconds: 60 * 60 * 24, // 1 day
+    },
+    fonts: [
+      'Cairo:400',
+    ],
+  },
 })

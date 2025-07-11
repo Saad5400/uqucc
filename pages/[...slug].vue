@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 definePageMeta({
   layout: 'docs',
 });
@@ -14,6 +13,11 @@ useHead({
   meta: [
     { name: 'description', content: page.value?.description, },
   ],
+});
+
+defineOgImageComponent('Seo', {
+  title: page.value?.title,
+  description: page.value?.description,
 });
 </script>
 
