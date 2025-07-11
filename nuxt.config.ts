@@ -36,7 +36,10 @@ export default defineNuxtConfig({
       cacheMaxAgeSeconds: 60 * 60 * 24, // 1 day
     },
     fonts: [
-      'Cairo:400',
+      {
+        name: 'Baysan',
+        path: '/fonts/Baysan.woff'
+      }
     ],
   },
 })
