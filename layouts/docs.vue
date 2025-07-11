@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SidebarMenuList from '@/components/layout/SidebarMenuList.vue';
+import SidebarMenuList from '~/components/layout/sidebar/SidebarMenuList.vue';
 
 const { data: items } = await useAsyncData('navigation', () =>
     queryCollectionNavigation('docs')
@@ -32,14 +32,15 @@ const { data: items } = await useAsyncData('navigation', () =>
                 <Button as-child variant="ghost" size="icon">
                     <SidebarTrigger />
                 </Button>
-                <div class="flex items-center gap-2">
+                <NuxtLink to="/" class="flex items-center gap-2">
                     <NuxtImg class="size-6" src="/favicon.svg" />
                     <span>
                         دليل طالب كلية الحاسبات
                     </span>
-                </div>
+                </NuxtLink>
             </header>
-            <main class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm p-4">
+            <main style="max-width: calc(100dw - 1rem);"
+                class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm p-4">
                 <slot />
             </main>
         </div>

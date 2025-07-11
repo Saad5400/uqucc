@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ChevronLeft } from 'lucide-vue-next';
 import type { ContentNavigationItem } from '@nuxt/content';
+import SidebarMenuLink from './SidebarMenuLink.vue';
 
 defineProps<{
     items: ContentNavigationItem[],
@@ -13,20 +14,14 @@ defineProps<{
         <li v-for="item in items" :key="item.stem">
             <!-- leaf node -->
             <SidebarMenuItem v-if="!item.children || !item.children.length">
-                <SidebarMenuButton class="h-full text-start" as-child>
-                    <NuxtLink :to="item.path">{{ item.title }}</NuxtLink>
-                </SidebarMenuButton>
+                <SidebarMenuLink :item="item" />
             </SidebarMenuItem>
 
             <!-- node with children -->
             <Collapsible v-else class="group">
                 <SidebarMenuItem>
                     <div class="flex items-center justify-between">
-                        <SidebarMenuButton class="h-full text-start" as-child>
-                            <NuxtLink :to="item.path">
-                                {{ item.title }}
-                            </NuxtLink>
-                        </SidebarMenuButton>
+                        <SidebarMenuLink :item="item" />
                         <CollapsibleTrigger asChild>
                             <SidebarMenuButton class="w-fit">
                                 <ChevronLeft class="size-4 group-data-[state=open]:-rotate-90 transition-transform" />

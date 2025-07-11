@@ -2,7 +2,6 @@
 useHead({
   htmlAttrs: {
     class: 'dark',
-    style: 'scrollbar-gutter: stable;',
     dir: 'rtl',
     lang: 'ar',
   },

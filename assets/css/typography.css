@@ -2,7 +2,7 @@
 
 @layer components {
     .typography * {
-        @apply my-2 transition-all text-foreground;
+        @apply my-2 transition-all text-foreground whitespace-normal break-words;
     }
 
     .typography h1 {
