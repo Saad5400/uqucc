@@ -1,5 +1,5 @@
 <template>
-  <thead>
+  <TableHeader>
     <slot />
-  </thead>
+  </TableHeader>
 </template>

@@ -26,9 +26,9 @@ const { data: items } = await useAsyncData('navigation', () =>
             </SidebarContent>
             <SidebarFooter />
         </Sidebar>
-        <div class="p-2 flex-1 space-y-4">
+        <div class="flex-1 p-2 space-y-4">
             <header
-                class="flex items-center gap-2 justify-start p-2 bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm">
+                class="flex items-center justify-start w-full gap-2 p-2 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
                 <Button as-child variant="ghost" size="icon">
                     <SidebarTrigger />
                 </Button>
@@ -40,7 +40,7 @@ const { data: items } = await useAsyncData('navigation', () =>
                 </NuxtLink>
             </header>
             <main style="max-width: calc(100dw - 1rem);"
-                class="bg-sidebar border-sidebar-border w-full rounded-lg border shadow-sm p-4">
+                class="w-full p-4 border rounded-lg shadow-sm bg-sidebar border-sidebar-border">
                 <slot />
             </main>
         </div>

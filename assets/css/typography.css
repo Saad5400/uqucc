@@ -2,7 +2,7 @@
 
 @layer components {
     .typography * {
-        @apply my-2 transition-all text-foreground whitespace-normal break-words;
+        @apply my-2 break-words whitespace-normal transition-all text-foreground;
     }
 
     .typography h1 {
@@ -78,22 +78,6 @@
 
     .typography ol {
         @apply my-6 ms-6 list-decimal [&>li]:mt-2;
-    }
-
-    .typography table {
-        @apply w-full my-6 overflow-y-auto;
-    }
-
-    .typography table thead tr {
-        @apply p-0 m-0 border-t even:bg-muted;
-    }
-
-    .typography table th {
-        @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
-    }
-
-    .typography table td {
-        @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
     }
 
     .typography img {

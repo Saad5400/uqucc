@@ -1,5 +1,5 @@
 <template>
-  <tbody>
+  <TableBody>
     <slot />
-  </tbody>
+  </TableBody>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <td>
+  <TableCell>
     <slot />
-  </td>
+  </TableCell>
 </template>

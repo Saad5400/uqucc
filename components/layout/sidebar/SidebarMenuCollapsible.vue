@@ -8,8 +8,8 @@ import { cn } from '~/lib/utils';
 const props = defineProps<{
     item: ContentNavigationItem,
 }>();
-
-const open = ref(false);
+const route = useRoute();
+const open = ref(route.path.includes(props.item.path));
 </script>
 
 <template>
