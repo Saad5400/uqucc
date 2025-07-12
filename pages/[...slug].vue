@@ -1,33 +1,17 @@
 <script setup lang="ts">
 import { findPageBreadcrumb, findPageChildren } from '@nuxt/content/utils';
-
-definePageMeta({
-  layout: 'docs',
-});
+import PageCard from '~/components/PageCard.vue';
 
 const route = useRoute();
 
-const { data: page } = await useAsyncData(`pageData:${route.path}`, () => {
-  return queryCollection('docs').path(route.path).first();
-});
-const { data: items } = await useAsyncData(`navigationData:docs`, () =>
-  queryCollectionNavigation('docs')
+const { data: page } = await useAsyncData(`page:${route.path}`, () =>
+  queryCollection('docs').path(route.path).first()
 );
+const { data: items } = await useContentNavigation();
 const children = findPageChildren(items.value ?? [], route.path);
 const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, { current: true });
 
-useHead({
-  title: page.value?.title,
-  meta: [
-    { name: 'description', content: page.value?.description, },
-  ],
-});
-
-defineOgImageComponent('Seo', {
-  title: page.value?.title,
-  description: page.value?.description,
-});
-
+defineOgImageComponent('Seo', page.value?.seo);
 useSeoMeta(page.value?.seo || {});
 </script>
 
@@ -52,7 +36,9 @@ useSeoMeta(page.value?.seo || {});
       {{ breadcrumbs.at(-1)?.title }}
     </h1>
     <div class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,80dvw),1fr))] gap-4">
-      <PageCard v-for="child in children" :key="child.path" :title="child.title" :href="child.path" />
+      <PageCard v-for="child in children" :key="child.path" :href="child.path">
+        {{ child.title }}
+      </PageCard>
     </div>
   </div>
 </template>

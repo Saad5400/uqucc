@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { cn } from '~/lib/utils';
+
 const props = defineProps<{
-    title: string;
     href: string;
+    class?: string;
 }>();
 </script>
 
 <template>
-    <Button as-child variant="secondary" class="p-8 text-2xl text-center whitespace-normal size-full">
+    <Button as-child variant="secondary"
+        :class="cn('p-8 text-2xl text-center whitespace-normal size-full', props.class)">
         <NuxtLink :to="href">
-            {{ props.title }}
+            <slot />
         </NuxtLink>
     </Button>
 </template>

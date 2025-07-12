@@ -14,11 +14,11 @@
     }
 
     .typography h3 {
-        @apply mb-4 text-2xl font-semibold tracking-tight scroll-m-20;
+        @apply my-4 text-2xl font-semibold tracking-tight scroll-m-20;
     }
 
     .typography h4 {
-        @apply text-xl font-semibold tracking-tight scroll-m-20;
+        @apply my-4 text-xl font-semibold tracking-tight scroll-m-20;
     }
 
     .typography h5 {
