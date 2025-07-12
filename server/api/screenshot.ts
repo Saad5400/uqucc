@@ -1,9 +1,13 @@
-import puppeteer, { Page } from "puppeteer";
-import { downloadBrowsers } from "puppeteer/internal/node/install.js";
+import chromium from "@sparticuz/chromium-min";
+import puppeteerCore, { Browser, Page } from "puppeteer-core";
 
-let _page: Page | null = null;
+const remoteExecutablePath =
+    "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
 const width = 720;
 const height = 720;
+
+let browser: Browser | null = null;
+let page: Page | null = null;
 
 export default defineCachedEventHandler(async (event) => {
     const { path } = getQuery(event);
@@ -14,20 +18,19 @@ export default defineCachedEventHandler(async (event) => {
         });
     }
 
-    const url = `https://uqucc.sb.sa${path}`;
-    let page = _page;
-    if (!page) {
-        await downloadBrowsers();
-
-        const browser = await puppeteer.launch({
-            args: ["--use-gl=angle", "--use-angle=swiftshader", "--single-process", "--no-sandbox"],
+    if (!browser) {
+        browser = await puppeteerCore.launch({
+            args: chromium.args,
+            executablePath: await chromium.executablePath(remoteExecutablePath),
             headless: true,
         });
-
-        page = await browser.newPage();
-        _page = page;
     }
 
+    if (!page) {
+        page = await browser.newPage();
+    }
+
+    const url = `https://uqucc.sb.sa${path}`;
     await page.goto(url);
     await page.setViewport({ width: width, height: height, deviceScaleFactor: 2 });
     const mainElement = await page.$("main");
