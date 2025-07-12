@@ -2,7 +2,7 @@ import chromium from "@sparticuz/chromium-min";
 import puppeteerCore, { Browser, Page } from "puppeteer-core";
 
 const remoteExecutablePath =
-    "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
+    "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
 const width = 720;
 const height = 720;
 
@@ -20,12 +20,7 @@ export default defineCachedEventHandler(async (event) => {
 
     if (!browser) {
         browser = await puppeteerCore.launch({
-            args: [
-                '--disable-web-security',
-                '--disable-features=IsolateOrigins,site-per-process',
-                '--disable-setuid-sandbox',
-                '--no-sandbox',
-            ],
+            args: chromium.args,
             executablePath: await chromium.executablePath(remoteExecutablePath),
             headless: true,
         });
