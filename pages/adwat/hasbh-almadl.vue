@@ -256,5 +256,4 @@ const seo = {
     description: 'احسب معدلك الدراسي لجامعة أم القرى',
 };
 useSeoMeta(seo);
-defineOgImageComponent('Seo', seo);
 </script>

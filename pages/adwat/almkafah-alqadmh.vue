@@ -202,7 +202,6 @@ const seo = {
     زر الموقع لتفاصيل أكثر وأدق`
 };
 useSeoMeta(seo);
-defineOgImageComponent('Seo', seo);
 </script>
 
 <style scoped>

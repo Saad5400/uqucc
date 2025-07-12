@@ -14,7 +14,6 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     'shadcn-nuxt',
-    'nuxt-og-image',
     '@nuxtjs/color-mode',
     '@formkit/auto-animate/nuxt',
   ],
@@ -42,18 +41,6 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwindcss(),
-    ],
-  },
-
-  ogImage: {
-    defaults: {
-      cacheMaxAgeSeconds: 60 * 60 * 12, // 12 hours
-    },
-    fonts: [
-      {
-        name: 'Baysan',
-        path: '/fonts/Baysan.woff'
-      }
     ],
   },
 })

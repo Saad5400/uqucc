@@ -11,8 +11,13 @@ const { data: items } = await useContentNavigation();
 const children = findPageChildren(items.value ?? [], route.path);
 const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, { current: true });
 
-defineOgImageComponent('Seo', page.value?.seo);
-useSeoMeta(page.value?.seo || {});
+useSeoMeta({
+  ...(page.value?.seo || {}),
+  ogTitle: page.value?.title,
+  ogDescription: page.value?.description,
+  ogImage: `https://uqucc.sb.sa/api/screenshot?path=${route.path}`,
+  twitterCard: 'summary_large_image',
+});
 </script>
 
 <template>
