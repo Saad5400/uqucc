@@ -5,6 +5,7 @@ const remoteExecutablePath =
     "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
 const width = 720;
 const height = 720;
+const cache = 60 * 60 * 8; // Cache for 8 hours
 
 let browser: Browser | null = null;
 let page: Page | null = null;
@@ -19,11 +20,18 @@ export default defineCachedEventHandler(async (event) => {
     }
 
     if (!browser) {
-        browser = await puppeteerCore.launch({
-            args: chromium.args,
-            executablePath: await chromium.executablePath(remoteExecutablePath),
-            headless: true,
-        });
+        if (process.env.DEV)
+            browser = await puppeteerCore.launch({
+                args: chromium.args,
+                executablePath: '/usr/bin/chromium', // Use the local Chromium in development
+                headless: true,
+            });
+        else
+            browser = await puppeteerCore.launch({
+                args: chromium.args,
+                executablePath: await chromium.executablePath(remoteExecutablePath),
+                headless: true,
+            });
     }
 
     if (!page) {
@@ -34,23 +42,14 @@ export default defineCachedEventHandler(async (event) => {
     await page.goto(url);
     await page.setViewport({ width: width, height: height, deviceScaleFactor: 2 });
     const mainElement = await page.$("main");
-    const screenshot = await mainElement?.screenshot({
-        type: "jpeg",
-        fullPage: false,
-        clip: {
-            x: 0,
-            y: 0,
-            width: width,
-            height: height
-        }
-    });
+    const screenshot = await mainElement?.screenshot();
 
     return new Response(screenshot, {
         headers: {
-            "Content-Type": "image/jpeg",
-            "Cache-Control": `public, max-age=${60 * 60 * 8}` // Cache for 8 hours
+            "Content-Type": "image/png",
+            "Cache-Control": `public, max-age=${cache}`,
         }
     });
 }, {
-    maxAge: 60 * 60 * 8, // Cache for 8 hours
+    maxAge: cache,
 });
