@@ -1,8 +1,10 @@
 import { defineContentConfig, defineCollection, z } from '@nuxt/content'
+import { asSitemapCollection } from '@nuxtjs/sitemap/content'
+import { asRobotsCollection } from '@nuxtjs/robots/content'
 
 export default defineContentConfig({
   collections: {
-    docs: defineCollection({
+    docs: defineCollection(asSitemapCollection(asRobotsCollection({
       type: 'page',
       source: '**/*.{md,mdc,yml}',
       schema: z.object({
@@ -11,6 +13,6 @@ export default defineContentConfig({
           children: z.any(),
         }),
       }),
-    })
+    })))
   }
 })

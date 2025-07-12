@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { Moon, Sun } from 'lucide-vue-next';
 import SidebarMenuList from '~/components/layout/sidebar/SidebarMenuList.vue';
-import { SIDEBAR_WIDTH } from '~/components/ui/sidebar/utils';
 
 const { data: items } = await useAsyncData('navigation', () =>
     queryCollectionNavigation('docs')
 );
 
 const colorMode = useColorMode();
-
 </script>
 
 <template>

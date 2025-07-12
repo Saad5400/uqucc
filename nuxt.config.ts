@@ -6,6 +6,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
     '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -15,6 +17,11 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     '@nuxtjs/color-mode',
   ],
+
+  site: {
+    url: 'http://uqucc.sb.sa',
+    name: 'دليل طالب كلية الحاسبات',
+  },
 
   colorMode: {
     classSuffix: '',

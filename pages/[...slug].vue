@@ -27,6 +27,8 @@ defineOgImageComponent('Seo', {
   title: page.value?.title,
   description: page.value?.description,
 });
+
+useSeoMeta(page.value?.seo || {});
 </script>
 
 <template>
