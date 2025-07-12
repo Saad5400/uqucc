@@ -1,6 +1,5 @@
-import { launch, Page } from "puppeteer-core";
-import chrome from "chrome-aws-lambda";
-import { ContentNavigationItem } from "@nuxt/content";
+import puppeteer, { Page } from "puppeteer";
+import { downloadBrowsers } from "puppeteer/internal/node/install.js";
 
 let _page: Page | null = null;
 const width = 720;
@@ -18,19 +17,13 @@ export default defineCachedEventHandler(async (event) => {
     const url = `https://uqucc.sb.sa${path}`;
     let page = _page;
     if (!page) {
-        const executablePath = await chrome.executablePath;
-        const options = {
-            args: executablePath ? chrome.args : [
-                "--hide-scrollbars",
-                "--disable-web-security",
-                "--disable-setuid-sandbox",
-                "--no-sandbox",
-            ],
-            executablePath: executablePath ?? '/usr/bin/chromium',
-            headless: chrome.headless,
-        };
+        await downloadBrowsers();
 
-        const browser = await launch(options);
+        const browser = await puppeteer.launch({
+            args: ["--use-gl=angle", "--use-angle=swiftshader", "--single-process", "--no-sandbox"],
+            headless: true,
+        });
+
         page = await browser.newPage();
         _page = page;
     }
