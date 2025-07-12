@@ -20,7 +20,12 @@ export default defineCachedEventHandler(async (event) => {
 
     if (!browser) {
         browser = await puppeteerCore.launch({
-            args: chromium.args,
+            args: [
+                '--disable-web-security',
+                '--disable-features=IsolateOrigins,site-per-process',
+                '--disable-setuid-sandbox',
+                '--no-sandbox',
+            ],
             executablePath: await chromium.executablePath(remoteExecutablePath),
             headless: true,
         });
