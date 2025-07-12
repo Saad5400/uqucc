@@ -20,13 +20,7 @@ export default defineCachedEventHandler(async (event) => {
         await downloadBrowsers();
 
         const browser = await puppeteer.launch({
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-gpu',
-                '--single-process',
-            ],
+            args: ["--use-gl=angle", "--use-angle=swiftshader", "--single-process", "--no-sandbox"],
             headless: true,
         });
 
