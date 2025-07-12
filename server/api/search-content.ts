@@ -1,6 +1,6 @@
 import { ContentNavigationItem } from "@nuxt/content";
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
     const { collection, query }: { collection: string, query: string } = getQuery(event);
 
     if (!collection || !query) {
@@ -52,4 +52,6 @@ export default defineEventHandler(async (event) => {
     }
 
     return result;
+}, {
+    maxAge: 60 * 60 * 4, // Cache for 4 hours
 })
