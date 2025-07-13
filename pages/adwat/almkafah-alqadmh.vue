@@ -65,11 +65,16 @@ interface TimeLeft {
 }
 
 const calculateNextPaymentDate = (currentDate: Date): Date => {
-    const year = currentDate.getFullYear()
-    const month = currentDate.getMonth()
+    // Convert to Riyadh timezone
+    const riyadhDate = new Date(currentDate.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
+    const year = riyadhDate.getFullYear()
+    const month = riyadhDate.getMonth()
 
-    // Start with the 27th of current month
+    // Start with the 27th of current month in Riyadh timezone
     let paymentDate = new Date(year, month, 27)
+    
+    // Convert to Riyadh timezone
+    paymentDate = new Date(paymentDate.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
 
     // Apply the adjustment rules first
     const dayOfWeek = paymentDate.getDay()
@@ -80,12 +85,13 @@ const calculateNextPaymentDate = (currentDate: Date): Date => {
     }
 
     // If we're past the payment date (including adjustments), move to next month
-    if (currentDate.toDateString() === paymentDate.toDateString()) {
+    if (riyadhDate.toDateString() === paymentDate.toDateString()) {
         // It's payment day today
         return paymentDate
-    } else if (currentDate > paymentDate) {
+    } else if (riyadhDate > paymentDate) {
         // Move to next month
         paymentDate = new Date(year, month + 1, 27)
+        paymentDate = new Date(paymentDate.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
         const nextDayOfWeek = paymentDate.getDay()
         if (nextDayOfWeek === 5) { // Friday
             paymentDate.setDate(26) // Move to Thursday
@@ -98,12 +104,16 @@ const calculateNextPaymentDate = (currentDate: Date): Date => {
 }
 
 const isToday = (date: Date): boolean => {
-    const today = new Date()
-    return date.toDateString() === today.toDateString()
+    // Get today's date in Riyadh timezone
+    const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
+    // Convert the input date to Riyadh timezone
+    const riyadhDate = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
+    return riyadhDate.toDateString() === today.toDateString()
 }
 
 const calculateTimeLeft = (targetDate: Date): TimeLeft => {
-    const now = new Date()
+    // Get current time in Riyadh timezone
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
     const difference = targetDate.getTime() - now.getTime()
 
     if (difference > 0) {
@@ -119,16 +129,21 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft => {
 }
 
 const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('ar-SA', {
+    // Convert to Riyadh timezone
+    const riyadhDate = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
+    
+    // Format in Hijri calendar
+    return riyadhDate.toLocaleDateString('ar-SA-u-ca-islamic', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-        weekday: 'long'
+        weekday: 'long',
+        timeZone: 'Asia/Riyadh'
     })
 }
 
-// Initialize with server-side values
-const currentDate = new Date()
+// Initialize with server-side values using Riyadh timezone
+const currentDate = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
 const paymentDate = calculateNextPaymentDate(currentDate)
 
 // Reactive state that works on both server and client
@@ -138,7 +153,8 @@ const isPaymentDay = ref<boolean>(isToday(paymentDate))
 
 // Update function that can be called both server and client side
 const updateCountdown = () => {
-    const now = new Date()
+    // Get current time in Riyadh timezone
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
     const currentPaymentDate = calculateNextPaymentDate(now)
 
     // Update payment date if it has changed (moved to next month)
