@@ -1,9 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <Collapsible>
+  <Collapsible class="max-w-[40rem]">
     <CollapsibleTrigger
-      class="text-base text-foreground/80 border-2 whitespace-normal break-words h-fit w-full max-w-[30rem] text-start justify-between my-0"
+      class="text-base text-foreground/80 w-full border-2 whitespace-normal break-words h-fit text-start justify-between my-0"
       as-child
     >
       <Button variant="secondary">
