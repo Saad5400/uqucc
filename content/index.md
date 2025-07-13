@@ -80,7 +80,7 @@ description: |
 س/ أول سنة لابتوب أو آيباد؟  
 #content  
 - اللابتوب: أساسي ولا غنى عنه في التخصص. [كيف اختار لابتوب؟](/altqnyh-walajhzh/labtwb)
-- الآيباد: اختياري ومساعد حسب أسلوب دراستك. [كيف اختار آيباد؟](/altqnyh-walajhzh/aypad)
+- الآيباد: اختياري ومساعد حسب أسلوب دراستك. [كيف اختار آيباد؟](/altqnyh-walajhzh/aybad)
 
 [تفاصيل أكثر](/altqnyh-walajhzh/aybad-aw-labtwb)
 ::
