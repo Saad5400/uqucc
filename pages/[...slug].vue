@@ -15,8 +15,22 @@ useSeoMeta({
   ...(page.value?.seo || {}),
   ogTitle: page.value?.title,
   ogDescription: page.value?.description,
-  ogImage: `https://uqucc.sb.sa/api/screenshot?path=${route.path}`,
+  ogUrl: `https://uqucc.sb.sa${route.path}`,
+  ogType: 'website',
+  ogImageUrl: encodeURI(`https://uqucc.sb.sa/api/screenshot?path=${route.path}`),
+  ogImageWidth: 720,
+  ogImageHeight: 377,
+  ogImageType: 'image/png',
+  ogImageAlt: page.value?.title,
   twitterCard: 'summary_large_image',
+  twitterTitle: page.value?.title,
+  twitterDescription: page.value?.description,
+  twitterImage: encodeURI(`https://uqucc.sb.sa/api/screenshot?path=${route.path}`),
+  twitterImageWidth: 720,
+  twitterImageHeight: 377,
+  twitterImageAlt: page.value?.title,
+  twitterSite: '@SaadBatwa',
+  twitterCreator: '@SaadBatwa',
 });
 </script>
 
