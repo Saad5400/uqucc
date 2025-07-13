@@ -37,18 +37,11 @@ async function screenshotHandler(event: any) {
     const url = `https://uqucc.sb.sa${path}`;
     await page.goto(url);
     await page.setViewport({ width, height, deviceScaleFactor: 2 });
-
-    const main = await page.$("main");
-    const buffer = await main?.screenshot({
-        type: "png",
-        fullPage: false,
-        clip: {
-            x: 0,
-            y: 0,
-            width,
-            height,
-        },
+    await page.evaluate(() => {
+        document.documentElement.style.scrollbarGutter = "auto";
+        document.querySelector("header")?.remove();
     });
+    const buffer = await page.screenshot();
 
     // only send Cache-Control in prod
     const headers: Record<string, string> = { "Content-Type": "image/png" };
