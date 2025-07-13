@@ -7,7 +7,7 @@ const { data } = await useAsyncData("search-data", () =>
 );
 
 const fuse = new Fuse(data.value, {
-  keys: ["title", "content"],
+  keys: ["title", "content", "path"],
 });
 
 const results = computed(() => fuse.search(toValue(query)).slice(0, 10));
@@ -45,7 +45,7 @@ const open = ref(false);
           @click="open = false"
           class="flex flex-col items-start whitespace-normal h-fit hover:!bg-card-foreground/10"
         >
-          <NuxtLink class="w-full" :to="link.item.path">
+          <NuxtLink class="w-full" :to="link.item.id">
             <h5 class="font-semibold text-start">
               {{ link.item.title }}
             </h5>
