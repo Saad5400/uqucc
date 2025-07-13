@@ -38,13 +38,19 @@ async function screenshotHandler(event: any) {
     await page.goto(url);
     await page.setViewport({ width, height, deviceScaleFactor: 2 });
     await page.evaluate(() => {
+        // @ts-ignore
         document.documentElement.style.scrollbarGutter = "auto";
+        // @ts-ignore
         document.querySelector("header")?.remove();
     });
-    const buffer = await page.screenshot();
+    // wait for 10ms so that the page can render properly
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    const buffer = await page.screenshot({
+        type: "webp",
+    });
 
     // only send Cache-Control in prod
-    const headers: Record<string, string> = { "Content-Type": "image/png" };
+    const headers: Record<string, string> = { "Content-Type": "image/webp" };
     if (!process.env.DEV) {
         headers["Cache-Control"] = `public, max-age=${cache}`;
     }
