@@ -15,10 +15,10 @@ const results = computed(() => fuse.search(toValue(query)).slice(0, 10));
 const uniqueResults = computed(() => {
   const seen = new Set();
   return results.value.filter((result) => {
-    if (seen.has(result.item.id)) {
+    if (seen.has(result.item.title)) {
       return false;
     }
-    seen.add(result.item.id);
+    seen.add(result.item.title);
     return true;
   });
 });
