@@ -6,7 +6,7 @@ useHead({
   },
   title: 'دليل طالب كلية الحاسبات',
   link: [
-    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.ico' },
   ]
 });
 </script>
