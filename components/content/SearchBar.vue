@@ -23,6 +23,18 @@ const uniqueResults = computed(() => {
   });
 });
 
+function handleOpenChange() {
+  open.value = !open.value;
+}
+
+const handleNavigate = () => {
+  if (uniqueResults.value.length > 0) {
+    const firstResult = uniqueResults.value[0].item.id;
+    open.value = false;
+    navigateTo(firstResult);
+  }
+};
+
 const open = ref(false);
 </script>
 
@@ -33,18 +45,21 @@ const open = ref(false);
     </DialogTrigger>
     <DialogContent>
       <Input
+        @keyup.enter="handleNavigate"
+        @keyup.esc="open = false"
+        type="search"
         class="border-card-foreground/30"
         v-model="query"
         placeholder="بحث ..."
       />
-      <div class="flex flex-col gap-2 overflow-y-auto h-96">
+      <div class="flex flex-col gap-2 overflow-y-auto h-96 p-1">
         <Button
           variant="ghost"
           v-for="link of uniqueResults"
           :key="link.item.id"
           as-child
           @click="open = false"
-          class="flex flex-col items-start whitespace-normal h-fit hover:!bg-card-foreground/10"
+          class="flex flex-col w-full items-start whitespace-normal h-fit hover:!bg-card-foreground/10"
         >
           <NuxtLink class="w-full" :to="link.item.id">
             <h5 class="font-semibold text-start">
