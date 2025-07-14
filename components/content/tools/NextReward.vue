@@ -74,78 +74,109 @@ interface TimeLeft {
   seconds: number;
 }
 
-const getRiyadhDate = (date?: Date): Date => {
-  const now = date || new Date();
-  // Get the current time in Riyadh timezone (UTC+3)
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-  const riyadhTime = new Date(utc + (3 * 3600000)); // UTC+3 for Riyadh
-  return riyadhTime;
+const RIYADH_TIMEZONE = 'Asia/Riyadh';
+const PAYMENT_DAY = 27;
+
+/**
+ * Gets the current date and time in Riyadh timezone as a UTC Date object
+ * This ensures consistent calculations across server and client
+ */
+const getCurrentRiyadhDate = (): Date => {
+  // Get current time in Riyadh timezone using Intl API
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: RIYADH_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+
+  const parts = formatter.formatToParts(new Date());
+  const dateComponents = {
+    year: parseInt(parts.find(p => p.type === 'year')!.value),
+    month: parseInt(parts.find(p => p.type === 'month')!.value) - 1, // Month is 0-indexed
+    day: parseInt(parts.find(p => p.type === 'day')!.value),
+    hour: parseInt(parts.find(p => p.type === 'hour')!.value),
+    minute: parseInt(parts.find(p => p.type === 'minute')!.value),
+    second: parseInt(parts.find(p => p.type === 'second')!.value)
+  };
+
+  // Create UTC date that represents the current Riyadh time
+  return new Date(Date.UTC(
+    dateComponents.year,
+    dateComponents.month,
+    dateComponents.day,
+    dateComponents.hour,
+    dateComponents.minute,
+    dateComponents.second
+  ));
 };
 
-const createRiyadhDate = (year: number, month: number, day: number): Date => {
-  // Create date in Riyadh timezone
-  const date = new Date();
-  date.setFullYear(year, month, day);
-  date.setHours(0, 0, 0, 0);
-  
-  // Adjust for Riyadh timezone offset
-  const utcOffset = date.getTimezoneOffset() * 60000;
-  const riyadhOffset = 3 * 3600000; // UTC+3
-  const localOffset = -date.getTimezoneOffset() * 60000;
-  
-  return new Date(date.getTime() - localOffset + riyadhOffset);
+/**
+ * Creates a UTC Date object representing a specific Riyadh date/time
+ */
+const createRiyadhDateInUTC = (year: number, month: number, day: number, hour = 0, minute = 0, second = 0): Date => {
+  return new Date(Date.UTC(year, month, day, hour, minute, second));
 };
 
-const calculateNextPaymentDate = (currentDate: Date): Date => {
-  // Get current date in Riyadh timezone
-  const riyadhDate = getRiyadhDate(currentDate);
-  const year = riyadhDate.getFullYear();
-  const month = riyadhDate.getMonth();
-
-  // Start with the 27th of current month in Riyadh timezone
-  let paymentDate = createRiyadhDate(year, month, 27);
-
-  // Apply the adjustment rules first
-  const dayOfWeek = paymentDate.getDay();
-  if (dayOfWeek === 5) {
-    // Friday
-    paymentDate = createRiyadhDate(year, month, 26); // Move to Thursday
-  } else if (dayOfWeek === 6) {
-    // Saturday
-    paymentDate = createRiyadhDate(year, month, 28); // Move to Sunday
+/**
+ * Adjusts payment date if it falls on Friday or Saturday
+ * Friday moves to Thursday, Saturday moves to Sunday
+ */
+const adjustPaymentDateForWeekend = (year: number, month: number, day: number): Date => {
+  const date = createRiyadhDateInUTC(year, month, day);
+  const dayOfWeek = date.getUTCDay();
+  
+  if (dayOfWeek === 5) { // Friday
+    return createRiyadhDateInUTC(year, month, day - 1); // Move to Thursday
+  } else if (dayOfWeek === 6) { // Saturday
+    return createRiyadhDateInUTC(year, month, day + 1); // Move to Sunday
   }
+  
+  return date;
+};
 
-  // If we're past the payment date (including adjustments), move to next month
-  if (riyadhDate.toDateString() === paymentDate.toDateString()) {
-    // It's payment day today
-    return paymentDate;
-  } else if (riyadhDate > paymentDate) {
+/**
+ * Calculates the next payment date based on current Riyadh time
+ * Returns a UTC Date object for consistent calculations
+ */
+const calculateNextPaymentDate = (): Date => {
+  const currentRiyadhDate = getCurrentRiyadhDate();
+  const year = currentRiyadhDate.getUTCFullYear();
+  const month = currentRiyadhDate.getUTCMonth();
+  const day = currentRiyadhDate.getUTCDate();
+
+  // Start with the payment day of current month
+  let paymentDate = adjustPaymentDateForWeekend(year, month, PAYMENT_DAY);
+
+  // Check if we need to move to next month
+  const todayUTC = createRiyadhDateInUTC(year, month, day);
+  
+  if (todayUTC > paymentDate) {
     // Move to next month
-    paymentDate = createRiyadhDate(year, month + 1, 27);
-    const nextDayOfWeek = paymentDate.getDay();
-    if (nextDayOfWeek === 5) {
-      // Friday
-      paymentDate = createRiyadhDate(year, month + 1, 26); // Move to Thursday
-    } else if (nextDayOfWeek === 6) {
-      // Saturday
-      paymentDate = createRiyadhDate(year, month + 1, 28); // Move to Sunday
-    }
+    const nextMonth = month + 1;
+    const nextYear = nextMonth > 11 ? year + 1 : year;
+    const adjustedMonth = nextMonth > 11 ? 0 : nextMonth;
+    paymentDate = adjustPaymentDateForWeekend(nextYear, adjustedMonth, PAYMENT_DAY);
   }
 
   return paymentDate;
 };
 
-const isToday = (date: Date): boolean => {
-  // Get today's date in Riyadh timezone
-  const today = getRiyadhDate();
-  // Compare with the provided date
-  const riyadhDate = getRiyadhDate(date);
-  return riyadhDate.toDateString() === today.toDateString();
+const isToday = (paymentDate: Date): boolean => {
+  const currentRiyadhDate = getCurrentRiyadhDate();
+  return (
+    currentRiyadhDate.getUTCFullYear() === paymentDate.getUTCFullYear() &&
+    currentRiyadhDate.getUTCMonth() === paymentDate.getUTCMonth() &&
+    currentRiyadhDate.getUTCDate() === paymentDate.getUTCDate()
+  );
 };
 
 const calculateTimeLeft = (targetDate: Date): TimeLeft => {
-  // Get current time in Riyadh timezone
-  const now = getRiyadhDate();
+  const now = getCurrentRiyadhDate();
   const difference = targetDate.getTime() - now.getTime();
 
   if (difference > 0) {
@@ -161,20 +192,18 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft => {
 };
 
 const formatDate = (date: Date): string => {
-  // Use the date directly as it's already in Riyadh timezone
-  // Format in Hijri calendar
+  // Convert UTC date to display in Riyadh timezone and Hijri calendar
   return date.toLocaleDateString("ar-SA-u-ca-islamic", {
     year: "numeric",
     month: "long",
     day: "numeric",
     weekday: "long",
-    timeZone: "Asia/Riyadh",
+    timeZone: RIYADH_TIMEZONE,
   });
 };
 
-// Initialize with server-side values using Riyadh timezone
-const currentDate = getRiyadhDate();
-const paymentDate = calculateNextPaymentDate(currentDate);
+// Initialize with server-side values using UTC
+const paymentDate = calculateNextPaymentDate();
 
 // Reactive state that works on both server and client
 const timeLeft = ref<TimeLeft>(calculateTimeLeft(paymentDate));
@@ -183,9 +212,7 @@ const isPaymentDay = ref<boolean>(isToday(paymentDate));
 
 // Update function that can be called both server and client side
 const updateCountdown = () => {
-  // Get current time in Riyadh timezone
-  const now = getRiyadhDate();
-  const currentPaymentDate = calculateNextPaymentDate(now);
+  const currentPaymentDate = calculateNextPaymentDate();
 
   // Update payment date if it has changed (moved to next month)
   if (nextPaymentDate.value.getTime() !== currentPaymentDate.getTime()) {
@@ -207,8 +234,8 @@ onMounted(() => {
   // Update immediately on mount to sync with client time
   updateCountdown();
 
-  // Set up interval for real-time updates
-  timer = setInterval(updateCountdown, 300);
+  // Set up interval for real-time updates (every second)
+  timer = setInterval(updateCountdown, 1000);
 });
 
 onUnmounted(() => {
