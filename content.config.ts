@@ -13,6 +13,7 @@ export default defineContentConfig({
           children: z.any(),
         }),
         hidden: z.boolean().optional(),
+        ogImage: z.string().optional(),
       }),
     })))
   }

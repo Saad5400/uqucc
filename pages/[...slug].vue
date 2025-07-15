@@ -18,6 +18,7 @@ const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, {
 });
 
 const siteConfig = useSiteConfig();
+const ogImageUrl = page.value?.ogImage ? `${siteConfig.url}${page.value?.ogImage}` : encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`);
 
 useSeoMeta({
   ...(page.value?.seo || {}),
@@ -25,7 +26,7 @@ useSeoMeta({
   ogDescription: page.value?.description,
   ogUrl: `${siteConfig.url}${route.path}`,
   ogType: "website",
-  ogImageUrl: encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`),
+  ogImageUrl: ogImageUrl,
   ogImageWidth: 720,
   ogImageHeight: 377,
   ogImageType: "image/png",
@@ -33,9 +34,7 @@ useSeoMeta({
   twitterCard: "summary_large_image",
   twitterTitle: page.value?.title,
   twitterDescription: page.value?.description,
-  twitterImage: encodeURI(
-    `${siteConfig.url}/api/screenshot?path=${route.path}`
-  ),
+  twitterImage: ogImageUrl,
   twitterImageWidth: 720,
   twitterImageHeight: 377,
   twitterImageAlt: page.value?.title,
@@ -78,7 +77,11 @@ useSeoMeta({
   </div>
 
   <Button as-child variant="link" class="mt-4" v-if="page">
-    <NuxtLink :to="`${siteConfig.github}/content/${page?.stem}.${page?.extension}`" target="_blank" rel="noopener noreferrer">
+    <NuxtLink
+      :to="`${siteConfig.github}/content/${page?.stem}.${page?.extension}`"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Pencil />
       <span>تعديل هذه الصفحة</span>
     </NuxtLink>
