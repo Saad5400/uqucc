@@ -37,7 +37,9 @@ async function screenshotHandler(event: any) {
     page = await browser.newPage();
   }
 
-  const url = `https://uqucc.sb.sa${path}`;
+  const siteConfig = useSiteConfig(event);
+
+  const url = `${siteConfig.url}${path}`;
   await page.goto(url);
   await page.setViewport({ width, height, deviceScaleFactor: 2 });
   await page.evaluate(() => {

@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   ],
 
   site: {
-    url: "http://uqucc.sb.sa",
+    url: "https://uqucc.sb.sa",
+    github: "https://github.com/Saad5400/uqucc/tree/nuxt",
     name: "دليل طالب كلية الحاسبات",
   },
 

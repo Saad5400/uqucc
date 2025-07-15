@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { findPageBreadcrumb, findPageChildren } from "@nuxt/content/utils";
+import { Pencil } from "lucide-vue-next";
 import PageCard from "~/components/PageCard.vue";
 
 const route = useRoute();
@@ -8,20 +9,23 @@ const { data: page } = await useAsyncData(`page:${route.path}`, () =>
   queryCollection("docs").path(route.path).first()
 );
 const { data: items } = await useContentNavigation();
-const children = findPageChildren(items.value ?? [], route.path.replace(/\/$/, ""));
+const children = findPageChildren(
+  items.value ?? [],
+  route.path.replace(/\/$/, "")
+);
 const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, {
   current: true,
 });
+
+const siteConfig = useSiteConfig();
 
 useSeoMeta({
   ...(page.value?.seo || {}),
   ogTitle: page.value?.title,
   ogDescription: page.value?.description,
-  ogUrl: `https://uqucc.sb.sa${route.path}`,
+  ogUrl: `${siteConfig.url}${route.path}`,
   ogType: "website",
-  ogImageUrl: encodeURI(
-    `https://uqucc.sb.sa/api/screenshot?path=${route.path}`
-  ),
+  ogImageUrl: encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`),
   ogImageWidth: 720,
   ogImageHeight: 377,
   ogImageType: "image/png",
@@ -30,7 +34,7 @@ useSeoMeta({
   twitterTitle: page.value?.title,
   twitterDescription: page.value?.description,
   twitterImage: encodeURI(
-    `https://uqucc.sb.sa/api/screenshot?path=${route.path}`
+    `${siteConfig.url}/api/screenshot?path=${route.path}`
   ),
   twitterImageWidth: 720,
   twitterImageHeight: 377,
@@ -72,4 +76,11 @@ useSeoMeta({
       </PageCard>
     </div>
   </div>
+
+  <Button as-child variant="link" class="mt-4" v-if="page">
+    <NuxtLink :to="`${siteConfig.github}/content/${page?.stem}.${page?.extension}`" target="_blank" rel="noopener noreferrer">
+      <Pencil />
+      <span>تعديل هذه الصفحة</span>
+    </NuxtLink>
+  </Button>
 </template>
