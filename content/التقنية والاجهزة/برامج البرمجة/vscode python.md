@@ -1,5 +1,3 @@
-<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/a4909f28-b5e8-4bea-b0a1-a577626cbff1" /># VS Code مع Python
-
 ::el-cato
 ::
 
