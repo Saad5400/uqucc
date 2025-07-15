@@ -5,53 +5,14 @@
 ::el-cato
 ::
 
-### تحميل Python
-1. اذهب إلى موقع [python.org](https://www.python.org/downloads/)
-2. اضغط على "Download Python" (سيعرض أحدث إصدار)
-
-![تحميل Python](placeholder-pycharm-python-download.png)
-
-### تثبيت Python
-
-**في Windows:**
-1. شغل ملف التثبيت
-2. **مهم جداً:** تأكد من تحديد "Add Python to PATH"
-
-![تثبيت Python في Windows](placeholder-pycharm-python-install-windows.png)
-
-3. اختر "Install Now" أو "Customize installation"
-4. في الخيارات المتقدمة، تأكد من تحديد:
-   - Install for all users
-   - Add Python to environment variables
-   - Precompile standard library
-
-![خيارات التثبيت المتقدمة](placeholder-pycharm-python-advanced-options.png)
-
-**في Mac:**
-استخدم Homebrew لسهولة الإدارة:
-```bash
-# تثبيت Homebrew إذا لم يكن مثبت
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# تثبيت Python
-brew install python
-```
-
-## الخطوة 2: تحميل PyCharm Community
-
 ### التحميل
 1. اذهب إلى موقع [jetbrains.com/pycharm](https://www.jetbrains.com/pycharm/)
 2. اضغط على "Download"
 
-![موقع PyCharm](placeholder-pycharm-website.png)
+<img width="2524" height="1285" alt="image" src="https://github.com/user-attachments/assets/e26ecbaf-1b52-4040-96c7-0d7d02aa9495" />
+<img width="2541" height="1290" alt="image" src="https://github.com/user-attachments/assets/168daa3c-566c-43e0-91f9-7fc7c736a0e3" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/3fec20af-7354-4ce0-9093-1feba263810c" />
 
-3. اختر "Community" (النسخة المجانية)
-
-![اختيار PyCharm Community](placeholder-pycharm-community-selection.png)
-
-4. اختر نظام التشغيل المناسب
-
-![اختيار نظام التشغيل](placeholder-pycharm-os-selection.png)
 
 ## الخطوة 3: تثبيت PyCharm
 
@@ -59,62 +20,34 @@ brew install python
 1. شغل ملف `.exe` المحمل
 2. ستظهر شاشة الترحيب، اضغط "Next"
 
-![شاشة ترحيب PyCharm](placeholder-pycharm-welcome.png)
-
-3. اختر مجلد التثبيت
-
-![اختيار مجلد التثبيت](placeholder-pycharm-install-location.png)
-
-4. حدد Installation Options:
-   - Create Desktop Shortcut
-   - Update PATH variable
-   - Update Context Menu
-   - Create Associations
-
-![خيارات التثبيت](placeholder-pycharm-install-options.png)
-
-5. اختر Start Menu Folder
-
-![Start Menu Folder](placeholder-pycharm-start-menu.png)
-
-6. اضغط "Install" وانتظر انتهاء التثبيت
-
-![عملية التثبيت](placeholder-pycharm-installing.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/29aac269-8b60-4e6d-97ce-37840c2b06ca" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/80a82975-6b2d-4712-aaf3-3afa72a69932" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/adf7102d-06d7-4c8c-adc8-7db3669a1fa8" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/e59203e0-0266-46e7-a34f-b2efb895775c" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/e804aa7b-c119-465d-881d-32b201dc84c2" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/e61fbf06-3430-4306-9391-03ada5ab1a2e" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5fe8c856-3c2a-426f-9fb6-1732cf9f7c8a" />
 
 ### التثبيت في Mac
 1. افتح ملف `.dmg` المحمل
 2. اسحب PyCharm إلى مجلد Applications
 
-![تثبيت PyCharm في Mac](placeholder-pycharm-mac-install.png)
-
 ## الخطوة 4: أول تشغيل وإعداد
 
 ### بدء التشغيل
 1. افتح PyCharm من desktop أو start menu
-2. ستظهر شاشة Data Sharing
 
-![Data Sharing](placeholder-pycharm-data-sharing.png)
-
-3. اختر ما إذا كنت تريد مشاركة بيانات الاستخدام
-
-### إعداد UI Theme
-اختر theme المفضل:
-
-![اختيار Theme](placeholder-pycharm-theme-selection.png)
-
-- **Darcula:** الوضع المظلم
-- **IntelliJ Light:** الوضع الفاتح
-- **High contrast:** للوضوح العالي
-
-### إعداد Plugins
-يمكن تثبيت plugins إضافية أو تخطي هذه الخطوة:
-
-![إعداد Plugins](placeholder-pycharm-plugins-setup.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/e53e382a-510b-44db-beb8-f392f2f0f0a9" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/da6fafc8-3519-479e-9ac7-34ac761dd968" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/e7eacab7-9ae3-4335-b9af-89eec48ba3d1" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/91c53e31-d25f-4aff-98c8-4521e4cfc168" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8483e2d7-ca40-4381-bbbb-fd2df09eedc6" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/1c58c9c2-31f6-4d87-b2fb-26ab26bb76ad" />
 
 ### شاشة الترحيب
 ستظهر شاشة PyCharm الرئيسية:
 
-![شاشة الترحيب النهائية](placeholder-pycharm-final-welcome.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/2ca7ce61-1a70-4ac1-9a2a-a668d83af368" />
 
 ## الخطوة 5: إنشاء مشروع Python جديد
 
@@ -122,166 +55,16 @@ brew install python
 1. من شاشة الترحيب، اضغط "New Project"
 2. أو من القائمة: File > New Project
 
-![إنشاء مشروع جديد](placeholder-pycharm-new-project.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8a7c0e2c-3ef1-4190-a6f7-178080a08051" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/4cd3e4a5-cab4-4448-8bfd-5be59bfcf0b7" />
 
-### تكوين المشروع
-1. اختر نوع المشروع "Pure Python"
-2. حدد Location للمشروع
+### تشغيل البرنامج
 
-![تكوين المشروع](placeholder-pycharm-project-config.png)
-
-3. في Python Interpreter، اختر:
-   - **Previously configured interpreter:** استخدام Python موجود
-   - **New environment using Virtualenv:** إنشاء بيئة افتراضية جديدة
-
-![اختيار Python Interpreter](placeholder-pycharm-interpreter-selection.png)
-
-4. إذا اخترت New environment:
-   - حدد Location للبيئة الافتراضية
-   - اختر Base interpreter (Python المثبت)
-   - حدد inherit global site-packages إذا كنت تريد الوصول للمكتبات العامة
-
-![إعداد البيئة الافتراضية](placeholder-pycharm-venv-config.png)
-
-5. اضغط "Create" لإنشاء المشروع
-
-## الخطوة 6: استكشاف واجهة PyCharm
-
-### النظرة العامة على الواجهة
-بعد إنشاء المشروع، ستظهر الواجهة الرئيسية:
-
-![الواجهة الرئيسية](placeholder-pycharm-main-interface.png)
-
-### أجزاء الواجهة الرئيسية
-
-**1. Project Tool Window (الشريط الأيسر):**
-عرض هيكل المشروع والملفات
-
-![Project Tool Window](placeholder-pycharm-project-window.png)
-
-**2. Editor (الجزء الأوسط):**
-منطقة كتابة وتحرير الكود
-
-![Editor](placeholder-pycharm-editor.png)
-
-**3. Structure Tool Window:**
-عرض هيكل الملف الحالي (functions, classes, etc.)
-
-![Structure Window](placeholder-pycharm-structure.png)
-
-**4. Terminal:**
-طرفية مدمجة للتشغيل المباشر
-
-![Terminal المدمج](placeholder-pycharm-terminal.png)
-
-**5. Python Console:**
-وحدة تحكم Python تفاعلية
-
-![Python Console](placeholder-pycharm-console.png)
-
-## الخطوة 7: كتابة أول برنامج Python
-
-### إنشاء ملف Python جديد
-1. انقر بزر الماوس الأيمن على مجلد المشروع
-2. اختر New > Python File
-
-![إنشاء ملف Python](placeholder-pycharm-new-file.png)
-
-3. أدخل اسم الملف (مثل `main`)
-
-![تسمية الملف](placeholder-pycharm-file-name.png)
-
-### كتابة الكود
-```python
-# برنامج تفاعلي بسيط
-def main():
-    print("مرحباً بك في PyCharm!")
-    print("=" * 30)
-    
-    # طلب معلومات المستخدم
-    name = input("ما اسمك؟ ")
-    age = int(input("كم عمرك؟ "))
-    
-    print(f"\nأهلاً وسهلاً {name}!")
-    print(f"عمرك {age} سنة")
-    
-    # حساب بسيط
-    year_born = 2024 - age
-    print(f"لقد ولدت في عام {year_born} تقريباً")
-    
-    # قائمة اهتمامات
-    interests = []
-    print("\nأخبرني عن اهتماماتك (اكتب 'انتهيت' للانتهاء):")
-    
-    while True:
-        interest = input("اهتمام: ")
-        if interest.lower() == 'انتهيت':
-            break
-        interests.append(interest)
-    
-    if interests:
-        print(f"\nاهتماماتك: {', '.join(interests)}")
-    
-    print("\nشكراً لك!")
-
-if __name__ == "__main__":
-    main()
-```
-
-![كتابة الكود](placeholder-pycharm-write-code.png)
-
-### استخدام IntelliSense
-PyCharm يوفر IntelliSense متقدم:
-- `Ctrl+Space`: إكمال الكود
-- عرض documentation عند التمرير
-- اقتراح parameters للدوال
-
-![IntelliSense في PyCharm](placeholder-pycharm-intellisense.png)
-
-## الخطوة 8: تشغيل البرنامج
-
-### طرق تشغيل البرنامج
-
-**الطريقة 1: من الأيقونة**
 اضغط على أيقونة Run الخضراء في toolbar
 
-![أيقونة Run](placeholder-pycharm-run-icon.png)
-
-**الطريقة 2: انقر بزر الماوس الأيمن**
-في المحرر واختر "Run 'main'"
-
-![Run من Context Menu](placeholder-pycharm-run-context.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/6fb1d036-c54c-46ce-91e8-81037533beca" />
 
 ### نافذة النتائج
 ستظهر النتائج في Run tool window:
 
-![نافذة النتائج](placeholder-pycharm-run-output.png)
-
-## الخطوة 9: استخدام Debugger
-
-### وضع Breakpoints
-1. انقر على gutter (الهامش الأيسر) بجانب رقم السطر
-2. سيظهر نقطة حمراء تشير للـ breakpoint
-
-![وضع Breakpoint](placeholder-pycharm-set-breakpoint.png)
-
-### بدء Debug
-1. اضغط على أيقونة Debug (الخنفساء)
-2. أو اذهب إلى Run > Debug 'main' (`Shift+F9`)
-
-![بدء Debug](placeholder-pycharm-start-debug.png)
-
-### استخدام Debug Controls
-عند التوقف على breakpoint:
-
-![Debug Controls](placeholder-pycharm-debug-controls.png)
-
-- **Resume Program (F9):** متابعة التنفيذ
-- **Step Over (F8):** تنفيذ السطر الحالي
-- **Step Into (F7):** الدخول إلى function
-- **Step Out (Shift+F8):** الخروج من function
-
-### فحص المتغيرات
-في نافذة Variables:
-
-![فحص المتغيرات](placeholder-pycharm-debug-variables.png)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/21f8051a-baf5-4c64-825f-8fefb6e843d3" />
