@@ -56,39 +56,39 @@
 
 4. بعد التثبيت، افتح VS Code
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0001.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/bb0480b6-b81e-4a86-835c-79bee479e33d" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/bb0480b6-b81e-4a86-835c-79bee479e33d" />
 
 ### تثبيت Python Extension
 1. افتح VS Code
 2. اضغط على أيقونة Extensions في الشريط الجانبي (`Ctrl+Shift+X`)
 3. ابحث عن "Python"
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0002.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5b8feaf7-c187-4ca9-a51f-0badfa6b8803" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5b8feaf7-c187-4ca9-a51f-0badfa6b8803" />
 
 4. اضغط "Install" على "Python" من Microsoft
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0004.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/f17e1793-c3d9-40f2-94a4-fe9e28eb49d6" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/f17e1793-c3d9-40f2-94a4-fe9e28eb49d6" />
 
 ### إنشاء مجلد المشروع
 1. أنشئ مجلد جديد لمشروعك
 2. افتح VS Code واضغط "File" > "Open Folder"
 3. اختر المجلد الذي أنشأته
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0006.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/39850f6f-a9c9-401b-ba5e-56d813b365d2" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0007.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5853e607-088d-4bda-b78b-3cc190ed22ce" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0010.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8609ad00-7be2-4cfb-b10f-5b8c57bb8716" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0011.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/98fd65f2-1d9a-4f63-a766-10ce66f62ad5" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0013.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/44fe7d56-36b1-464a-a427-e681e0a19674" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0014.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/43686f83-fa6a-4a9d-80aa-96cffaf48f0a" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0016.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8fee2bf4-e829-4dc0-980c-97eae7ef26a7" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/39850f6f-a9c9-401b-ba5e-56d813b365d2" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5853e607-088d-4bda-b78b-3cc190ed22ce" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8609ad00-7be2-4cfb-b10f-5b8c57bb8716" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/98fd65f2-1d9a-4f63-a766-10ce66f62ad5" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/44fe7d56-36b1-464a-a427-e681e0a19674" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/43686f83-fa6a-4a9d-80aa-96cffaf48f0a" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/8fee2bf4-e829-4dc0-980c-97eae7ef26a7" />
 
 ### إنشاء ملف Python
 1. في VS Code، اضغط `Ctrl+N` لإنشاء ملف جديد
 2. احفظ الملف باسم `main.py`
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0017.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/7787a57d-c993-463b-a717-54415bd6114c" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0018.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/f41fded9-a3cc-4ea1-ae1e-fbf294f3911a" />
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0019.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/c9b8f552-dfd3-46e2-b8fe-378b69823a55" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/7787a57d-c993-463b-a717-54415bd6114c" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/f41fded9-a3cc-4ea1-ae1e-fbf294f3911a" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/c9b8f552-dfd3-46e2-b8fe-378b69823a55" />
 
 ### كتابة أول برنامج
 ```python
@@ -101,14 +101,14 @@ if __name__ == "__main__":
     main()
 ```
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0022.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5e56c45b-6f92-4202-beb0-8534a2b4841b" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/5e56c45b-6f92-4202-beb0-8534a2b4841b" />
 
 ### تشغيل البرنامج
 1. اضغط `F5` أو اضغط على أيقونة "Run" في الشريط العلوي
 2. أو انقر بزر الماوس الأيمن واختر "Run Python File in Terminal"
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0023.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/eda9e334-e2eb-460e-a18b-eccb92cccb17" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/eda9e334-e2eb-460e-a18b-eccb92cccb17" />
 
 3. ستظهر النتيجة في نافذة Terminal
 
-mhtml:file:///C:/Users/saad/Downloads/Recording_20250715_1329.mht!screenshot0024.JPEG<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/c2506409-d3b8-4290-a444-29cc9756f272" />
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/c2506409-d3b8-4290-a444-29cc9756f272" />
