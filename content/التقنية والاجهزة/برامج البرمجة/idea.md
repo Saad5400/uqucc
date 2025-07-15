@@ -5,204 +5,99 @@
 ::el-cato
 ::
 
-### التحميل
-1. اذهب إلى موقع [jetbrains.com](https://www.jetbrains.com/idea/download#community-edition)
-2. اضغط على "Download"
+#### 1. تحميل IntelliJ IDEA
 
-![تحميل IntelliJ IDEA](placeholder-intellij-download.png)
+ادخل الرابط [https://www.jetbrains.com/idea](https://www.jetbrains.com/idea) واختر زر التحميل.
 
-### التثبيت في Windows
-1. شغل الملف المحمل
-2. اتبع خطوات معالج التثبيت
+![تحميل IntelliJ IDEA](https://i.imgur.com/dQQBP2m.png)
 
-![معالج تثبيت IntelliJ](placeholder-intellij-install-wizard.png)
+في الصفحة التالية انزل عند **Community Edition** واضغط تحميل (تأكد من اختيارك لنفس النسخة المجانية، **لا تحمل Ultimate** لأنها مدفوعة).
 
-![اختيار مجلد التثبيت](placeholder-intellij-install-path.png)
+<img alt="image" src="https://github.com/user-attachments/assets/9845931d-5140-4624-8c04-80e91272ef96" />
 
-4. حدد الخيارات الإضافية:
-   - إنشاء desktop shortcut
-   - إضافة مجلد bin إلى PATH
+بعد انتهاء التحميل، اذهب إلى مجلد التنزيلات واضغط على الملف مرتين.
 
-![خيارات التثبيت](placeholder-intellij-install-options.png)
+![فتح ملف التثبيت](https://i.imgur.com/GHiEEa6.png)
 
-5. اضغط "Install" وانتظر انتهاء التثبيت
+ستظهر نافذة التثبيت، استمر بالضغط على **Next** واختر **Add bin folder to PATH** كما في الصور:
 
-![عملية التثبيت](placeholder-intellij-installing.png)
+![تثبيت – خطوة 1](https://i.imgur.com/mOexoQX.png)  
+![تثبيت – خطوة 2](https://i.imgur.com/X68f7FN.png)  
+![تثبيت – خطوة 3](https://i.imgur.com/jLG8NqY.png)  
+![تثبيت – خطوة 4](https://i.imgur.com/fsOmKke.png)
 
-### التثبيت في Mac
-1. افتح ملف `.dmg` المحمل
-2. اسحب IntelliJ IDEA إلى مجلد Applications
+بعد انتهاء عملية التثبيت اختر **Reboot now** (الخيار الأول) ثم اضغط **Finish** لإعادة تشغيل الجهاز.
 
-![تثبيت IntelliJ في Mac](placeholder-intellij-mac-install.png)
+![إنهاء التثبيت](https://i.imgur.com/AOgt4Y6.png)
 
-### بدء التشغيل
-1. افتح IntelliJ IDEA من desktop أو start menu
-2. ستظهر شاشة الترحيب
+#### 2. تحميل Java JDK من داخل البرنامج
 
-![شاشة الترحيب](placeholder-intellij-welcome-screen.png)
+افتح IntelliJ IDEA عن طريق البحث عنه أو من أيقونة سطح المكتب.
 
-### إعداد UI Theme
-1. اختر theme المفضل (Darcula للوضع المظلم أو IntelliJ Light)
+![فتح IntelliJ IDEA](https://i.imgur.com/UaE2DXG.png)
 
-![اختيار Theme](placeholder-intellij-theme-selection.png)
+وافق على شروط الاستخدام ومنح الصلاحيات اللازمة.
 
-### إعداد Keymap
-1. اختر تخطيط المفاتيح (عادة Default أو Eclipse للقادمين من Eclipse)
+![شروط الاستخدام](https://i.imgur.com/higUgCe.png)  
+![منح الصلاحيات](https://i.imgur.com/IJqoM66.png)  
+![متابعة](https://i.imgur.com/KL4MQX4.png)
 
-![اختيار Keymap](placeholder-intellij-keymap-selection.png)
+اختر **Create New Project**.
 
-### إعداد Plugins
-1. اختر plugins الإضافية حسب الحاجة
-2. يمكن تثبيت المزيد لاحقاً
+![إنشاء مشروع جديد](https://i.imgur.com/4ggQc3h.png)
 
-![اختيار Plugins](placeholder-intellij-plugins-selection.png)
+غيّر اسم المشروع إن أردت، ثم اضغط على **Project SDK**.
 
-### إنشاء مشروع جديد
-1. من شاشة الترحيب، اضغط "New Project"
-2. أو من القائمة: File > New > Project
+![اختيار SDK](https://i.imgur.com/zr7JeoU.png)
 
-![إنشاء مشروع جديد](placeholder-intellij-new-project.png)
+اضغط **Add SDK**.
 
-### اختيار نوع المشروع
-1. اختر "Java" من القائمة اليسرى
-2. تأكد من اختيار Project SDK الصحيح
+![إضافة SDK](https://i.imgur.com/RQFDZCO.png)
 
-![اختيار نوع المشروع](placeholder-intellij-project-type.png)
+اختر **Download JDK**.
 
-3. إذا لم يظهر JDK، اضغط "New" واختر مجلد تثبيت Java
+![تحميل JDK](https://i.imgur.com/2GUW0aF.png)
 
-![إضافة JDK](placeholder-intellij-add-jdk.png)
+حدد أحدث نسخة (مثلاً JDK 21) أو أي نسخة مطلوبة، ثم اضغط **Download**.
 
-### إعداد المشروع
-1. اختر ما إذا كنت تريد إنشاء project من template
-2. للمبتدئين، اختر "Create project from template"
-3. حدد "Command Line App"
+![اختيار إصدار JDK](https://i.imgur.com/jOok4gN.png)
 
-![اختيار Template](placeholder-intellij-project-template.png)
+اضغط **Create** لإنشاء المشروع.
 
-4. أدخل معلومات المشروع:
-   - Project name: اسم المشروع
-   - Project location: مكان حفظ المشروع
-   - Base package: اسم package الأساسي
+![إنشاء المشروع](https://i.imgur.com/43upyk4.png)
 
-![معلومات المشروع](placeholder-intellij-project-details.png)
+#### 3. تشغيل كود جافا
 
-5. اضغط "Finish" لإنشاء المشروع
+بعد فتح المشروع ستجد ملف الكود في مجلد **src** باسمه **Main**. لتشغيل الكود اضغط زر التشغيل في أعلى يمين البرنامج.
 
-### نظرة عامة على الواجهة
-بعد إنشاء المشروع، ستظهر الواجهة الرئيسية:
+![تشغيل الكود](https://i.imgur.com/HkyFuyg.png)
 
-![الواجهة الرئيسية](placeholder-intellij-main-interface.png)
+سيظهر ناتج الكود في نافذة **Run** أسفل البرنامج.
 
-### أجزاء الواجهة الرئيسية
+![ناتج التشغيل](https://i.imgur.com/rk1C7YQ.png)
 
-**1. Project Explorer (الشريط الأيسر):**
-- عرض هيكل المشروع وملفاته
+#### 4. تتبع كود جافا (Debugging)
 
-![Project Explorer](placeholder-intellij-project-explorer.png)
+لتتبع كود جافا سطرًا بسطر ورؤية قيم المتغيرات، ضع نقطة التوقف (Breakpoint) الحمراء عند السطر الذي تريد البدء منه.
 
-**2. Editor (الجزء الأوسط):**
-- منطقة كتابة وتحرير الكود
+![نقطة التوقف](https://i.imgur.com/7NXb0Ds.png)
 
-![Editor](placeholder-intellij-editor.png)
+اضغط على أيقونة الحشرة (Debug) أعلى يمين البرنامج.
 
-**3. Tool Windows (الأشرطة الجانبية):**
-- نوافذ للأدوات المختلفة (Terminal, Version Control, إلخ)
+![بدء التتبع](https://i.imgur.com/rh3Vnsn.png)
 
-![Tool Windows](placeholder-intellij-tool-windows.png)
+ستظهر لوحة تحكم **Debug**؛ استخدم الزر التالي للانتقال للسطر التالي:
 
-**4. Status Bar (الشريط السفلي):**
-- معلومات حول المشروع والملف الحالي
+![Step Over](https://i.imgur.com/EbdZB3f.png)
 
-![Status Bar](placeholder-intellij-status-bar.png)
+تظهر المتغيرات أسفل في قسم **Threads & Variables**.
 
-### إنشاء class جديد
-1. انقر بزر الماوس الأيمن على مجلد `src`
-2. اختر New > Java Class
+![عرض المتغيرات](https://i.imgur.com/jtApV1v.png)
 
-![إنشاء Java Class](placeholder-intellij-new-class.png)
+لإنهاء جلسة التتبع واستكمال البرنامج اضغط الزر الموضح:
 
-3. أدخل اسم الـ class (مثل `HelloWorld`)
+![إيقاف التتبع](https://i.imgur.com/9IskTJG.png)
 
-![تسمية Class](placeholder-intellij-class-name.png)
+ولرؤية ناتج الكود أو إدخال البيانات في خانة **Console**:
 
-### كتابة الكود
-```java
-public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-        
-        // طلب اسم المستخدم
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        System.out.print("What's your name? ");
-        String name = scanner.nextLine();
-        
-        System.out.println("Hello, " + name + "!");
-        scanner.close();
-    }
-}
-```
-
-![كتابة كود Java](placeholder-intellij-write-code.png)
-
-### استخدام IntelliSense
-- اضغط `Ctrl+Space` لإظهار اقتراحات الكود
-- IntelliJ يقترح methods وvariables تلقائياً
-
-![IntelliSense في IntelliJ](placeholder-intellij-intellisense.png)
-
-## الخطوة 8: تشغيل البرنامج
-
-### طرق تشغيل البرنامج
-
-**الطريقة 1: من المحرر**
-1. انقر بزر الماوس الأيمن في المحرر
-2. اختر "Run 'Main.main()'"
-
-![تشغيل من المحرر](placeholder-intellij-run-from-editor.png)
-
-**الطريقة 2: من الأيقونة**
-1. اضغط على أيقونة Run الخضراء بجانب method main
-
-![أيقونة Run](placeholder-intellij-run-icon.png)
-
-### نافذة النتائج
-ستظهر نافذة Run في أسفل الشاشة مع نتيجة البرنامج:
-
-![نافذة النتائج](placeholder-intellij-run-output.png)
-
-## الخطوة 9: استخدام Debugger
-
-### وضع Breakpoints
-1. انقر على الهامش الأيسر بجانب رقم السطر لوضع breakpoint
-
-![وضع Breakpoint](placeholder-intellij-set-breakpoint.png)
-
-2. سيظهر نقطة حمراء تشير إلى الـ breakpoint
-
-![Breakpoint موضوع](placeholder-intellij-breakpoint-set.png)
-
-### بدء Debug
-1. انقر بزر الماوس الأيمن في المحرر
-2. اختر "Debug 'Main.main()'"
-
-![بدء Debug](placeholder-intellij-start-debug.png)
-
-3. أو اضغط على أيقونة Debug (الخنفساء الخضراء)
-
-![أيقونة Debug](placeholder-intellij-debug-icon.png)
-
-### استخدام Debug Controls
-عند التوقف على breakpoint، ستظهر أدوات debug:
-
-![أدوات Debug](placeholder-intellij-debug-controls.png)
-
-- **Step Over (F8):** تنفيذ السطر الحالي
-- **Step Into (F7):** الدخول إلى method
-- **Step Out (Shift+F8):** الخروج من method حالي
-- **Resume (F9):** متابعة التنفيذ
-
-### فحص المتغيرات
-في نافذة Variables، يمكن رؤية قيم المتغيرات:
-
-![فحص المتغيرات](placeholder-intellij-debug-variables.png)
+![نافذة Console](https://i.imgur.com/ScN6uSU.png)
