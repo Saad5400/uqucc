@@ -16,7 +16,13 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@formkit/auto-animate/nuxt",
+    "nuxt-gtag",
   ],
+
+  gtag: {
+    enabled: !process.env.DEV,
+    id: "G-D6V76T469N",
+  },
 
   site: {
     url: "https://uqucc.sb.sa",
