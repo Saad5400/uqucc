@@ -10,8 +10,10 @@
         <slot mdc-unwrap="p" />
       </Button>
     </CollapsibleTrigger>
-    <CollapsibleContent class="ms-6 ps-2 border-primary/50">
-      <slot name="content" mdc-unwrap="p, ul" />
+    <CollapsibleContent class="ms-3 rounded-b-xl bg-secondary/60 shadow">
+      <div class="ps-4">
+        <slot name="content" mdc-unwrap="p, ul" />
+      </div>
     </CollapsibleContent>
   </Collapsible>
 </template>
