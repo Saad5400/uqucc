@@ -9,7 +9,7 @@ const { data: items } = await useContentNavigation();
 
 onMounted(() =>
   new Date().getDay() === 5 &&
-    setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 1000)
+    setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 1500)
 )
 </script>
 
