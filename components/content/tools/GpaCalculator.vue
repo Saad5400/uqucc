@@ -67,7 +67,7 @@
 
     <div v-auto-animate class="!space-y-2">
       <div v-for="course in courses" :key="course.id" class="flex gap-2 my-0">
-        <Button variant="destructive" @click="removeCourse(course.id)">
+        <Button aria-label="حذف" variant="destructive" @click="removeCourse(course.id)">
           <Trash />
         </Button>
         <Input v-model="course.name" placeholder="اسم المقرر" />

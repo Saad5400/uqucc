@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Fuse from "fuse.js";
+import { Search } from "lucide-vue-next";
 
 const query = ref("");
 const { data } = await useAsyncData("search-data", () =>
@@ -41,7 +42,10 @@ const open = ref(false);
 <template>
   <Dialog v-model:open="open">
     <DialogTrigger as-child>
-      <Button variant="outline"> ابحث في الدليل </Button>
+      <Button variant="outline">
+        <Search />
+        ابحث
+      </Button>
     </DialogTrigger>
     <DialogContent>
       <Input
