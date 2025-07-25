@@ -1,6 +1,10 @@
 <template>
   <h2 :id="slugify(props.id || '')">
-    <a v-if="props.id && generate" :href="`#${slugify(props.id)}`">
+    <a
+      class="text-foreground font-normal"
+      v-if="props.id && generate"
+      :href="`#${slugify(props.id)}`"
+    >
       <slot />
     </a>
     <slot v-else />
@@ -8,10 +12,16 @@
 </template>
 
 <script setup lang="ts">
-import slugify from 'slugify';
+import slugify from "slugify";
 
-const props = defineProps<{ id?: string }>()
+const props = defineProps<{ id?: string }>();
 
-const { headings } = useRuntimeConfig().public.mdc
-const generate = computed(() => props.id && ((typeof headings?.anchorLinks === 'boolean' && headings?.anchorLinks === true) || (typeof headings?.anchorLinks === 'object' && headings?.anchorLinks?.h2)))
+const { headings } = useRuntimeConfig().public.mdc;
+const generate = computed(
+  () =>
+    props.id &&
+    ((typeof headings?.anchorLinks === "boolean" &&
+      headings?.anchorLinks === true) ||
+      (typeof headings?.anchorLinks === "object" && headings?.anchorLinks?.h2))
+);
 </script>

@@ -1,6 +1,7 @@
 <template>
   <h3 :id="slugify(props.id || '')">
     <a
+      class="text-foreground font-normal"
       v-if="props.id && generate"
       :href="`#${slugify(props.id)}`"
     >
@@ -11,10 +12,16 @@
 </template>
 
 <script setup lang="ts">
-import slugify from 'slugify';
+import slugify from "slugify";
 
-const props = defineProps<{ id?: string }>()
+const props = defineProps<{ id?: string }>();
 
-const { headings } = useRuntimeConfig().public.mdc
-const generate = computed(() => props.id && ((typeof headings?.anchorLinks === 'boolean' && headings?.anchorLinks === true) || (typeof headings?.anchorLinks === 'object' && headings?.anchorLinks?.h3)))
+const { headings } = useRuntimeConfig().public.mdc;
+const generate = computed(
+  () =>
+    props.id &&
+    ((typeof headings?.anchorLinks === "boolean" &&
+      headings?.anchorLinks === true) ||
+      (typeof headings?.anchorLinks === "object" && headings?.anchorLinks?.h3))
+);
 </script>
