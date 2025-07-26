@@ -6,11 +6,11 @@
     }
 
     .typography h1 {
-        @apply mb-8 text-4xl tracking-tight scroll-m-20;
+        @apply mb-8 text-3xl tracking-tight scroll-m-20;
     }
 
     .typography h2 {
-        @apply pb-2 my-4 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 first:mt-0;
+        @apply pb-2 my-4 text-[1.7rem] font-semibold tracking-tight transition-colors border-b scroll-m-20 first:mt-0;
     }
 
     .typography h3 {
