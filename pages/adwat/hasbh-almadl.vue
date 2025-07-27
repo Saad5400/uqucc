@@ -251,8 +251,10 @@ onMounted(() => {
     loadCourses()
 })
 
-useSeoMeta({
+const seo = {
     title: 'حاسبة المعدل',
     description: 'احسب معدلك الدراسي لجامعة أم القرى',
-})
+};
+useSeoMeta(seo);
+defineOgImageComponent('Seo', seo);
 </script>
