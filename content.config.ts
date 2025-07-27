@@ -12,6 +12,7 @@ export default defineContentConfig({
           type: z.string(),
           children: z.any(),
         }),
+        hidden: z.boolean().optional(),
       }),
     })))
   }
