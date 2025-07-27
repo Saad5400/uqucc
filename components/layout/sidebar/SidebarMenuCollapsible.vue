@@ -13,7 +13,7 @@ const open = ref(false);
 
 watch(() => route.path, (newPath) => {
     open.value = newPath.includes(props.item.path);
-});
+}, { immediate: true });
 </script>
 
 <template>
