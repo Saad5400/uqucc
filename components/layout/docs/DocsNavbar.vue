@@ -18,21 +18,24 @@ const colorMode = useColorMode();
                 </span>
             </NuxtLink>
         </div>
-        <ClientOnly class="flex items-center gap-2">
-            <Button v-if="colorMode.value === 'dark'" @click="colorMode.preference = 'light'" variant="ghost"
-                size="icon">
-                <Moon />
-            </Button>
-            <Button v-if="colorMode.value === 'light'" @click="colorMode.preference = 'dark'" variant="ghost"
-                size="icon">
-                <Sun />
-            </Button>
-
-            <template #fallback>
-                <Button class="skeleton" variant="ghost" size="icon">
-                    <Skeleton class="size-full" />
+        <div class="flex items-center gap-2">
+            <SearchBar />
+            <ClientOnly class="flex items-center gap-2">
+                <Button v-if="colorMode.value === 'dark'" @click="colorMode.preference = 'light'" variant="ghost"
+                    size="icon">
+                    <Moon />
                 </Button>
-            </template>
-        </ClientOnly>
+                <Button v-if="colorMode.value === 'light'" @click="colorMode.preference = 'dark'" variant="ghost"
+                    size="icon">
+                    <Sun />
+                </Button>
+
+                <template #fallback>
+                    <Button class="skeleton" variant="ghost" size="icon">
+                        <Skeleton class="size-full" />
+                    </Button>
+                </template>
+            </ClientOnly>
+        </div>
     </header>
 </template>
