@@ -38,4 +38,5 @@ const colorMode = useColorMode();
             </ClientOnly>
         </div>
     </header>
+    <NuxtLoadingIndicator color="var(--primary)" />
 </template>
