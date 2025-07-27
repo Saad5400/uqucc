@@ -24,10 +24,12 @@ const uniqueLinks = computed(() => {
         return true
     })
 })
+
+const open = ref(false);
 </script>
 
 <template>
-    <Dialog>
+    <Dialog v-model:open="open">
         <DialogTrigger as-child>
             <Button variant="outline">
                 ابحث في الدليل
@@ -36,7 +38,7 @@ const uniqueLinks = computed(() => {
         <DialogContent>
             <Input class="border-card-foreground/30" v-model="query" placeholder="بحث ..." />
             <div class="flex flex-col gap-2 overflow-y-auto h-96">
-                <Button variant="ghost" v-for="link of uniqueLinks" :key="link.id" as-child
+                <Button variant="ghost" v-for="link of uniqueLinks" :key="link.id" as-child @click="open = false"
                     class="flex flex-col items-start whitespace-normal h-fit hover:!bg-card-foreground/10">
                     <NuxtLink class="w-full" :to="link.id">
                         <h5 class="font-semibold text-start">

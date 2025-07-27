@@ -6,7 +6,7 @@
     }
 
     .typography h1 {
-        @apply mb-4 text-4xl tracking-tight scroll-m-20;
+        @apply mb-8 text-4xl tracking-tight scroll-m-20;
     }
 
     .typography h2 {
