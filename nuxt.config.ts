@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     'nuxt-og-image',
     '@nuxtjs/color-mode',
+    '@formkit/auto-animate/nuxt',
   ],
 
   site: {

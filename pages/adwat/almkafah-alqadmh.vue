@@ -33,28 +33,28 @@
 
     <!-- Countdown Display -->
     <template v-else>
-      <div class="grid grid-cols-4 gap-4 mb-6 text-primary">
+      <div class="grid grid-cols-4 gap-4 mb-6">
         <div class="p-4 shadow-md bg-card rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold">{{ timeLeft.days }}</div>
+          <div class="text-3xl font-bold text-primary">{{ timeLeft.days }}</div>
           <div class="text-sm opacity-80">يوم</div>
         </div>
         <div class="p-4 shadow-md bg-card rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold">{{ timeLeft.hours }}</div>
+          <div class="text-3xl font-bold text-primary">{{ timeLeft.hours }}</div>
           <div class="text-sm opacity-80">ساعة</div>
         </div>
         <div class="p-4 shadow-md bg-card rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold">{{ timeLeft.minutes }}</div>
+          <div class="text-3xl font-bold text-primary">{{ timeLeft.minutes }}</div>
           <div class="text-sm opacity-80">دقيقة</div>
         </div>
         <div class="p-4 shadow-md bg-card rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold">{{ timeLeft.seconds }}</div>
+          <div class="text-3xl font-bold text-primary">{{ timeLeft.seconds }}</div>
           <div class="text-sm opacity-80">ثانية</div>
         </div>
       </div>
 
-      <div class="p-4 rounded-lg shadow-md text-primary bg-card">
+      <div class="p-4 rounded-lg shadow-md bg-card">
         <p class="!mb-0 text-base">
-          موعد المكافأة القادمة: <strong>{{ formatDate(nextPaymentDate) }}</strong>
+          موعد المكافأة القادمة: <strong class="text-primary">{{ formatDate(nextPaymentDate) }}</strong>
         </p>
       </div>
     </template>
@@ -167,7 +167,7 @@ onMounted(() => {
   updateCountdown()
   
   // Set up interval for real-time updates
-  timer = setInterval(updateCountdown, 1000) // Update every second for better performance
+  timer = setInterval(updateCountdown, 300)
 })
 
 onUnmounted(() => {
