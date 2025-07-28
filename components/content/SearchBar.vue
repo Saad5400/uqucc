@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import Fuse from "fuse.js";
 import { Search } from "lucide-vue-next";
+import slugify from "slugify";
 
 const query = ref("");
 const { data } = await useAsyncData("search-data", () =>
-  queryCollectionSearchSections("docs")
+  queryCollectionSearchSections("docs", {
+    ignoredTags: ["h1"],
+  })
 );
 
 // @ts-ignore
@@ -12,28 +15,29 @@ const fuse = new Fuse(data.value, {
   keys: ["title", "content"],
 });
 
-const results = computed(() => fuse.search(toValue(query)).slice(0, 10));
-const uniqueResults = computed(() => {
-  const seen = new Set();
-  return results.value.filter((result) => {
-    if (seen.has(result.item.title)) {
-      return false;
-    }
-    seen.add(result.item.title);
-    return true;
-  });
-});
-
-function handleOpenChange() {
-  open.value = !open.value;
-}
+const results = computed(() =>
+  fuse
+    .search(toValue(query))
+    .slice(0, 10)
+    .filter((result) =>
+      result.item.id.includes("#" + result.item.title.replaceAll(" ", "-"))
+    )
+    .sort((a, b) => a.item.level - b.item.level)
+);
 
 const handleNavigate = () => {
-  if (uniqueResults.value.length > 0) {
-    const firstResult = uniqueResults.value[0].item.id;
+  if (results.value.length > 0) {
+    const firstResult = results.value[0].item.id;
     open.value = false;
-    navigateTo(firstResult);
+    navigateTo(slugifyId(firstResult));
   }
+};
+
+const slugifyId = (url: string) => {
+  const parts = url.split("#");
+  if (parts.length < 2) return url;
+  const id = parts[1];
+  return `${parts[0]}#${slugify(id)}`;
 };
 
 const open = ref(false);
@@ -59,13 +63,13 @@ const open = ref(false);
       <div class="flex flex-col gap-2 overflow-y-auto h-96 p-1">
         <Button
           variant="ghost"
-          v-for="link of uniqueResults"
+          v-for="link of results"
           :key="link.item.id"
           as-child
           @click="open = false"
           class="flex flex-col w-full items-start whitespace-normal h-fit hover:!bg-card-foreground/10"
         >
-          <NuxtLink class="w-full" :to="link.item.id">
+          <NuxtLink class="w-full" :to="slugifyId(link.item.id)">
             <h5 class="font-semibold text-start">
               {{ link.item.title }}
             </h5>

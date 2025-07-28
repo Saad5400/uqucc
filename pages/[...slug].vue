@@ -18,7 +18,9 @@ const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, {
 });
 
 const siteConfig = useSiteConfig();
-const ogImageUrl = page.value?.ogImage ? `${siteConfig.url}${page.value?.ogImage}` : encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`);
+const ogImageUrl = page.value?.ogImage
+  ? `${siteConfig.url}${page.value?.ogImage}`
+  : encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`);
 
 useSeoMeta({
   ...(page.value?.seo || {}),
@@ -41,6 +43,17 @@ useSeoMeta({
   twitterSite: "@SaadBatwa",
   twitterCreator: "@SaadBatwa",
 });
+
+watch(
+  () => route.fullPath,
+  () => {
+    if (route.hash)
+      setTimeout(
+        () => document.querySelector(route.hash)?.scrollIntoView(),
+        200
+      );
+  },
+);
 </script>
 
 <template>
