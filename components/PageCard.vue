@@ -12,7 +12,10 @@ const props = defineProps<{
     as-child
     variant="secondary"
     :class="
-      cn('p-8 text-2xl text-center whitespace-normal size-full', props.class)
+      cn(
+        'p-8 text-2xl whitespace-normal size-full flex justify-start text-start',
+        props.class
+      )
     "
   >
     <NuxtLink :to="href">

@@ -52,8 +52,10 @@ watch(
         () => document.querySelector(route.hash)?.scrollIntoView(),
         200
       );
-  },
+  }
 );
+
+console.log(page.value);
 </script>
 
 <template>
@@ -75,19 +77,8 @@ watch(
       </div>
     </BreadcrumbList>
   </Breadcrumb>
+
   <ContentRenderer v-if="page" :value="page" class="typography" />
-  <div v-if="!page && children" class="typography">
-    <h1>
-      {{ breadcrumbs.at(-1)?.title }}
-    </h1>
-    <div
-      class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,80dvw),1fr))] gap-4"
-    >
-      <PageCard v-for="child in children" :key="child.path" :href="child.path">
-        {{ child.title }}
-      </PageCard>
-    </div>
-  </div>
 
   <Button as-child variant="link" class="mt-4" v-if="page">
     <NuxtLink
@@ -99,4 +90,18 @@ watch(
       <span>تعديل هذه الصفحة</span>
     </NuxtLink>
   </Button>
+
+  <div v-if="!page && children" class="typography">
+    <h1>
+      {{ breadcrumbs.at(-1)?.title }}
+    </h1>
+    <div
+      class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,80dvw),1fr))] gap-4"
+    >
+      <PageCard v-for="child in children" :key="child.path" :href="child.path">
+        <Icon v-if="child.icon" :name="child.icon" class="!size-8 me-1"/>
+        {{ child.title }}
+      </PageCard>
+    </div>
+  </div>
 </template>
