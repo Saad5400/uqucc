@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@formkit/auto-animate/nuxt",
     "nuxt-gtag",
-    "@nuxtjs/google-fonts",
+    "@nuxt/fonts",
   ],
 
   gtag: {
@@ -44,13 +44,6 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: "",
     componentDir: "./components/ui",
-  },
-
-  googleFonts: {
-    download: false,
-    families: {
-      Cairo: true,
-    },
   },
 
   css: ["~/assets/css/tailwind.css", "~/assets/css/typography.css"],

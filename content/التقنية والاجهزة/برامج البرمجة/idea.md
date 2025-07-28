@@ -1,3 +1,8 @@
+---
+icon: solar:programming-broken
+order: 40
+---
+
 # IntelliJ IDEA
 
 بيئة التطوير المخصصة لجافا

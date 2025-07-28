@@ -1,3 +1,8 @@
+---
+icon: solar:code-circle-broken
+order: 30
+---
+
 # PyCharm
 
 بيئة التطوير المخصصة لبايثون

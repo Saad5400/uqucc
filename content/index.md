@@ -4,6 +4,8 @@ description: |
   يحتوي على المواضيع المهمة والمفيدة
   من كتابة الطلاب للطلاب
 ogImage: /banner.jpg
+order: -10
+icon: solar:home-2-broken
 ---
 
 # دليل طالب كلية الحاسبات

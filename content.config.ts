@@ -14,6 +14,8 @@ export default defineContentConfig({
         }),
         hidden: z.boolean().optional(),
         ogImage: z.string().optional(),
+        order: z.number().optional().default(0),
+        icon: z.string().optional(),
       }),
     })))
   }

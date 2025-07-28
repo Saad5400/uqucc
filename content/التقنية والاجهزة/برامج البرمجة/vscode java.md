@@ -1,3 +1,8 @@
+---
+icon: solar:programming-broken
+order: 20
+---
+
 # VS Code مع Java
 
 ::el-cato
