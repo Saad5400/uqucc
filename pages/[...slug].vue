@@ -54,8 +54,6 @@ watch(
       );
   }
 );
-
-console.log(page.value);
 </script>
 
 <template>

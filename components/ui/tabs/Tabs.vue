@@ -17,6 +17,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     data-slot="tabs"
     v-bind="forwarded"
     :class="cn('flex flex-col gap-2', props.class)"
+    style="direction: rtl;"
   >
     <slot />
   </TabsRoot>
