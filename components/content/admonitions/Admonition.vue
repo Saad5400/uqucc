@@ -7,7 +7,7 @@ import { Info } from 'lucide-vue-next';
         <slot name="icon">
             <Info />
         </slot>
-        <AlertTitle>
+        <AlertTitle class="my-0 [&>ul]:my-0">
             <slot />
         </AlertTitle>
     </Alert>

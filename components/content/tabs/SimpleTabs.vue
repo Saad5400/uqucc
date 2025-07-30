@@ -8,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <Tabs :default-value="slugify(items[0])">
-    <TabsList>
+    <TabsList class="max-w-[87dvw] md:max-w-[calc(100dvw-26rem)] mb-0">
       <TabsTrigger
         v-for="item in items"
         :key="slugify(item)"
@@ -19,6 +19,7 @@ const props = defineProps<{
     </TabsList>
 
     <TabsContent
+      class="max-w-[87dvw] md:max-w-[calc(100dvw-26rem)]"
       v-for="(item, index) in items"
       :key="slugify(item)"
       :value="slugify(item)"

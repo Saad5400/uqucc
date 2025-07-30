@@ -11,7 +11,7 @@ defineProps<{
 
 <template>
     <ul class="space-y-1">
-        <li v-for="item in items" :key="item.stem">
+        <li v-for="item in items.sort((a, b) => a.order - b.order)" :key="item.stem">
             <!-- leaf node -->
             <SidebarMenuItem v-if="!item.children || !item.children.length">
                 <SidebarMenuLink :item="item" />
