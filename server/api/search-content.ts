@@ -49,6 +49,8 @@ export default defineCachedEventHandler(
         ""
       );
 
+      text = text.replace(/ة/g, "ه");
+
       // 9. Collapse multiple spaces into one, trim ends
       text = text.replace(/\s+/g, " ").trim();
 
