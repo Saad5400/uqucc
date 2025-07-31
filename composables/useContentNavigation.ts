@@ -5,10 +5,12 @@ export const useContentNavigation = async () =>
     const data = (await queryCollectionNavigation("docs", [
       "order",
       "icon",
-    ]).where("hidden", "IS NULL")) as (ContentNavigationItem & {
-      order: number;
-      icon: string;
-    })[];
+    ]).where("hidden", "IS NULL")) as DocsItem[];
 
     return data.sort((a, b) => a.order - b.order);
   });
+
+export interface DocsItem extends ContentNavigationItem {
+  order: number;
+  icon: string;
+}

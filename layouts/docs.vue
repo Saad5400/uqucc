@@ -5,17 +5,16 @@ import { Toaster } from "@/components/ui/sonner";
 import "vue-sonner/style.css"; // vue-sonner v2 requires this import
 import { toast } from "vue-sonner";
 
-const { data: items } = await useContentNavigation();
-
-onMounted(() =>
-  new Date().getDay() === 5 &&
+onMounted(
+  () =>
+    new Date().getDay() === 5 &&
     setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 1500)
-)
+);
 </script>
 
 <template>
   <SidebarProvider>
-    <DocsSidebar :items="items" />
+    <DocsSidebar />
     <div
       class="flex-1 p-2 space-y-4 max-w-[calc(100dvw)] md:max-w-[calc(100dvw-var(--sidebar-width))]"
     >

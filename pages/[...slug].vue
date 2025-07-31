@@ -2,6 +2,7 @@
 import { findPageBreadcrumb, findPageChildren } from "@nuxt/content/utils";
 import { Pencil } from "lucide-vue-next";
 import PageCard from "~/components/PageCard.vue";
+import { findPageItem } from "~/lib/utils";
 
 const route = useRoute();
 
@@ -9,11 +10,17 @@ const { data: page } = await useAsyncData(`page:${route.path}`, () =>
   queryCollection("docs").path(route.path).first()
 );
 const { data: items } = await useContentNavigation();
-const children = findPageChildren(
-  items.value ?? [],
-  route.path.replace(/\/$/, "")
-);
-const breadcrumbs = findPageBreadcrumb(items.value ?? [], route.path, {
+
+const itemsList = computed(() => {
+  return items.value ?? [];
+});
+const normalizedPath = computed(() => {
+  return route.path.replace(/\/$/, ""); // Remove trailing slash for consistency
+});
+
+const pageItem = findPageItem(itemsList.value, normalizedPath.value);
+const children = findPageChildren(itemsList.value, normalizedPath.value);
+const breadcrumbs = findPageBreadcrumb(itemsList.value, normalizedPath.value, {
   current: true,
 });
 
@@ -43,17 +50,6 @@ useSeoMeta({
   twitterSite: "@SaadBatwa",
   twitterCreator: "@SaadBatwa",
 });
-
-watch(
-  () => route.fullPath,
-  () => {
-    if (route.hash)
-      setTimeout(
-        () => document.querySelector(route.hash)?.scrollIntoView(),
-        200
-      );
-  }
-);
 </script>
 
 <template>
@@ -97,7 +93,7 @@ watch(
       class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,80dvw),1fr))] gap-4"
     >
       <PageCard v-for="child in children" :key="child.path" :href="child.path">
-        <Icon v-if="child.icon" :name="child.icon" class="!size-8 me-1"/>
+        <Icon v-if="child.icon" :name="child.icon" class="!size-8 me-1" />
         {{ child.title }}
       </PageCard>
     </div>
