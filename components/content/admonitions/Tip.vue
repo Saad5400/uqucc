@@ -6,7 +6,7 @@ import { Lightbulb } from 'lucide-vue-next';
 <template>
     <Admonition>
         <template #icon>
-            <Lightbulb />
+            <Lightbulb class="my-0" />
         </template>
         <slot mdc-unwrap="p" />
     </Admonition>

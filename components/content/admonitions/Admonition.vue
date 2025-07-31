@@ -5,7 +5,7 @@ import { Info } from 'lucide-vue-next';
 <template>
     <Alert>
         <slot name="icon">
-            <Info />
+            <Info class="my-0" />
         </slot>
         <AlertTitle class="my-0 [&>ul]:my-0">
             <slot />

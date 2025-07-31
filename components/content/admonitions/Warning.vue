@@ -6,7 +6,7 @@ import { CircleAlert } from 'lucide-vue-next';
 <template>
     <Admonition>
         <template #icon>
-            <CircleAlert />
+            <CircleAlert class="my-0" />
         </template>
         <slot mdc-unwrap="p" />
     </Admonition>
