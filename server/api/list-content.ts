@@ -12,7 +12,8 @@ export default defineCachedEventHandler(
     }
 
     // @ts-ignore
-    const navigation = await queryCollectionNavigation(event, collection);
+    const navigation = await queryCollectionNavigation(event, collection)
+      .where("hidden", "IS NULL");
 
     const navigationNames: string[] = [];
 
