@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-auto-animate>
-      <div v-if="totalCredits" class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div v-if="totalCredits" class="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <!-- Real GPA -->
         <Card>
           <CardHeader>
