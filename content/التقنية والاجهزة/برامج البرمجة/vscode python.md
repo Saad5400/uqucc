@@ -3,6 +3,8 @@ icon: solar:code-broken
 order: 10
 ---
 
+# VS Code مع Python
+
 ::el-cato
 ::
 

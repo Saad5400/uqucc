@@ -1,5 +1,5 @@
 ---
-icon: solar:code-circle-broken
+icon: solar:code-broken
 order: 30
 ---
 
