@@ -1,4 +1,10 @@
+---
+icon: mdi:github
+---
+
 # تفعيل GitHub حزمة الطلاب
+
+ادخل موقع GitHub: https://github.com/login
 
 ![IMG_9443](https://github.com/user-attachments/assets/468c03d0-a522-4552-b386-828e5d14704c)
 ![IMG_9444](https://github.com/user-attachments/assets/e68a2198-e98c-4ebe-8d84-41b3a93217b4)
