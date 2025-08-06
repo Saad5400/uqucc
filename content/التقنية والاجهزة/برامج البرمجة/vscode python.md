@@ -1,5 +1,5 @@
 ---
-icon: solar:code-broken
+icon: proicons:python
 order: 10
 ---
 
