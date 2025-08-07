@@ -17,7 +17,7 @@ export default defineCachedEventHandler(
       .where("hidden", "IS NULL");
 
     function normalizeText(input: string): string {
-      let text = input;
+      let text = input.toLowerCase().trim();
 
       // 1. Normalize Unicode to NFC form
       text = text.normalize("NFC");
