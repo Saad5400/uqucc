@@ -1,5 +1,6 @@
 ---
 icon: mdi:github
+authors: ["rito_4s", "muiopv"]
 ---
 
 # تفعيل GitHub حزمة الطلاب

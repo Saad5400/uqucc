@@ -28,7 +28,7 @@ const getAuthor = (author: string) => authors[author];
         <span v-else>
           {{ getAuthor(author).name }}
         </span>
-        <template v-if="index < page.authors.length - 1">, </template>
+        <template v-if="index < page.authors.length - 1"> و</template>
       </template>
     </div>
   </h1>
