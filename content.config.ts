@@ -16,6 +16,7 @@ export default defineContentConfig({
         ogImage: z.string().optional(),
         order: z.number().optional().default(0),
         icon: z.string().optional(),
+        authors: z.array(z.string()).optional(),
       }),
     })))
   }
