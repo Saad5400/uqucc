@@ -66,15 +66,15 @@ async function screenshotHandler(event: any) {
     type: "webp",
   });
 
+  // only send Cache-Control in prod
   const headers: Record<string, string> = { "Content-Type": "image/webp" };
+  if (!process.env.DEV) {
+    headers["Cache-Control"] = `public, max-age=${cache}`;
+  }
 
   // @ts-ignore
   return new Response(buffer, { headers });
 }
 
 // export either a cached or plain handler
-export default process.env.DEV
-  ? defineEventHandler(screenshotHandler)
-  : defineCachedEventHandler(screenshotHandler, {
-      maxAge: cache,
-    });
+export default defineEventHandler(screenshotHandler);
