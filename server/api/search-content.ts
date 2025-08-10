@@ -90,6 +90,6 @@ export default defineCachedEventHandler(
     return result;
   },
   {
-    maxAge: 60 * 60 * 24 * 30, // Cache for 30 days
+    maxAge: 60 * 60 * 24, // Cache for 1 day
   }
 );
