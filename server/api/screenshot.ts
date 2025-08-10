@@ -37,8 +37,20 @@ async function screenshotHandler(event: any) {
     page = await browser.newPage();
   }
 
-  const url = `http://${event.req.headers.host}${path}`;
-  await page.goto(url);
+  // Fallback to localhost in dev or use the host header
+  const host = event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
+  const protocol = process.env.DEV ? 'http' : 'https';
+  const url = `${protocol}://${host}${path}`;
+  
+  try {
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+  } catch (error) {
+    console.error('Failed to navigate to URL:', url, error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: `Failed to navigate to ${path}`,
+    });
+  }
   await page.setViewport({ width, height, deviceScaleFactor: 2 });
   await page.evaluate(() => {
     // @ts-ignore
