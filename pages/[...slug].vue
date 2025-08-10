@@ -24,15 +24,16 @@ const breadcrumbs = findPageBreadcrumb(itemsList.value, normalizedPath.value, {
 });
 
 const siteConfig = useSiteConfig();
+const url = useRequestURL();
 const ogImageUrl = page?.ogImage
-  ? `${siteConfig.url}${page?.ogImage}`
-  : encodeURI(`${siteConfig.url}/api/screenshot?path=${route.path}`);
+  ? `${url.origin}${page?.ogImage}`
+  : encodeURI(`${url.origin}/api/screenshot?path=${route.path}`);
 
 useSeoMeta({
   ...(page?.seo || {}),
   ogTitle: page?.title,
   ogDescription: page?.description,
-  ogUrl: `${siteConfig.url}${route.path}`,
+  ogUrl: `${url.origin}${route.path}`,
   ogType: "website",
   ogImageUrl: ogImageUrl,
   ogImageWidth: 720,

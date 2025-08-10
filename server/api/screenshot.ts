@@ -37,9 +37,7 @@ async function screenshotHandler(event: any) {
     page = await browser.newPage();
   }
 
-  const siteConfig = useSiteConfig(event);
-
-  const url = `${siteConfig.url}${path}`;
+  const url = `http://${event.req.headers.host}${path}`;
   await page.goto(url);
   await page.setViewport({ width, height, deviceScaleFactor: 2 });
   await page.evaluate(() => {
@@ -59,6 +57,7 @@ async function screenshotHandler(event: any) {
     headers["Cache-Control"] = `public, max-age=${cache}`;
   }
 
+  // @ts-ignore
   return new Response(buffer, { headers });
 }
 
