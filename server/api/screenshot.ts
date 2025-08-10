@@ -3,7 +3,7 @@ import puppeteerCore, { Browser, Page } from "puppeteer-core";
 
 const remoteExecutablePath =
   "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
-const cache = 60 * 60 * 24; // 1 day
+const cache = 60 * 60 * 24 * 30; // 30 days
 
 let browser: Browser | null = null;
 let page: Page | null = null;
@@ -12,7 +12,7 @@ let page: Page | null = null;
 const DEFAULT_WIDTH = 720;
 const DEFAULT_HEIGHT = 377;
 
-async function generateScreenshotBuffer(event: any) {
+async function screenshotHandler(event: any) {
   const { path, width: wQ, height: hQ } = getQuery(event);
   if (!path) {
     throw createError({
@@ -38,16 +38,17 @@ async function generateScreenshotBuffer(event: any) {
   }
 
   // Determine protocol and host
-  const host = event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
+  const host =
+    event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
   // Use HTTP for localhost or when in dev mode, HTTPS for production domains
-  const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
-  const protocol = process.env.DEV || isLocalhost ? 'http' : 'https';
+  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
+  const protocol = process.env.DEV || isLocalhost ? "http" : "https";
   const url = `${protocol}://${host}${path}`;
-  
+
   try {
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
   } catch (error) {
-    console.error('Failed to navigate to URL:', url, error);
+    console.error("Failed to navigate to URL:", url, error);
     throw createError({
       statusCode: 500,
       statusMessage: `Failed to navigate to ${path}`,
@@ -61,14 +62,9 @@ async function generateScreenshotBuffer(event: any) {
     document.getElementsByTagName("header")[0].style.display = "none";
   });
 
-  return await page.screenshot({
+  const buffer = await page.screenshot({
     type: "webp",
   });
-}
-
-async function screenshotHandler(event: any) {
-  const buffer = await generateScreenshotBuffer(event);
-  const base64Data = Buffer.from(buffer).toString('base64');
 
   // only send Cache-Control in prod
   const headers: Record<string, string> = { "Content-Type": "image/webp" };
@@ -76,12 +72,9 @@ async function screenshotHandler(event: any) {
     headers["Cache-Control"] = `public, max-age=${cache}`;
   }
 
-  const responseBuffer = Buffer.from(base64Data, 'base64');
-  return new Response(responseBuffer, { headers });
+  // @ts-ignore
+  return new Response(buffer, { headers });
 }
 
 // export either a cached or plain handler
-export default defineCachedEventHandler(screenshotHandler, {
-  maxAge: process.env.DEV ? 0 : cache, // No caching in dev, full cache in prod
-});
-
+export default defineEventHandler(screenshotHandler);
