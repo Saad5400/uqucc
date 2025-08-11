@@ -3,7 +3,7 @@ import puppeteerCore, { Browser, Page } from "puppeteer-core";
 
 const remoteExecutablePath =
   "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
-const cache = 60 * 60 * 24 * 30; // 30 days
+const cache = 60 * 60 * 1; // 1 hour
 
 let browser: Browser | null = null;
 let page: Page | null = null;
@@ -78,3 +78,4 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
+
