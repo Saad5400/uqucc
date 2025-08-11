@@ -40,5 +40,25 @@ export const authors = {
     'muiopv': {
         name: 'يارا السلمي',
         url: 'https://x.com/muiopv',
+    },
+    'Zartz14': {
+        name: 'زياد إمام',
+        url: 'https://x.com/z_artz14',
+    },
+    'Evani': {
+        name: 'محمد الشريف',
+        url: 'https://x.com/SWEevani',
+    },
+    'Nour': {
+        name: 'نور عبدالعزيز',
+        url: 'https://x.com/78Nour_',
+    },
+    'khaled': {
+        name: 'خالد النافع',
+        url: 'https://x.com/khal_x7',
+    },
+    'Shadi': {
+        name: 'شادي رزق',
+        url: 'https://x.com/ShadiSWE',
     }
 };
