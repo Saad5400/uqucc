@@ -247,7 +247,6 @@ onUnmounted(() => {
 updateCountdown();
 
 function formatDay(days: number): string {
-  console.log(days);
   switch (days) {
     case 1:
       return "يوم واحد";
