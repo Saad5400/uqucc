@@ -60,5 +60,9 @@ export const authors = {
     'Shadi': {
         name: 'شادي رزق',
         url: 'https://x.com/ShadiSWE',
+    },
+    'maziad': {
+        name: 'مزيد العبدالعزيز',
+        url: 'https://x.com/maziad_140',
     }
 };
