@@ -44,9 +44,10 @@ async function screenshotHandler(event: any) {
   const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
   const protocol = process.env.DEV || isLocalhost ? "http" : "https";
   const url = `${protocol}://${host}${path}`;
+  // const url = `https://uqucc.sb.sa${path}`;
 
   try {
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
+    await page.goto(url);
   } catch (error) {
     console.error("Failed to navigate to URL:", url, error);
     throw createError({
@@ -78,4 +79,5 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
+
 
