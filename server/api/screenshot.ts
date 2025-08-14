@@ -54,7 +54,7 @@ async function screenshotHandler(event: any) {
 
     // Determine protocol and host
     const host =
-      event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
+      `localhost:${process.env.PORT || 3000}` || event.req.headers.host;
     // Use HTTP for localhost or when in dev mode, HTTPS for production domains
     const isLocalhost =
       host.includes("localhost") || host.includes("127.0.0.1");
@@ -79,7 +79,7 @@ async function screenshotHandler(event: any) {
       // @ts-ignore
       document.documentElement.style.scrollbarGutter = "auto";
       // @ts-ignore
-      document.getElementsByClassName("screenshot-hidden").forEach((el) => {
+      document.querySelectorAll(".screenshot-hidden").forEach((el) => {
         el.style.display = "none";
       });
     });
