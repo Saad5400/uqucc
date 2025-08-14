@@ -6,7 +6,6 @@ const remoteExecutablePath =
 const cache = 60 * 60 * 1; // 1 hour
 
 let browser: Browser | null = null;
-let page: Page | null = null;
 
 // aspect ratio constants (1.91:1)
 const DEFAULT_WIDTH = 720;
@@ -24,60 +23,96 @@ async function screenshotHandler(event: any) {
   const width = wQ ? parseInt(wQ as string, 10) : DEFAULT_WIDTH;
   const height = hQ ? parseInt(hQ as string, 10) : DEFAULT_HEIGHT;
 
-  if (!browser) {
-    browser = await puppeteerCore.launch({
-      args: chromium.args,
-      executablePath: process.env.DEV
-        ? "/usr/bin/chromium"
-        : await chromium.executablePath(remoteExecutablePath),
-      headless: true,
-    });
-  }
-  if (!page) {
-    page = await browser.newPage();
-  }
-
-  // Determine protocol and host
-  const host =
-    event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
-  // Use HTTP for localhost or when in dev mode, HTTPS for production domains
-  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
-  const protocol = process.env.DEV || isLocalhost ? "http" : "https";
-  const url = `${protocol}://${host}${path}`;
-  // const url = `https://uqucc.sb.sa${path}`;
+  let currentPage: Page | null = null;
 
   try {
-    await page.goto(url);
+    if (!browser) {
+      browser = await puppeteerCore.launch({
+        args: [
+          ...chromium.args,
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-accelerated-2d-canvas",
+          "--no-first-run",
+          "--no-zygote",
+          "--single-process",
+          "--disable-gpu",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-renderer-backgrounding",
+        ],
+        executablePath: process.env.DEV
+          ? "/usr/bin/chromium"
+          : await chromium.executablePath(remoteExecutablePath),
+        headless: true,
+      });
+    }
+
+    // Create a new page for each request to avoid conflicts
+    currentPage = await browser.newPage();
+
+    // Determine protocol and host
+    const host =
+      event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
+    // Use HTTP for localhost or when in dev mode, HTTPS for production domains
+    const isLocalhost =
+      host.includes("localhost") || host.includes("127.0.0.1");
+    const protocol = process.env.DEV || isLocalhost ? "http" : "https";
+    const url = `${protocol}://${host}${path}`;
+    // const url = `https://uqucc.sb.sa${path}`;
+
+    try {
+      await currentPage.goto(url, {
+        waitUntil: "networkidle0",
+        timeout: 5000,
+      });
+    } catch (error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: `Failed to navigate to ${path}`,
+      });
+    }
+    await currentPage.setViewport({ width, height, deviceScaleFactor: 2 });
+
+    await currentPage.evaluate(() => {
+      // @ts-ignore
+      document.documentElement.style.scrollbarGutter = "auto";
+      // @ts-ignore
+      document.getElementsByClassName("screenshot-hidden").forEach((el) => {
+        el.style.display = "none";
+      });
+    });
+
+    const buffer = await currentPage.screenshot({
+      type: "webp",
+    });
+
+    // only send Cache-Control in prod
+    const headers: Record<string, string> = { "Content-Type": "image/webp" };
+    if (!process.env.DEV) {
+      headers["Cache-Control"] = `public, max-age=${cache}`;
+    }
+
+    // @ts-ignore
+    return new Response(buffer, { headers });
   } catch (error) {
-    console.error("Failed to navigate to URL:", url, error);
+    console.error("Screenshot handler error:", error);
     throw createError({
       statusCode: 500,
-      statusMessage: `Failed to navigate to ${path}`,
+      statusMessage: "Failed to generate screenshot",
     });
+  } finally {
+    // Clean up the current page
+    if (currentPage) {
+      try {
+        await currentPage.close();
+      } catch (closeError) {
+        console.error("Failed to close page:", closeError);
+      }
+    }
   }
-  await page.setViewport({ width, height, deviceScaleFactor: 2 });
-  await page.evaluate(() => {
-    // @ts-ignore
-    document.documentElement.style.scrollbarGutter = "auto";
-    // @ts-ignore
-    document.getElementsByTagName("header")[0].style.display = "none";
-  });
-
-  const buffer = await page.screenshot({
-    type: "webp",
-  });
-
-  // only send Cache-Control in prod
-  const headers: Record<string, string> = { "Content-Type": "image/webp" };
-  if (!process.env.DEV) {
-    headers["Cache-Control"] = `public, max-age=${cache}`;
-  }
-
-  // @ts-ignore
-  return new Response(buffer, { headers });
 }
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
-
-
