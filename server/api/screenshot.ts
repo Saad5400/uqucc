@@ -58,14 +58,11 @@ async function screenshotHandler(event: any) {
     const isLocalhost =
       host.includes("localhost") || host.includes("127.0.0.1");
     const protocol = process.env.DEV || isLocalhost ? "http" : "https";
-    const url = `${protocol}://${host}${path}`;
-    // const url = `https://uqucc.sb.sa${path}`;
+    // const url = `${protocol}://${host}${path}`;
+    const url = `https://uqucc.sb.sa${path}`;
 
     try {
-      await currentPage.goto(url, {
-        waitUntil: "networkidle0",
-        timeout: 5000,
-      });
+      await currentPage.goto(url);
     } catch (error) {
       throw createError({
         statusCode: 500,
@@ -115,3 +112,4 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
+
