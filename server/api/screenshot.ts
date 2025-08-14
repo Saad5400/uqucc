@@ -53,8 +53,7 @@ async function screenshotHandler(event: any) {
     currentPage = await browser.newPage();
 
     // Determine protocol and host
-    const host =
-      `localhost:${process.env.PORT || 3000}` || event.req.headers.host;
+    const host = `localhost:${process.env.PORT || 3000}`;
     // Use HTTP for localhost or when in dev mode, HTTPS for production domains
     const isLocalhost =
       host.includes("localhost") || host.includes("127.0.0.1");

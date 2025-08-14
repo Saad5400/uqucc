@@ -8,7 +8,7 @@ import { toast } from "vue-sonner";
 onMounted(
   () =>
     new Date().getDay() === 5 &&
-    setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 1500)
+    setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 100)
 );
 </script>
 
@@ -23,7 +23,7 @@ onMounted(
         class="w-full p-4 border rounded-lg shadow-sm bg-sidebar border-sidebar-border"
       >
         <slot />
-        <Toaster />
+        <Toaster class="screenshot-hidden" />
       </main>
     </div>
   </SidebarProvider>

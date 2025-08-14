@@ -54,7 +54,7 @@ useSeoMeta({
 
 <template>
   <template v-if="breadcrumbs.length > 1">
-    <Breadcrumb class="mb-4">
+    <Breadcrumb class="mb-4 screenshot-hidden">
       <BreadcrumbList>
         <div
           class="contents"
@@ -83,7 +83,7 @@ useSeoMeta({
   </template>
 
   <template v-if="page">
-    <Button as-child variant="link" class="mt-4">
+    <Button as-child variant="link" class="mt-4 screenshot-hidden">
       <NuxtLink
         :to="`${siteConfig.github}/content/${page?.stem}.${page?.extension}`"
         target="_blank"
