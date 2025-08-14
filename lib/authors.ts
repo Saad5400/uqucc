@@ -1,6 +1,6 @@
 export const authors = {
     'we1vle': {
-        name: 'Ds.retaj📊👩🏻‍💻',
+        name: '📊👩🏻‍💻Ds.retaj',
     },
     'oiixp1': {
         name: 'أثير الكناني',
