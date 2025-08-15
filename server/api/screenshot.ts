@@ -4,12 +4,72 @@ import puppeteerCore, { Browser, Page } from "puppeteer-core";
 const remoteExecutablePath =
   "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
 const cache = 60 * 60 * 1; // 1 hour
+const BROWSER_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 let browser: Browser | null = null;
+let browserLaunchedAt = 0;
+let launchingPromise: Promise<Browser> | null = null;
 
 // aspect ratio constants (1.91:1)
 const DEFAULT_WIDTH = 720;
 const DEFAULT_HEIGHT = 377;
+
+async function launchBrowser(): Promise<Browser> {
+  const launched = await puppeteerCore.launch({
+    args: [
+      ...chromium.args,
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--no-zygote",
+      "--single-process",
+      "--disable-gpu",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+    ],
+    executablePath: process.env.DEV
+      ? "/usr/bin/chromium"
+      : await chromium.executablePath(remoteExecutablePath),
+    headless: true,
+  });
+
+  browserLaunchedAt = Date.now();
+  return launched;
+}
+
+async function getBrowser(): Promise<Browser> {
+  const tooOld =
+    browser && browserLaunchedAt > 0 && Date.now() - browserLaunchedAt > BROWSER_TTL_MS;
+  const disconnected = browser && !browser.isConnected();
+
+  if (tooOld || disconnected) {
+    try {
+      await browser?.close();
+    } catch (e) {
+      // ignore close errors
+    } finally {
+      browser = null;
+    }
+  }
+
+  if (browser) return browser;
+
+  if (!launchingPromise) {
+    launchingPromise = launchBrowser()
+      .then((b) => {
+        browser = b;
+        return b;
+      })
+      .finally(() => {
+        launchingPromise = null;
+      });
+  }
+
+  return launchingPromise!;
+}
 
 async function screenshotHandler(event: any) {
   const { path, width: wQ, height: hQ } = getQuery(event);
@@ -26,40 +86,16 @@ async function screenshotHandler(event: any) {
   let currentPage: Page | null = null;
 
   try {
-    if (!browser) {
-      browser = await puppeteerCore.launch({
-        args: [
-          ...chromium.args,
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-accelerated-2d-canvas",
-          "--no-first-run",
-          "--no-zygote",
-          "--single-process",
-          "--disable-gpu",
-          "--disable-background-timer-throttling",
-          "--disable-backgrounding-occluded-windows",
-          "--disable-renderer-backgrounding",
-        ],
-        executablePath: process.env.DEV
-          ? "/usr/bin/chromium"
-          : await chromium.executablePath(remoteExecutablePath),
-        headless: true,
-      });
-    }
+    const b = await getBrowser();
 
     // Create a new page for each request to avoid conflicts
-    currentPage = await browser.newPage();
+    currentPage = await b.newPage();
 
     // Determine protocol and host
     const host = `localhost:${process.env.PORT || 3000}`;
-    // Use HTTP for localhost or when in dev mode, HTTPS for production domains
-    const isLocalhost =
-      host.includes("localhost") || host.includes("127.0.0.1");
+    const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
     const protocol = process.env.DEV || isLocalhost ? "http" : "https";
-    // const url = `${protocol}://${host}${path}`;
-    const url = `https://uqucc.sb.sa${path}`;
+    const url = `${protocol}://${host}${path}`;
 
     try {
       await currentPage.goto(url);
@@ -69,6 +105,7 @@ async function screenshotHandler(event: any) {
         statusMessage: `Failed to navigate to ${path}`,
       });
     }
+
     await currentPage.setViewport({ width, height, deviceScaleFactor: 2 });
 
     await currentPage.evaluate(() => {
@@ -76,7 +113,7 @@ async function screenshotHandler(event: any) {
       document.documentElement.style.scrollbarGutter = "auto";
       // @ts-ignore
       document.querySelectorAll(".screenshot-hidden").forEach((el) => {
-        el.style.display = "none";
+        (el as HTMLElement).style.display = "none";
       });
     });
 
@@ -112,4 +149,3 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
-
