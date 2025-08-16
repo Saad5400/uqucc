@@ -1,151 +1,95 @@
+// server/api/screenshot.get.ts
 import chromium from "@sparticuz/chromium-min";
-import puppeteerCore, { Browser, Page } from "puppeteer-core";
+import puppeteerCore, { Browser, Page, BrowserContext } from "puppeteer-core";
+import { defineEventHandler, getQuery, createError, getRequestURL } from "h3";
 
 const remoteExecutablePath =
   "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar";
+
 const cache = 60 * 60 * 1; // 1 hour
-const BROWSER_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 let browser: Browser | null = null;
-let browserLaunchedAt = 0;
 let launchingPromise: Promise<Browser> | null = null;
 
-// aspect ratio constants (1.91:1)
-const DEFAULT_WIDTH = 720;
-const DEFAULT_HEIGHT = 377;
-
 async function launchBrowser(): Promise<Browser> {
-  const launched = await puppeteerCore.launch({
-    args: [
-      ...chromium.args,
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-accelerated-2d-canvas",
-      "--no-first-run",
-      "--no-zygote",
-      "--single-process",
-      "--disable-gpu",
-      "--disable-background-timer-throttling",
-      "--disable-backgrounding-occluded-windows",
-      "--disable-renderer-backgrounding",
-    ],
+  return puppeteerCore.launch({
+    args: chromium.args,
     executablePath: process.env.DEV
       ? "/usr/bin/chromium"
       : await chromium.executablePath(remoteExecutablePath),
     headless: true,
   });
-
-  browserLaunchedAt = Date.now();
-  return launched;
 }
 
 async function getBrowser(): Promise<Browser> {
-  const tooOld =
-    browser && browserLaunchedAt > 0 && Date.now() - browserLaunchedAt > BROWSER_TTL_MS;
+  const crashed = browser && browser.process()?.exitCode !== null;
   const disconnected = browser && !browser.isConnected();
 
-  if (tooOld || disconnected) {
-    try {
-      await browser?.close();
-    } catch (e) {
-      // ignore close errors
-    } finally {
-      browser = null;
+  if (!browser || crashed || disconnected) {
+    if (!launchingPromise) {
+      launchingPromise = launchBrowser()
+        .then((b) => (browser = b))
+        .finally(() => { launchingPromise = null; });
     }
+    return launchingPromise!;
   }
-
-  if (browser) return browser;
-
-  if (!launchingPromise) {
-    launchingPromise = launchBrowser()
-      .then((b) => {
-        browser = b;
-        return b;
-      })
-      .finally(() => {
-        launchingPromise = null;
-      });
-  }
-
-  return launchingPromise!;
+  return browser;
 }
 
-async function screenshotHandler(event: any) {
-  const { path, width: wQ, height: hQ } = getQuery(event);
-  if (!path) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "path parameter is required",
-    });
+async function withPage<T>(fn: (p: Page) => Promise<T>): Promise<T> {
+  const b = await getBrowser();
+  const ctx: BrowserContext = await b.createIncognitoBrowserContext();
+  const page = await ctx.newPage();
+  try {
+    // ⬇️ 5-second timeouts
+    page.setDefaultTimeout(5000);
+    page.setDefaultNavigationTimeout(5000);
+    return await fn(page);
+  } finally {
+    try { await page.close(); } catch {}
+    try { await ctx.close(); } catch {}
   }
+}
+
+const DEFAULT_WIDTH = 720;
+const DEFAULT_HEIGHT = 377;
+
+export default defineEventHandler(async (event) => {
+  const { path, width: wQ, height: hQ } = getQuery(event);
+  if (!path) throw createError({ statusCode: 400, statusMessage: "path parameter is required" });
 
   const width = wQ ? parseInt(wQ as string, 10) : DEFAULT_WIDTH;
   const height = hQ ? parseInt(hQ as string, 10) : DEFAULT_HEIGHT;
 
-  let currentPage: Page | null = null;
-
+  let buffer: Buffer;
   try {
-    const b = await getBrowser();
+    buffer = await withPage(async (page) => {
+      await page.setViewport({ width, height, deviceScaleFactor: 2 });
 
-    // Create a new page for each request to avoid conflicts
-    currentPage = await b.newPage();
+      const origin = getRequestURL(event).origin;
+      const url = new URL(String(path), origin).toString();
 
-    // Determine protocol and host
-    const host = `localhost:${process.env.PORT || 3000}`;
-    const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
-    const protocol = process.env.DEV || isLocalhost ? "http" : "https";
-    const url = `${protocol}://${host}${path}`;
+      // ⬇️ 5-second navigation timeout
+      await page.goto(url, { waitUntil: "networkidle2", timeout: 5000 });
 
-    try {
-      await currentPage.goto(url);
-    } catch (error) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: `Failed to navigate to ${path}`,
+      await page.evaluate(() => {
+        // @ts-ignore
+        document.documentElement.style.scrollbarGutter = "auto";
+        // @ts-ignore
+        document.querySelectorAll(".screenshot-hidden").forEach((el) => {
+          (el as HTMLElement).style.display = "none";
+        });
       });
-    }
 
-    await currentPage.setViewport({ width, height, deviceScaleFactor: 2 });
-
-    await currentPage.evaluate(() => {
-      // @ts-ignore
-      document.documentElement.style.scrollbarGutter = "auto";
-      // @ts-ignore
-      document.querySelectorAll(".screenshot-hidden").forEach((el) => {
-        (el as HTMLElement).style.display = "none";
-      });
+      return (await page.screenshot({ type: "webp" })) as Buffer;
     });
-
-    const buffer = await currentPage.screenshot({
-      type: "webp",
-    });
-
-    // only send Cache-Control in prod
-    const headers: Record<string, string> = { "Content-Type": "image/webp" };
-    if (!process.env.DEV) {
-      headers["Cache-Control"] = `public, max-age=${cache}`;
-    }
-
-    // @ts-ignore
-    return new Response(buffer, { headers });
   } catch (error) {
     console.error("Screenshot handler error:", error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Failed to generate screenshot",
-    });
-  } finally {
-    // Clean up the current page
-    if (currentPage) {
-      try {
-        await currentPage.close();
-      } catch (closeError) {
-        console.error("Failed to close page:", closeError);
-      }
-    }
+    throw createError({ statusCode: 500, statusMessage: "Failed to generate screenshot" });
   }
-}
 
-// export either a cached or plain handler
-export default defineEventHandler(screenshotHandler);
+  const headers: Record<string, string> = { "Content-Type": "image/webp" };
+  if (!process.env.DEV) headers["Cache-Control"] = `public, max-age=${cache}`;
+  // @ts-ignore
+  return new Response(buffer, { headers });
+});
