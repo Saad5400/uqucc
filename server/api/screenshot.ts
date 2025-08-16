@@ -6,75 +6,257 @@ const remoteExecutablePath =
 const cache = 60 * 60 * 1; // 1 hour
 
 let browser: Browser | null = null;
-let page: Page | null = null;
+let pageCount = 0;
+let lastUsed = Date.now();
+const MAX_PAGES_BEFORE_RESTART = 10; // Much more aggressive restart
+const MAX_IDLE_TIME = 30000; // 30 seconds idle time before restart
+const TIMEOUT = 5000; // 5 second timeout
+
+// Periodic cleanup every 60 seconds
+setInterval(async () => {
+  const now = Date.now();
+  if (browser && (now - lastUsed) > MAX_IDLE_TIME) {
+    console.log("Cleaning up idle browser instance");
+    await killBrowserProcess();
+    pageCount = 0;
+    forceGC();
+  }
+}, 60000);
+
+// Handle process termination
+process.on('SIGINT', async () => {
+  console.log('Received SIGINT, cleaning up...');
+  await killBrowserProcess();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('Received SIGTERM, cleaning up...');
+  await killBrowserProcess();
+  process.exit(0);
+});
 
 // aspect ratio constants (1.91:1)
 const DEFAULT_WIDTH = 720;
 const DEFAULT_HEIGHT = 377;
 
-async function screenshotHandler(event: any) {
-  const { path, width: wQ, height: hQ } = getQuery(event);
-  if (!path) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "path parameter is required",
-    });
+// Force garbage collection if available
+function forceGC() {
+  if (global.gc) {
+    try {
+      global.gc();
+    } catch (e) {
+      console.log("GC not available");
+    }
   }
+}
 
-  const width = wQ ? parseInt(wQ as string, 10) : DEFAULT_WIDTH;
-  const height = hQ ? parseInt(hQ as string, 10) : DEFAULT_HEIGHT;
+// Monitor memory usage
+function getMemoryUsage() {
+  const used = process.memoryUsage();
+  return {
+    rss: Math.round(used.rss / 1024 / 1024 * 100) / 100,
+    heapTotal: Math.round(used.heapTotal / 1024 / 1024 * 100) / 100,
+    heapUsed: Math.round(used.heapUsed / 1024 / 1024 * 100) / 100,
+    external: Math.round(used.external / 1024 / 1024 * 100) / 100,
+  };
+}
 
-  if (!browser) {
+async function killBrowserProcess() {
+  if (browser) {
+    try {
+      const browserProcess = browser.process();
+      if (browserProcess) {
+        browserProcess.kill('SIGKILL');
+      }
+      await browser.close();
+    } catch (error) {
+      console.error("Error force-killing browser:", error);
+    }
+    browser = null;
+  }
+}
+
+async function getBrowserInstance() {
+  const now = Date.now();
+  const memUsage = getMemoryUsage();
+  
+  // Force restart if idle too long, too many pages, or high memory usage
+  const shouldRestart = !browser || 
+    pageCount >= MAX_PAGES_BEFORE_RESTART || 
+    (now - lastUsed) > MAX_IDLE_TIME ||
+    memUsage.heapUsed > 200; // Restart if heap > 200MB
+
+  if (shouldRestart) {
+    console.log(`Restarting browser. Pages: ${pageCount}, Idle: ${now - lastUsed}ms, Memory: ${JSON.stringify(memUsage)}`);
+    
+    await killBrowserProcess();
+    forceGC();
+    
     browser = await puppeteerCore.launch({
-      args: chromium.args,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-web-security',
+        '--disable-extensions',
+        '--disable-plugins',
+        '--disable-images',
+        '--disable-javascript',
+        '--disable-default-apps',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        '--disable-features=TranslateUI',
+        '--disable-component-update',
+        '--disable-domain-reliability',
+        '--disable-sync',
+        '--disable-client-side-phishing-detection',
+        '--disable-permissions-api',
+        '--disable-notifications',
+        '--disable-desktop-notifications',
+        '--disable-background-networking',
+        '--memory-pressure-off',
+        '--max_old_space_size=128', // Limit V8 heap
+        '--aggressive-cache-discard',
+        ...chromium.args,
+      ],
       executablePath: process.env.DEV
         ? "/usr/bin/chromium"
         : await chromium.executablePath(remoteExecutablePath),
       headless: true,
+      timeout: TIMEOUT,
     });
+    pageCount = 0;
   }
-  if (!page) {
-    page = await browser.newPage();
-  }
+  
+  lastUsed = now;
+  return browser;
+}
 
-  // Determine protocol and host
-  const host =
-    event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
-  // Use HTTP for localhost or when in dev mode, HTTPS for production domains
-  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
-  const protocol = process.env.DEV || isLocalhost ? "http" : "https";
-  // const url = `${protocol}://${host}${path}`;
-  const url = `https://uqucc.sb.sa${path}`;
+async function screenshotHandler(event: any) {
+  const startTime = Date.now();
+  let page: Page | null = null;
+  let browserInstance: Browser | null = null;
 
   try {
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
-  } catch (error) {
-    console.error("Failed to navigate to URL:", url, error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: `Failed to navigate to ${path}`,
+    const { path, width: wQ, height: hQ } = getQuery(event);
+    if (!path) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "path parameter is required",
+      });
+    }
+
+    const width = wQ ? parseInt(wQ as string, 10) : DEFAULT_WIDTH;
+    const height = hQ ? parseInt(hQ as string, 10) : DEFAULT_HEIGHT;
+
+    browserInstance = await getBrowserInstance();
+    if (!browserInstance) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Failed to get browser instance",
+      });
+    }
+
+    page = await browserInstance.newPage();
+    pageCount++;
+
+    // Set aggressive timeouts
+    await page.setDefaultTimeout(TIMEOUT);
+    await page.setDefaultNavigationTimeout(TIMEOUT);
+
+    // Disable resource loading for faster screenshots
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+      const resourceType = request.resourceType();
+      if (['stylesheet', 'font', 'image', 'media'].includes(resourceType)) {
+        request.abort();
+      } else {
+        request.continue();
+      }
     });
-  }
-  await page.setViewport({ width, height, deviceScaleFactor: 2 });
-  await page.evaluate(() => {
+
+    // Set viewport early
+    await page.setViewport({ width, height, deviceScaleFactor: 1 }); // Reduced scale factor
+
+    // Determine protocol and host
+    const host =
+      event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
+    const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
+    const protocol = process.env.DEV || isLocalhost ? "http" : "https";
+    const url = `https://uqucc.sb.sa${path}`;
+
+    console.log(`[${Date.now() - startTime}ms] Attempting screenshot: ${url}`);
+
+    // Race condition: either the page loads or we timeout
+    const navigationPromise = page.goto(url, { 
+      waitUntil: "domcontentloaded",
+      timeout: TIMEOUT 
+    });
+
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`Custom timeout after ${TIMEOUT}ms`)), TIMEOUT);
+    });
+
+    try {
+      await Promise.race([navigationPromise, timeoutPromise]);
+    } catch (error: any) {
+      console.error(`[${Date.now() - startTime}ms] Navigation failed:`, error?.message || error);
+      throw createError({
+        statusCode: 504,
+        statusMessage: `Navigation timeout for ${path}`,
+      });
+    }
+
+    console.log(`[${Date.now() - startTime}ms] Page loaded, taking screenshot`);
+
+    // Quick DOM manipulation
+    await page.evaluate(() => {
+      // @ts-ignore
+      const header = document.querySelector("header");
+      // @ts-ignore
+      if (header) header.style.display = "none";
+      // @ts-ignore
+      document.documentElement.style.scrollbarGutter = "auto";
+    });
+
+    const buffer = await page.screenshot({
+      type: "webp",
+      quality: 80, // Reduced quality for faster processing
+    });
+
+    console.log(`[${Date.now() - startTime}ms] Screenshot completed, size: ${buffer.length} bytes`);
+
+    const headers: Record<string, string> = { "Content-Type": "image/webp" };
+    if (!process.env.DEV) {
+      headers["Cache-Control"] = `public, max-age=${cache}`;
+    }
+
     // @ts-ignore
-    document.documentElement.style.scrollbarGutter = "auto";
-    // @ts-ignore
-    document.getElementsByTagName("header")[0].style.display = "none";
-  });
+    return new Response(buffer, { headers });
 
-  const buffer = await page.screenshot({
-    type: "webp",
-  });
-
-  // only send Cache-Control in prod
-  const headers: Record<string, string> = { "Content-Type": "image/webp" };
-  if (!process.env.DEV) {
-    headers["Cache-Control"] = `public, max-age=${cache}`;
+  } catch (error: any) {
+    const memUsage = getMemoryUsage();
+    console.error(`[${Date.now() - startTime}ms] Screenshot error:`, error?.message || error, "Memory:", memUsage);
+    
+    // Force browser restart on error
+    await killBrowserProcess();
+    pageCount = 0;
+    forceGC();
+    
+    throw error;
+  } finally {
+    if (page) {
+      try {
+        await page.close();
+      } catch (error) {
+        console.error("Error closing page:", error);
+      }
+    }
+    forceGC();
   }
-
-  // @ts-ignore
-  return new Response(buffer, { headers });
 }
 
 // export either a cached or plain handler
