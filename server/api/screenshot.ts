@@ -102,8 +102,6 @@ async function getBrowserInstance() {
         '--disable-web-security',
         '--disable-extensions',
         '--disable-plugins',
-        '--disable-images',
-        '--disable-javascript',
         '--disable-default-apps',
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',
@@ -166,17 +164,6 @@ async function screenshotHandler(event: any) {
     // Set aggressive timeouts
     await page.setDefaultTimeout(TIMEOUT);
     await page.setDefaultNavigationTimeout(TIMEOUT);
-
-    // Disable resource loading for faster screenshots
-    await page.setRequestInterception(true);
-    page.on('request', (request) => {
-      const resourceType = request.resourceType();
-      if (['stylesheet', 'font', 'image', 'media'].includes(resourceType)) {
-        request.abort();
-      } else {
-        request.continue();
-      }
-    });
 
     // Set viewport early
     await page.setViewport({ width, height, deviceScaleFactor: 1 }); // Reduced scale factor
@@ -261,3 +248,4 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
+
