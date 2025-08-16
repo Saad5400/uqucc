@@ -15,7 +15,7 @@ const TIMEOUT = 5000; // 5 second timeout
 // Periodic cleanup every 60 seconds
 setInterval(async () => {
   const now = Date.now();
-  if (browser && (now - lastUsed) > MAX_IDLE_TIME) {
+  if (browser && now - lastUsed > MAX_IDLE_TIME) {
     console.log("Cleaning up idle browser instance");
     await killBrowserProcess();
     pageCount = 0;
@@ -24,14 +24,14 @@ setInterval(async () => {
 }, 60000);
 
 // Handle process termination
-process.on('SIGINT', async () => {
-  console.log('Received SIGINT, cleaning up...');
+process.on("SIGINT", async () => {
+  console.log("Received SIGINT, cleaning up...");
   await killBrowserProcess();
   process.exit(0);
 });
 
-process.on('SIGTERM', async () => {
-  console.log('Received SIGTERM, cleaning up...');
+process.on("SIGTERM", async () => {
+  console.log("Received SIGTERM, cleaning up...");
   await killBrowserProcess();
   process.exit(0);
 });
@@ -55,10 +55,10 @@ function forceGC() {
 function getMemoryUsage() {
   const used = process.memoryUsage();
   return {
-    rss: Math.round(used.rss / 1024 / 1024 * 100) / 100,
-    heapTotal: Math.round(used.heapTotal / 1024 / 1024 * 100) / 100,
-    heapUsed: Math.round(used.heapUsed / 1024 / 1024 * 100) / 100,
-    external: Math.round(used.external / 1024 / 1024 * 100) / 100,
+    rss: Math.round((used.rss / 1024 / 1024) * 100) / 100,
+    heapTotal: Math.round((used.heapTotal / 1024 / 1024) * 100) / 100,
+    heapUsed: Math.round((used.heapUsed / 1024 / 1024) * 100) / 100,
+    external: Math.round((used.external / 1024 / 1024) * 100) / 100,
   };
 }
 
@@ -67,7 +67,7 @@ async function killBrowserProcess() {
     try {
       const browserProcess = browser.process();
       if (browserProcess) {
-        browserProcess.kill('SIGKILL');
+        browserProcess.kill("SIGKILL");
       }
       await browser.close();
     } catch (error) {
@@ -80,44 +80,47 @@ async function killBrowserProcess() {
 async function getBrowserInstance() {
   const now = Date.now();
   const memUsage = getMemoryUsage();
-  
+
   // Force restart if idle too long, too many pages, or high memory usage
-  const shouldRestart = !browser || 
-    pageCount >= MAX_PAGES_BEFORE_RESTART || 
-    (now - lastUsed) > MAX_IDLE_TIME ||
+  const shouldRestart =
+    !browser ||
+    pageCount >= MAX_PAGES_BEFORE_RESTART ||
+    now - lastUsed > MAX_IDLE_TIME ||
     memUsage.heapUsed > 200; // Restart if heap > 200MB
 
   if (shouldRestart) {
-    console.log(`Restarting browser. Pages: ${pageCount}, Idle: ${now - lastUsed}ms, Memory: ${JSON.stringify(memUsage)}`);
-    
+    console.log(
+      `Restarting browser. Pages: ${pageCount}, Idle: ${now - lastUsed}ms, Memory: ${JSON.stringify(memUsage)}`
+    );
+
     await killBrowserProcess();
     forceGC();
-    
+
     browser = await puppeteerCore.launch({
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-web-security',
-        '--disable-extensions',
-        '--disable-plugins',
-        '--disable-default-apps',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding',
-        '--disable-features=TranslateUI',
-        '--disable-component-update',
-        '--disable-domain-reliability',
-        '--disable-sync',
-        '--disable-client-side-phishing-detection',
-        '--disable-permissions-api',
-        '--disable-notifications',
-        '--disable-desktop-notifications',
-        '--disable-background-networking',
-        '--memory-pressure-off',
-        '--max_old_space_size=128', // Limit V8 heap
-        '--aggressive-cache-discard',
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--disable-web-security",
+        "--disable-extensions",
+        "--disable-plugins",
+        "--disable-default-apps",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
+        "--disable-features=TranslateUI",
+        "--disable-component-update",
+        "--disable-domain-reliability",
+        "--disable-sync",
+        "--disable-client-side-phishing-detection",
+        "--disable-permissions-api",
+        "--disable-notifications",
+        "--disable-desktop-notifications",
+        "--disable-background-networking",
+        "--memory-pressure-off",
+        "--max_old_space_size=128", // Limit V8 heap
+        "--aggressive-cache-discard",
         ...chromium.args,
       ],
       executablePath: process.env.DEV
@@ -128,7 +131,7 @@ async function getBrowserInstance() {
     });
     pageCount = 0;
   }
-  
+
   lastUsed = now;
   return browser;
 }
@@ -171,33 +174,31 @@ async function screenshotHandler(event: any) {
     // Determine protocol and host
     const host =
       event.req.headers.host || `localhost:${process.env.PORT || 3000}`;
-    const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
+    const isLocalhost =
+      host.includes("localhost") || host.includes("127.0.0.1");
     const protocol = process.env.DEV || isLocalhost ? "http" : "https";
     const url = `https://uqucc.sb.sa${path}`;
 
     console.log(`[${Date.now() - startTime}ms] Attempting screenshot: ${url}`);
 
-    // Race condition: either the page loads or we timeout
-    const navigationPromise = page.goto(url, { 
-      waitUntil: "domcontentloaded",
-      timeout: TIMEOUT 
-    });
-
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error(`Custom timeout after ${TIMEOUT}ms`)), TIMEOUT);
-    });
-
+    // Try to navigate, but don't fail if it times out
     try {
-      await Promise.race([navigationPromise, timeoutPromise]);
-    } catch (error: any) {
-      console.error(`[${Date.now() - startTime}ms] Navigation failed:`, error?.message || error);
-      throw createError({
-        statusCode: 504,
-        statusMessage: `Navigation timeout for ${path}`,
+      await page.goto(url, {
+        waitUntil: "networkidle2", // Wait for network to be mostly idle (images loaded)
+        timeout: TIMEOUT,
       });
+      console.log(`[${Date.now() - startTime}ms] Page fully loaded`);
+    } catch (error: any) {
+      console.log(
+        `[${Date.now() - startTime}ms] Navigation timeout, but continuing with screenshot:`,
+        error?.message || error
+      );
+      // Don't throw error, just continue with partial screenshot
     }
 
-    console.log(`[${Date.now() - startTime}ms] Page loaded, taking screenshot`);
+    console.log(
+      `[${Date.now() - startTime}ms] Taking screenshot (ready or not)`
+    );
 
     // Quick DOM manipulation
     await page.evaluate(() => {
@@ -214,7 +215,9 @@ async function screenshotHandler(event: any) {
       quality: 80, // Reduced quality for faster processing
     });
 
-    console.log(`[${Date.now() - startTime}ms] Screenshot completed, size: ${buffer.length} bytes`);
+    console.log(
+      `[${Date.now() - startTime}ms] Screenshot completed, size: ${buffer.length} bytes`
+    );
 
     const headers: Record<string, string> = { "Content-Type": "image/webp" };
     if (!process.env.DEV) {
@@ -223,16 +226,20 @@ async function screenshotHandler(event: any) {
 
     // @ts-ignore
     return new Response(buffer, { headers });
-
   } catch (error: any) {
     const memUsage = getMemoryUsage();
-    console.error(`[${Date.now() - startTime}ms] Screenshot error:`, error?.message || error, "Memory:", memUsage);
-    
+    console.error(
+      `[${Date.now() - startTime}ms] Screenshot error:`,
+      error?.message || error,
+      "Memory:",
+      memUsage
+    );
+
     // Force browser restart on error
     await killBrowserProcess();
     pageCount = 0;
     forceGC();
-    
+
     throw error;
   } finally {
     if (page) {
@@ -248,4 +255,3 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
-
