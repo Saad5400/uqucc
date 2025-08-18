@@ -203,9 +203,7 @@ async function screenshotHandler(event: any) {
     // Quick DOM manipulation
     await page.evaluate(() => {
       // @ts-ignore
-      const header = document.querySelector("header");
-      // @ts-ignore
-      if (header) header.style.display = "none";
+      document.querySelectorAll(".screenshot-hidden").forEach((e) => e.style.display = "none");
       // @ts-ignore
       document.documentElement.style.scrollbarGutter = "auto";
     });
@@ -255,3 +253,4 @@ async function screenshotHandler(event: any) {
 
 // export either a cached or plain handler
 export default defineEventHandler(screenshotHandler);
+
