@@ -412,8 +412,8 @@ m-212 -146 c17 -5 28 -15 31 -30 6 -32 -26 -33 -47 -1 -11 17 -22 23 -33 19
     </figure>
     <h6>
         تحتاج شرح برمجة خصوصي لمقررات الجامعة؟
-        <ProseA href="https://elcato.sb.sa" target="_blank">
-            شوف منصة الكاتو للدورات!
+        <ProseA href="https://catodemy.sb.sa" target="_blank">
+            شوف كانوديمي للدورات!
         </ProseA>
     </h6>
   </div>
