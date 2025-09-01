@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import Info from '~/components/content/admonitions/Info.vue'
 
-const weeks = 18 // عدد أسابيع المقرر
+const weeks = 17 // عدد أسابيع المقرر
 const maxUnexcRate = 0.15 // %15 حد الغياب بدون عذر
 const maxAbsRate = 0.25 // %25 حد الغياب الكلي
 
