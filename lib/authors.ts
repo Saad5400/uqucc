@@ -54,4 +54,4 @@ export const authors = {
     },
     'Bader': {
         name: 'بدر الياسي',
-};
+}};
