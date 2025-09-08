@@ -51,5 +51,7 @@ export const authors = {
     },
     'maziad': {
         name: 'مزيد العبدالعزيز',
-    }
+    },
+    'Bader': {
+        name: 'بدر الياسي',
 };
