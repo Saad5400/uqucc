@@ -1,5 +1,6 @@
 <template>
   <component
+    class="size-full max-w-4xl"
     :is="ImageComponent"
     :src="refinedSrc"
     :alt="props.alt"

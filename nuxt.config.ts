@@ -51,4 +51,15 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        prefetch: true,
+        prefetchOn: {
+          visibility: true,
+        },
+      },
+    },
+  },
 });
