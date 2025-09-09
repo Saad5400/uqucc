@@ -1,6 +1,6 @@
 ---
 icon: iconoir:google-one
-author: rito_4s
+authors: [rito_4s]
 ---
 
 ![IMG_9972](https://github.com/user-attachments/assets/82351208-e8fc-4fce-b92b-585743add352)
