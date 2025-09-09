@@ -8,8 +8,6 @@ import { toast } from "vue-sonner";
 onMounted(async () => {
   if (new Date().getDay() === 5)
     setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 100);
-
-  await import("@/pages/[...slug].vue");
 });
 
 </script>
