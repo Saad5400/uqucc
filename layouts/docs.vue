@@ -5,9 +5,11 @@ import { Toaster } from "@/components/ui/sonner";
 import "vue-sonner/style.css"; // vue-sonner v2 requires this import
 import { toast } from "vue-sonner";
 
-onMounted(() => {
+onMounted(async () => {
   if (new Date().getDay() === 5)
     setTimeout(() => toast.info("اللهم صل وسلم على نبينا محمد"), 100);
+
+  await import("@/pages/[...slug].vue");
 });
 
 </script>

@@ -5,6 +5,8 @@ authors: [rito_4s]
 
 # تفعيل Google Pro مجانا
 
+https://gemini.google/students/
+
 ![IMG_9972](https://github.com/user-attachments/assets/82351208-e8fc-4fce-b92b-585743add352)
 ![IMG_9973](https://github.com/user-attachments/assets/d09bbbb1-0126-421a-aec4-3e464b10fcc7)
 ![IMG_9974](https://github.com/user-attachments/assets/df7fbe67-e4b0-4bdd-8dc7-e9fbe085da50)
