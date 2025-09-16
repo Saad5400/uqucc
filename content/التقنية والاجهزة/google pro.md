@@ -5,7 +5,9 @@ authors: [rito_4s]
 
 # تفعيل Google Pro مجانا
 
-https://gemini.google/students/
+رابط التفعيل: https://gemini.google/students/
+
+بعد التفعيل تقدر تلغي التجديد التلقائي من هنا: https://myaccount.google.com/subscriptions?continue=https%3A%2F%2Fmyaccount.google.com%2Fpayments-and-subscriptions
 
 ![IMG_9972](https://github.com/user-attachments/assets/82351208-e8fc-4fce-b92b-585743add352)
 ![IMG_9973](https://github.com/user-attachments/assets/d09bbbb1-0126-421a-aec4-3e464b10fcc7)
