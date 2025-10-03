@@ -48,7 +48,7 @@
       </p>
     </div>
 
-    <div class="flex items-center justify-between gap-2 !mb-4">
+    <div class="flex items-center justify-between gap-2 !my-4">
       <Button @click="addCourse" class="flex-1">
         إضافة مقرر
         <Plus />
