@@ -28,6 +28,12 @@ export default defineNuxtConfig({
     url: "https://uqucc.sb.sa",
     github: "https://github.com/Saad5400/uqucc/tree/nuxt",
     name: "دليل طالب كلية الحاسبات",
+    description:
+      "دليلك الشامل لكل ما يخص كلية الحاسبات من تخصصات ومقررات وأدوات ونصائح، بكتابة الطلاب للطلاب.",
+  },
+
+  robots: {
+    sitemap: "https://uqucc.sb.sa/sitemap.xml",
   },
 
   content: {
