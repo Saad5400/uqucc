@@ -24,31 +24,126 @@ const breadcrumbs = findPageBreadcrumb(itemsList.value, normalizedPath.value, {
 });
 
 const siteConfig = useSiteConfig();
+const siteName = siteConfig.name || "دليل طالب كلية الحاسبات";
 const url = useRequestURL();
 const ogImageUrl = page?.ogImage
   ? `${url.origin}${page?.ogImage}`
   : encodeURI(`${url.origin}/api/screenshot?path=${route.path}`);
 
+// Resolve a meaningful, unique title/description for this page.
+const sectionTitle = computed(() => breadcrumbs.at(-1)?.title);
+const pageTitle = computed(
+  () => page?.title || pageItem?.title || sectionTitle.value || siteName
+);
+const canonicalUrl = computed(
+  () => `${siteConfig.url}${normalizedPath.value || "/"}`
+);
+
+// Build a clean description: prefer the page description, then a sentence
+// derived from the section/title, falling back to the site description.
+function plainText(value: unknown): string {
+  return String(value ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+const pageDescription = computed(() => {
+  const fromPage = plainText(page?.description);
+  if (fromPage) return fromPage;
+  const title = plainText(pageTitle.value);
+  if (title && title !== siteName) {
+    return `${title} — ${siteName}: دليلك الشامل لكل ما يخص كلية الحاسبات.`;
+  }
+  return "دليلك الشامل لكل ما يخص كلية الحاسبات من تخصصات ومقررات وأدوات ونصائح، بكتابة الطلاب للطلاب.";
+});
+
 useSeoMeta({
   ...(page?.seo || {}),
-  ogTitle: page?.title,
-  ogDescription: page?.description,
-  ogUrl: `${url.origin}${route.path}`,
-  ogType: "website",
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogUrl: canonicalUrl,
+  ogType: page ? "article" : "website",
   ogImageUrl: ogImageUrl,
   ogImageWidth: 720,
   ogImageHeight: 377,
   ogImageType: "image/png",
-  ogImageAlt: page?.title,
+  ogImageAlt: pageTitle,
   twitterCard: "summary_large_image",
-  twitterTitle: page?.title,
-  twitterDescription: page?.description,
+  twitterTitle: pageTitle,
+  twitterDescription: pageDescription,
   twitterImage: ogImageUrl,
   twitterImageWidth: 720,
   twitterImageHeight: 377,
-  twitterImageAlt: page?.title,
+  twitterImageAlt: pageTitle,
   twitterSite: "@SaadBatwa",
   twitterCreator: "@SaadBatwa",
+});
+
+useHead({
+  link: [{ rel: "canonical", href: canonicalUrl }],
+});
+
+// Structured data: BreadcrumbList for every page, plus Article on content pages.
+const jsonLd = computed(() => {
+  const graph: Record<string, unknown>[] = [];
+
+  if (breadcrumbs.length) {
+    graph.push({
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: siteName,
+          item: `${siteConfig.url}/`,
+        },
+        ...breadcrumbs
+          .filter((b) => b.path && b.path !== "/")
+          .map((b, index) => ({
+            "@type": "ListItem",
+            position: index + 2,
+            name: b.title,
+            item: `${siteConfig.url}${b.path}`,
+          })),
+      ],
+    });
+  }
+
+  if (page) {
+    graph.push({
+      "@type": "TechArticle",
+      headline: pageTitle.value,
+      description: pageDescription.value,
+      inLanguage: "ar",
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl.value },
+      image: ogImageUrl,
+      isPartOf: { "@id": `${siteConfig.url}/#website` },
+      publisher: { "@id": `${siteConfig.url}/#organization` },
+      ...(page?.authors?.length
+        ? {
+            author: page.authors.map((name: string) => ({
+              "@type": "Person",
+              name,
+            })),
+          }
+        : {}),
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+});
+
+useHead({
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: computed(() => JSON.stringify(jsonLd.value)),
+    },
+  ],
 });
 </script>
 
